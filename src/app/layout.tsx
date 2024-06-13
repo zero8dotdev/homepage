@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Domine } from "next/font/google";
+import { CSPostHogProvider } from "@/app/providers";
 import "./globals.css";
 import Header from "./_components/header";
 
@@ -18,10 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${domine.className} bg-white text-[--foreground-rgb]`}>
-        <Header />
-        {children}
-      </body>
+      <CSPostHogProvider>
+        <body
+          className={`${domine.className} bg-white text-[--foreground-rgb]`}
+        >
+          <Header />
+          {children}
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }
