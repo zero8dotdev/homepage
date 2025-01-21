@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Domine } from "next/font/google";
+import { Assistant } from "next/font/google";
 import { CSPostHogProvider } from "@/app/providers";
 import "./globals.css";
 import Header from "./_components/header";
 
-const inter = Inter({ subsets: ["latin"] });
-const domine = Domine({ subsets: ["latin"] });
+const assistant = Assistant({ subsets: ["latin"], weight: "600" });
 
 export const metadata: Metadata = {
   title: "Zero8.Dev",
@@ -20,11 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <CSPostHogProvider>
-        <body
-          className={`${domine.className} bg-white text-[--foreground-rgb]`}
-        >
-          <Header />
-          {children}
+        <body className={`${assistant.className} bg-onyx`}>
+          <div className="container mx-auto grid grid-cols-4 grid-rows-[64px_repeat(5,_minmax(400px,_1fr)_400px] gap-4">
+            <Header />
+            {children}
+          </div>
         </body>
       </CSPostHogProvider>
     </html>

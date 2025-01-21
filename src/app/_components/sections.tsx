@@ -1,8 +1,8 @@
 const First = () => {
   return (
     <div className="h-screen flex justify-center items-center text-center">
-      <h1 className="text-black text-[100px]">
-        Our website isn&apos;t ready yet. Why?
+      <h1 className="text-primary text-[128px]">
+        Digital company building future forward software.
       </h1>
     </div>
   );
