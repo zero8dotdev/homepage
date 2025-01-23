@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <CSPostHogProvider>
         <body className={`${assistant.className} bg-onyx`}>
-          <div className="container mx-auto grid grid-cols-4 grid-rows-[64px_repeat(5,_minmax(400px,_1fr)_400px] gap-4">
+          <div className="container mx-auto grid grid-cols-4 grid-rows-[64px_repeat(5,_minmax(400px,_1fr)_400px] gap-x-4 pt-4">
             <Header />
             {children}
           </div>
