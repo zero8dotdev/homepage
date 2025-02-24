@@ -10,12 +10,12 @@ const config: Config = {
     colors: {
       onyx: "#121212",
       charcoal: "#212121",
-      primary: '#FFB8A8',
-      stroke: '#FFB8A8',
+      primary: "#FFB8A8",
+      stroke: "#FFB8A8",
+      desc: "#EDEDED",
+      textSecondary: "#9F9E9E",
     },
-    fontFamily: {
-      
-    },
+    fontFamily: {},
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
