@@ -5,6 +5,7 @@ import {
   Second,
   Testimonials,
   ContactsUs,
+  FeaturedProjects,
 } from "./_components/sections";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <First />
       <Second />
       <Fourth />
+      <FeaturedProjects />
       <Five />
       <Testimonials />
       <ContactsUs />

@@ -7,16 +7,19 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors: {
-      onyx: "#121212",
-      charcoal: "#212121",
-      primary: '#FFB8A8',
-      stroke: '#FFB8A8',
-    },
-    fontFamily: {
-      
-    },
     extend: {
+      colors: {
+        onyx: "#121212",
+        charcoal: "#212121",
+        primary: "#FFB8A8",
+        stroke: "#FFB8A8",
+        desc: "#EDEDED",
+        headerBlur: "#00000029",
+        menuIcon: "#CDFF41",
+      },
+      // fontWeight: {
+      //   extrabold: "800",
+      // },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

@@ -25,3 +25,233 @@ body {
     text-wrap: balance;
   }
 }
+
+.box {
+  position: absolute;
+  top: calc(50% - 150px);
+  left: calc(50% - 100px);
+  transform: perspective(1000px);
+  /* transform: perspective(1000px) rotateY(-45deg); */
+  width: 200px;
+  height: 200px;
+  transform-style: preserve-3d;
+}
+.box div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: animate 5s linear infinite;
+}
+.box div span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* background: linear-gradient(0deg, red, #bbb, red); */
+  border-radius: 20px;
+}
+
+.box div span:nth-child(1) {
+  transform: rotateX(0deg);
+  background-color: red;
+}
+.box div span:nth-child(2) {
+  transform: rotateX(45deg);
+  background-color: white;
+}
+.box div span:nth-child(3) {
+  transform: rotateX(-45deg);
+  background-color: yellow;
+}
+.box div span:nth-child(4) {
+  transform: rotateX(90deg);
+  background-color: orange;
+}
+.box div span:nth-child(5) {
+  transform: rotateX(90deg);
+  background-color: blue;
+}
+.box div span:nth-child(6) {
+  transform: rotateX(90deg);
+  background-color: green;
+}
+
+@keyframes animate {
+  0% {
+    transform: perspective(1000px);
+  }
+  100% {
+    transform: perspective(1000px) rotateX(359deg);
+  }
+}
+.stack {
+  width: 200px;
+  height: 200px;
+  transform: perspective(1000px);
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.stack div {
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.stack div span {
+  width: 100%;
+  height: 350px;
+  display: block;
+  position: absolute;
+  transform-origin: center;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.stack div span::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  right: 0;
+  top: 0;
+  /* background: inherit; */
+  background: blue;
+  /* background: rgba(0, 0, 0, 0.15); */
+  z-index: -1;
+}
+
+/* .stack div span::before:nth-child(1) {
+  background: linear-gradient(180deg, #f16529, #ff5500);
+}
+.stack div span::before:nth-child(2) {
+  background: linear-gradient(180deg, #17c31f, #1dc523);
+}
+.stack div span::before:nth-child(3) {
+  background: linear-gradient(180deg, #390de7, #091be5);
+}
+.stack div span::before:nth-child(4) {
+  background: linear-gradient(180deg, #f16529, #ff5500);
+}
+.stack div span::before:nth-child(5) {
+  background: linear-gradient(180deg, #4aec4f, #14de2c);
+} */
+.stack div span:nth-child(1) {
+  transform: rotateX(109deg);
+  background: linear-gradient(180deg, #f16529, #ff5500);
+}
+
+.stack div span:nth-child(2) {
+  transform: rotateX(102deg);
+  background: linear-gradient(180deg, #17c31f, #1dc523);
+}
+
+.stack div span:nth-child(3) {
+  transform: rotateX(95deg);
+  background: linear-gradient(180deg, #390de7, #091be5);
+}
+
+.stack div span:nth-child(4) {
+  transform: rotateX(85deg);
+  background: linear-gradient(180deg, #ed0817, #ff5500);
+}
+
+.stack div span:nth-child(5) {
+  transform: rotateX(78deg);
+  background: linear-gradient(180deg, #4aec4f, #14de2c);
+}
+
+/* .stack div span:nth-child(2) {
+  transform: rotateX(-30deg);
+}
+
+.stack div span:nth-child(3) {
+  transform: rotateX(-60deg);
+}
+
+.stack div span:nth-child(4) {
+  transform: rotateX(-90deg);
+}
+
+.stack div span:nth-child(5) {
+  transform: rotateX(-120deg);
+}
+
+.stack div span:nth-child(6) {
+  transform: rotateX(-150deg);
+} */
+/* .stack {
+  background-color: red;
+  width: 200px;
+  height: 50px;
+  transform: perspective(1000px);
+  transform-style: preserve-3d;
+}
+.stack div {
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  animation: stackview 5s infinite;
+}
+.stack div span {
+  width: 100%;
+  height: 100%;
+  background-color: orange;
+  display: block;
+
+}
+.stack div span:nth-child(2) {
+  transform: rotateX(-70deg);
+}
+
+@keyframes stackview {
+  0% {
+    transform: perspective(1000px);
+  }
+  100% {
+    transform: perspective(1000px);
+  }
+} */
+
+.gnani {
+  width: 200px;
+  height: 200px;
+}
+.gnani div {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border: 0px solid red;
+  border-radius: 10px;
+}
+
+.gnani div span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #ed0817, #111010);
+  border-radius: 10px;
+
+  position: absolute;
+}
+.gnani div span::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  top: 10px;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, #ed0817, #111010);
+  border-radius: 10px;
+}
