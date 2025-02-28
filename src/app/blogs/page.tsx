@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 import Featured from "./_components/featured";
 import Blog from "./_components/blog";
@@ -6,16 +5,19 @@ import Blog from "./_components/blog";
 const page = () => {
   const items = [
     {
+      id: 1,
       image: "/digital.png",
       title: "From Concept to Code: How we Build scalable Digital Solutions",
       desc: "Writing clean, maintainable code is more than a technical skill -it is a philosophy. In this post, we wil explore the principles behind clean coding and how they contribute to better collaboration, faster debugging and scalable projects.",
     },
     {
+      id: 2,
       image: "/desk.png",
       title: "5 Tools Every Developer Should Have in Their Toolkit",
       desc: "In the ever-envolving tech landscpe, having the right tools can make all the dirrerence. This post dives into the must-have tools that streamine workflows, boost productivity , and help tackle comples challenges with ease.",
     },
     {
+      id: 3,
       image: "/cloud.png",
       title: "Understanding the Cloud: A Develpers Perspective",
       desc: "Writing clean, maintainable code is more than a technical skill -it is a philosophy. In theis post, we will explore the principles behind clean coding and how they contribute to better collboration, faster debugging, and scalable projects.",

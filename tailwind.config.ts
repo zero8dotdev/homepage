@@ -14,6 +14,7 @@ const config: Config = {
       stroke: "#FFB8A8",
       desc: "#EDEDED",
       textSecondary: "#9F9E9E",
+      textGreen: "#CDFF41",
     },
     fontFamily: {},
     extend: {
