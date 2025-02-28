@@ -12,6 +12,8 @@ const config: Config = {
       charcoal: "#212121",
       primary: '#FFB8A8',
       stroke: '#FFB8A8',
+      green:'#CDFF41',
+      white:'#FFFFFF'
     },
     fontFamily: {
       
