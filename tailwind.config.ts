@@ -17,9 +17,7 @@ const config: Config = {
         headerBlur: "#00000029",
         menuIcon: "#CDFF41",
       },
-      // fontWeight: {
-      //   extrabold: "800",
-      // },
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

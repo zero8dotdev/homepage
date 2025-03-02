@@ -26,6 +26,13 @@ body {
   }
 }
 
+.font-custom-bold {
+  font-weight: 800px;
+}
+.font-custom-light {
+  font-weight: 400;
+}
+
 .box {
   position: absolute;
   top: calc(50% - 150px);

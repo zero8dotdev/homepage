@@ -1,5 +1,8 @@
+"use client";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { title } from "process";
+import { useEffect, useRef, useState } from "react";
 
 const First = () => {
   return (
@@ -7,22 +10,22 @@ const First = () => {
       <h1 className="text-primary text-[55px] lg:text-[128px] py-8 leading-none">
         Digital company building future forward software.
       </h1>
-      <div className="h-auto text-base grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-4 gap-y-2 font-normal text-desc">
-        <p className="col-span-1">
+      <div className="h-auto text-base grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-6 gap-y-6  text-desc">
+        <p className="col-span-1 font-extralight">
           Building with Flutter, Rust. Fully DevSecOps Compliant work. Pluggable
           teams, which mean no overheads and short turnaround times from
           integration to delivery.
         </p>
-        <p className="col-span-1">
+        <p className="col-span-1 font-extralight">
           We are fully compliant working with all different kinds of DBs.
           Including Mongo, SQL, NoSQL.
         </p>
-        <p className="row-start-2 lg:row-start-auto col-span-1">
+        <p className=" row-start-2 font-extralight lg:row-start-auto col-span-1">
           10+ teams around the world are running 12 B2B software solutions
           designed and delivered by Zero8.Dev.
         </p>
-        <div className="row-start-2 lg:row-start-auto col-span-1 flex justify-end items-end align-start">
-          <button className="bg-primary text-charcoal  px-4 py-2 flex justify-around">
+        <div className="row-start-2 lg:row-start-auto col-span-1 flex justify-end items-center lg:items-end align-start">
+          <button className="bg-primary text-charcoal  px-4 py-2 flex justify-around ">
             Build Now
             <ChevronRight />
           </button>
@@ -35,10 +38,10 @@ const First = () => {
 const Second = () => {
   return (
     <section
-      className="my-12 h-auto col-span-full grid border border-primary
+      className="col-span-full grid border border-primary
      text-primary text-[42px] lg:text-[96px] leading-none pt-2 relative before:content-['<div>'] before:absolute before:text-base before:bg-primary
       before:leading-none before:px-2 before:text-charcoal before:top-[-1.5rem] after:content-['</div>'] after:absolute after:text-base after:bg-primary after:leading-none 
-      after:px-2 after:text-charcoal after:bottom-[-1.5rem]"
+      after:px-2 after:text-charcoal after:bottom-[-1.5rem] "
     >
       <p>Frontend.</p>
       <p>Backend.</p>
@@ -49,52 +52,60 @@ const Second = () => {
 
 const Fourth = () => {
   return (
-    <div className="h-auto grid grid-rows-[auto_auto] grid-cols-4 gap-4 my-12">
+    <div className=" h-auto grid grid-rows-[auto_auto] grid-cols-4 gap-4 mt-12">
       <section className="col-span-4 lg:col-span-1">
         <h2>Phases of product we are involved in</h2>
       </section>
-      <section className="grid row-span-2 col-span-full grid-cols-2 lg:grid-cols-4 gap-4 text-desc">
+      <section className="grid row-span-2 col-span-full grid-cols-2 lg:grid-cols-4 gap-6 gap-y-10 ">
         <div className="col-span-1">
           <p className="h-9 w-9">
             <img src="/LightbulbFilament.png" />
           </p>
-          <h4 className="my-2 text-2xl">Ideation</h4>
-          <p className="text-base leading-4">
-            We get to know your idea and vision.
-          </p>
-          <p>We understand the target audience.</p>
-          <p>We identify problems we can solve for you and your users.</p>
-          <p>We propose ways for differentiation.</p>
+          <h4 className="my-2 text-2xl  font-bold">Ideation</h4>
+          <div className="font-extralight text-desc">
+            <p className="text-base leading-4">
+              We get to know your idea and vision.
+            </p>
+            <p>We understand the target audience.</p>
+            <p>We identify problems we can solve for you and your users.</p>
+            <p>We propose ways for differentiation.</p>
+          </div>
         </div>
         <div className="text col-span-1">
           <p className="h-9 w-9 ">
             <img src="/Headset.png" />
           </p>
-          <h4 className="my-2 text-2xl">Development</h4>
-          <p>We get to know your idea and vision.</p>
-          <p>We understand the target audience.</p>
-          <p>We identify problems we can solve for you and your users.</p>
-          <p>We propose ways for differentiation.</p>
+          <h4 className="my-2 text-2xl font-bold">Development</h4>
+          <div className="font-extralight text-desc">
+            <p>We get to know your idea and vision.</p>
+            <p>We understand the target audience.</p>
+            <p>We identify problems we can solve for you and your users.</p>
+            <p>We propose ways for differentiation.</p>
+          </div>
         </div>
         <div className="text col-span-1">
           <p className="h-9 w-9 ">
             <img src="/SealCheck.png" />
           </p>
-          <h4 className="my-2 text-2xl">Quality Assurance</h4>
-          <p>We get to know your idea and vision.</p>
-          <p>We understand the target audience.</p>
-          <p>We identify problems we can solve for you and your users.</p>
-          <p>We propose ways for differentiation.</p>
+          <h4 className="my-2 text-2xl font-bold">Quality Assurance</h4>
+          <div className="font-extralight text-desc">
+            <p>We get to know your idea and vision.</p>
+            <p>We understand the target audience.</p>
+            <p>We identify problems we can solve for you and your users.</p>
+            <p>We propose ways for differentiation.</p>
+          </div>
         </div>
         <div className="text col-span-1">
           <p className="h-9 w-9 ">
             <img src="/CodeBlock.png" />
           </p>
-          <h4 className="my-2 text-2xl">Support & Maintenance</h4>
-          <p>We get to know your idea and vision.</p>
-          <p>We understand the target audience.</p>
-          <p>We identify problems we can solve for you and your users.</p>
-          <p>We propose ways for differentiation.</p>
+          <h4 className="my-2 text-2xl font-bold">Support & Maintenance</h4>
+          <div className="font-extralight text-desc">
+            <p>We get to know your idea and vision.</p>
+            <p>We understand the target audience.</p>
+            <p>We identify problems we can solve for you and your users.</p>
+            <p>We propose ways for differentiation.</p>
+          </div>
         </div>
       </section>
     </div>
@@ -102,7 +113,7 @@ const Fourth = () => {
 };
 const FeaturedProjects = () => {
   return (
-    <section className="col-span-full px2">
+    <section className="col-span-full px-2 h-auto">
       <h2 className="text-primary text-[42px] lg:text-[96px] leading-[96px]">
         Featured Projects
       </h2>
@@ -134,7 +145,7 @@ const FeaturedProjects = () => {
           <p className="bg-[#232323] py-4 px-6 rounded-full">React Js</p>
         </div>
 
-        <div className="text-desc/70 my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
+        <div className="text-desc font-extralight my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
           <p className="text-base">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
@@ -142,13 +153,13 @@ const FeaturedProjects = () => {
           </p>
           <div>
             <h1 className="text-2xl text-primary">120M</h1>
-            <p className="text-desc/70 text-base">
+            <p className="text-desc font-extralight text-base">
               Lorem ipsum dolor sit amet.
             </p>
           </div>
           <div>
             <h1 className="text-2xl text-primary">1500+</h1>
-            <p className="text-desc/70 text-base">
+            <p className="text-desc font-extralight text-base">
               Lorem ipsum dolor sit amet.
             </p>
           </div>
@@ -166,7 +177,7 @@ const FeaturedProjects = () => {
         </div>
         <div className="lg:hidden border border-[#CDFF41] my-4"></div>
 
-        <div className="flex justify-between text-desc/70 lg:row-start-3 lg:col-span-1 lg:mt-6">
+        <div className="flex justify-between text-desc font-extralight lg:row-start-3 lg:col-span-1 lg:mt-6">
           <div className="space-y-1">
             <Image
               src="/Vector.png"
@@ -206,48 +217,58 @@ const FeaturedProjects = () => {
 };
 const Five = () => {
   return (
-    <>
-      <h2 className="text-primary text-[42px] lg:text-[96px] lg:leading-[96px] col-span-full my-8">
+    <section className="">
+      <h2 className=" text-primary text-[42px] lg:text-[96px] leading-tight lg:leading-[96px] col-span-full mb-8">
         The Zero8.Dev difference
       </h2>
-      <section className=" grid col-span-full gap-4 grid-cols-2 lg:grid-cols-4 grid-rows-4 lg:grid-rows-2">
-        <div className="bg-primary relative col-span-2 rounded p-6 flex justify-between items-center">
-          <div className="text-charcoal">
-            <h2 className="text-[22px]">Development Process</h2>
-            <p className="text-base ">
+      <div className="grid col-span-full gap-4 grid-cols-2 lg:grid-cols-4 grid-rows-4 lg:grid-rows-2">
+        <div className="bg-primary relative col-span-2 rounded p-2 lg:p-6 flex justify-between items-start lg:items-center gap-x-2">
+          <div className="text-charcoal w-[60%] space-y-5 ">
+            <h2 className="text-[22px] font-extrabold whitespace-nowrap">
+              Development Process
+            </h2>
+            <p className="text-base font-bold">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
               massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
               fringilla.
             </p>
             <p className="my-4">Learn More</p>
           </div>
-          <div className="w-full  flex justify-end items-end">
-            <img
+          <div className="self-end w-[40%] flex justify-end items-end">
+            <Image
+              alt="develop"
+              src="/developprocess.png"
+              className=" translate-x-1 translate-y-2 lg:translate-x-6 lg:translate-y-10 "
+              width={100}
+              height={100}
+              layout="responsive"
+            />
+            {/* <img
               src="/developprocess.png"
               alt="develop"
-              className=" translate-x-6 translate-y-10"
-            />
+              className=" translate-x-6 translate-y-10 "
+            /> */}
           </div>
         </div>
-        <div className="bg-charcoal col-span-1 rounded p-6">
-          <h4>Support</h4>
-          <p className="text-base ">
+        <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
+          <h4 className="font-bold text-[22px]">Support</h4>
+          <p className="text-base font-extralight text-desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
           </p>
         </div>
-        <div className="bg-charcoal col-span-1 rounded p-6">
-          <h4>Testing</h4>
-          <p className="text-base ">
+        <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
+          <h4 className="font-bold text-[22px]">Testing</h4>
+          <p className="text-base font-extralight text-desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
           </p>
         </div>
-        <div className="bg-charcoal col-span-2 rounded p-6">
-          <h4>Technology</h4>
-          <p className="text-base ">
+        <div className="bg-charcoal col-span-2 rounded p-2 lg:p-6 space-y-5">
+          <h4 className="font-bold text-[22px]">Technology</h4>
+          <p className="text-base font-extralight text-desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
@@ -259,38 +280,114 @@ const Five = () => {
             width={300}
             height={200}
           /> */}
-          <div className="flex w-full justify-center items-center">
+          <div className="flex w-full justify-center items-center ">
             <img src="/rocket.png" alt="develop" className="" />
           </div>
         </div>
-        <div className="bg-charcoal col-span-1 rounded p-6">
-          <h4>Consulting / Strategy</h4>
-          <p className="text-base ">
+        <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
+          <h4 className="font-bold text-[22px]">Consulting / Strategy</h4>
+          <p className="text-base font-extralight text-desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
           </p>
         </div>
 
-        <div className="bg-charcoal col-span-1 rounded p-6">
-          <h4>Frameworks</h4>
-          <p className="text-base ">
+        <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
+          <h4 className="font-bold text-[22px]">Frameworks</h4>
+          <p className="text-base font-extralight text-desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
           </p>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
 const Testimonials = () => {
+  const testimonialsRef = useRef<HTMLDivElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const testimonialList = [
+    {
+      title: `"Zero8 got our MVP up and running in virtually no time."`,
+      author: "-Vex Lexter, Aerotropic",
+    },
+    {
+      title: `"Zero8 got our MVP up and running in virtually no time."`,
+      author: "-Vex Lexter, Aerotropic",
+    },
+    {
+      title: `“Could not have deployed our vision better or sooner without Zero8.”`,
+      author: "-Wren Tedder, Navajo",
+    },
+  ];
+
+  const handleScroll = () => {
+    if (testimonialsRef.current) {
+      const scrollLeft = testimonialsRef.current.scrollLeft;
+      const width = testimonialsRef.current.offsetWidth;
+      const index = Math.round(scrollLeft / width);
+      setActiveIndex(index);
+    }
+  };
+
+  const scrollToIndex = (index: number) => {
+    if (testimonialsRef.current) {
+      testimonialsRef.current.scrollTo({
+        left: index * testimonialsRef.current.offsetWidth,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const ref = testimonialsRef.current;
+    if (ref) {
+      ref.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (ref) {
+        ref.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
   return (
-    <section className="col-span-full grid grid-cols-3 gap-4 py-20">
-      <div className="h-56 bg-charcoal rounded"></div>
-      <div className="h-56 bg-charcoal rounded"></div>
-      <div className="h-56 bg-charcoal rounded"></div>
+    <section className=" mb-4 col-span-1 h-auto">
+      <div
+        className="font-extralight flex w-full overflow-x-hidden snap-x 
+        snap-mandatory lg:grid lg:grid-cols-3 lg:gap-x-4"
+        ref={testimonialsRef}
+      >
+        {testimonialList.map((testimonial, index) => (
+          <div
+            key={index}
+            className="min-w-full p-2 h-56 bg-charcoal rounded text-desc 
+            text-base lg:text-xl flex flex-col justify-center items-center 
+            snap-center lg:p-4"
+          >
+            <div>
+              <p>{testimonial.title}</p>
+              <p className="text-base text-right">{testimonial.author}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-center gap-x-2 my-2 lg:hidden">
+        {testimonialList.map((_, index) => (
+          <div
+            key={index}
+            className={`w-4 h-4 rounded-full ${
+              index === activeIndex ? "bg-red-500" : "bg-desc"
+            } cursor-pointer`}
+            onClick={() => scrollToIndex(index)}
+          ></div>
+        ))}
+      </div>
     </section>
   );
 };
@@ -298,33 +395,33 @@ const Testimonials = () => {
 const ContactsUs = () => {
   return (
     <section className="col-span-full">
-      <h3 className="text-[96px] leading-[96px]">
+      <h3 className="text-[42px] lg:text-[96px] leading-[96px]">
         With Us, <span className="text-primary">it happens.</span>
       </h3>
-      <p className="text-[36px] leading-[40px]">
+      <p className="text-[22px] lg:text-[36px] lg:leading-[40px]">
         Tell us what you want to build and we will get back to you.
       </p>
-      <p className="py-4">I am interested in:</p>
-      <div className="flex gap-4 flex-wrap">
-        <button className="border-[2px] rounded-full p-3 border-primary text-primary">
+      <p className="py-2 lg:py-4">I am interested in:</p>
+      <div className="flex gap-2 lg:gap-4 flex-wrap">
+        <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           Site from scratch
         </button>
-        <button className="border-[2px] rounded-full p-3 border-primary text-primary">
+        <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           UI/UX Design
         </button>
-        <button className="border-[2px] rounded-full p-3 border-primary text-primary">
+        <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           Product Design
         </button>
-        <button className="border-[2px] rounded-full p-3 border-primary text-primary">
+        <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           Website flow
         </button>
-        <button className="border-[2px] rounded-full p-3 border-primary text-primary">
+        <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           Mobile Developement
         </button>
-        <button className="border-[2px] rounded-full p-3 border-primary text-primary">
+        <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           Backend Pluggable Team
         </button>
-        <button className="border-[2px] rounded-full p-3 border-primary text-primary">
+        <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           Frontend Pluggable Team
         </button>
       </div>
