@@ -1,13 +1,10 @@
-"use client";
-
 import Image from "next/image";
-import { useParams } from "next/navigation";
 import React from "react";
 import Credits from "./_components/credits";
 import Strategies from "./_components/strategies";
 
-const Page = () => {
-  const { blogId } = useParams();
+const Page = ({ params }: { params: { blogId: string } }) => {
+  const blogId = params.blogId;
   const blogs = [
     {
       id: 1,
@@ -19,7 +16,7 @@ const Page = () => {
         TLDR: "Using AI and putting smart analytics in the hands of entrepeneurs.Lorem ipsum dolor sit amet, consctetur adipiscing elit. Ut",
       },
       challenges:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consecteture adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consetetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consecterur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consecteture adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consetetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.",
       techStack: ["stack.png", "stack.png-1", "stack.png-2", "stack.png-3"],
       images: "service-picture",
       strategies: [
@@ -76,6 +73,7 @@ const Page = () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consecteture adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consetetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Lorem ipsum dolor sit amet, consecterur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna.",
     },
   ];
+
   const blog = blogs.find((e) => e.id === Number(blogId));
   const blogzDetails = blog ? blog : null;
 

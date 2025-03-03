@@ -1,14 +1,12 @@
-"use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import React from "react";
 
 const Blog = ({ item }: { item: any }) => {
-  const router = useRouter();
   return (
-    <div
+    <Link
+      href={`/blogs/${item.id}`}
       className="bg-charcoal grid lg:grid-cols-2 cursor-pointer"
-      onClick={() => router.push(`/blogs/${item.id}`)}
     >
       <Image
         src={`${item.image}`}
@@ -25,7 +23,7 @@ const Blog = ({ item }: { item: any }) => {
         <p className="text-textSecondary">{item.desc}</p>
         <p className="text-textSecondary">6 January 2025</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

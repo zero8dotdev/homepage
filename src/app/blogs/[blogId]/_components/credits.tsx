@@ -20,7 +20,7 @@ const Credits = ({ credits }: { credits: any }) => {
           </div>
         </div>
       </div>
-      <p className="col-span-2 lg:col-span-4 lg:order-3 text-textGreen ">
+      <p className="col-span-2 lg:col-span-4 lg:order-3 text-textSuccess">
         January 3. 2025
       </p>
 
