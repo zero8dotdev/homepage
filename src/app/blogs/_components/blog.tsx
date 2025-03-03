@@ -1,9 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const Blog = ({ item }: { item: any }) => {
   return (
-    <div className="bg-charcoal grid lg:grid-cols-2">
+    <Link
+      href={`/blogs/${item.id}`}
+      className="bg-charcoal grid lg:grid-cols-2 cursor-pointer"
+    >
       <Image
         src={`${item.image}`}
         alt="yoga"
@@ -19,7 +23,7 @@ const Blog = ({ item }: { item: any }) => {
         <p className="text-textSecondary">{item.desc}</p>
         <p className="text-textSecondary">6 January 2025</p>
       </div>
-    </div>
+    </Link>
   );
 };
 
