@@ -14,9 +14,11 @@ const config: Config = {
       stroke: "#FFB8A8",
       desc: "#EDEDED",
       textSecondary: "#9F9E9E",
-      limeGreen:"#CDFF41", 
+      iconGreen: "#CDFF41",
+      gridTextColor: "#EDEDED",
     },
     fontFamily: {},
+
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
