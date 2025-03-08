@@ -25,3 +25,16 @@ body {
     text-wrap: balance;
   }
 }
+
+.primary-heading {
+  @apply text-primary sm:text-[128px] text-[55px];
+}
+
+.secondary-heading {
+  @apply text-primary sm:text-[96px] text-[42px];
+}
+
+.grid-heading-with-primary-color{
+  @apply text-primary sm:text-[80px] text-[40px]
+}
+
