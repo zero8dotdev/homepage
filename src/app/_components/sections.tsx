@@ -1,8 +1,6 @@
-"use client";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { title } from "process";
-import { useEffect, useRef, useState } from "react";
+import Testimonials from "./testimonials";
 
 const First = () => {
   return (
@@ -10,7 +8,8 @@ const First = () => {
       <h1 className="text-primary text-[55px] lg:text-[128px] py-8 leading-none">
         Digital company building future forward software.
       </h1>
-      <div className="h-auto text-base grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-6 gap-y-6  text-desc">
+
+      <div className="h-auto text-base grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-6 gap-y-6  text-description">
         <p className="col-span-1 font-extralight">
           Building with Flutter, Rust. Fully DevSecOps Compliant work. Pluggable
           teams, which mean no overheads and short turnaround times from
@@ -62,7 +61,7 @@ const Fourth = () => {
             <img src="/LightbulbFilament.png" />
           </p>
           <h4 className="my-2 text-2xl  font-bold">Ideation</h4>
-          <div className="font-extralight text-desc">
+          <div className="font-extralight text-description">
             <p className="text-base leading-4">
               We get to know your idea and vision.
             </p>
@@ -76,7 +75,7 @@ const Fourth = () => {
             <img src="/Headset.png" />
           </p>
           <h4 className="my-2 text-2xl font-bold">Development</h4>
-          <div className="font-extralight text-desc">
+          <div className="font-extralight text-description">
             <p>We get to know your idea and vision.</p>
             <p>We understand the target audience.</p>
             <p>We identify problems we can solve for you and your users.</p>
@@ -88,7 +87,7 @@ const Fourth = () => {
             <img src="/SealCheck.png" />
           </p>
           <h4 className="my-2 text-2xl font-bold">Quality Assurance</h4>
-          <div className="font-extralight text-desc">
+          <div className="font-extralight text-description">
             <p>We get to know your idea and vision.</p>
             <p>We understand the target audience.</p>
             <p>We identify problems we can solve for you and your users.</p>
@@ -100,7 +99,7 @@ const Fourth = () => {
             <img src="/CodeBlock.png" />
           </p>
           <h4 className="my-2 text-2xl font-bold">Support & Maintenance</h4>
-          <div className="font-extralight text-desc">
+          <div className="font-extralight text-description">
             <p>We get to know your idea and vision.</p>
             <p>We understand the target audience.</p>
             <p>We identify problems we can solve for you and your users.</p>
@@ -145,7 +144,7 @@ const FeaturedProjects = () => {
           <p className="bg-[#232323] py-4 px-6 rounded-full">React Js</p>
         </div>
 
-        <div className="text-desc font-extralight my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
+        <div className="text-description font-extralight my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
           <p className="text-base">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
@@ -153,13 +152,13 @@ const FeaturedProjects = () => {
           </p>
           <div>
             <h1 className="text-2xl text-primary">120M</h1>
-            <p className="text-desc font-extralight text-base">
+            <p className="text-description font-extralight text-base">
               Lorem ipsum dolor sit amet.
             </p>
           </div>
           <div>
             <h1 className="text-2xl text-primary">1500+</h1>
-            <p className="text-desc font-extralight text-base">
+            <p className="text-description font-extralight text-base">
               Lorem ipsum dolor sit amet.
             </p>
           </div>
@@ -177,7 +176,7 @@ const FeaturedProjects = () => {
         </div>
         <div className="lg:hidden border border-[#CDFF41] my-4"></div>
 
-        <div className="flex justify-between text-desc font-extralight lg:row-start-3 lg:col-span-1 lg:mt-6">
+        <div className="flex justify-between text-description font-extralight lg:row-start-3 lg:col-span-1 lg:mt-6">
           <div className="space-y-1">
             <Image
               src="/Vector.png"
@@ -252,7 +251,7 @@ const Five = () => {
         </div>
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="font-bold text-[22px]">Support</h4>
-          <p className="text-base font-extralight text-desc">
+          <p className="text-base font-extralight text-description">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
@@ -260,7 +259,7 @@ const Five = () => {
         </div>
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="font-bold text-[22px]">Testing</h4>
-          <p className="text-base font-extralight text-desc">
+          <p className="text-base font-extralight text-description">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
@@ -268,7 +267,7 @@ const Five = () => {
         </div>
         <div className="bg-charcoal col-span-2 rounded p-2 lg:p-6 space-y-5">
           <h4 className="font-bold text-[22px]">Technology</h4>
-          <p className="text-base font-extralight text-desc">
+          <p className="text-base font-extralight text-description">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
@@ -286,7 +285,7 @@ const Five = () => {
         </div>
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="font-bold text-[22px]">Consulting / Strategy</h4>
-          <p className="text-base font-extralight text-desc">
+          <p className="text-base font-extralight text-description">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
@@ -295,98 +294,12 @@ const Five = () => {
 
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="font-bold text-[22px]">Frameworks</h4>
-          <p className="text-base font-extralight text-desc">
+          <p className="text-base font-extralight text-description">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla.
           </p>
         </div>
-      </div>
-    </section>
-  );
-};
-
-const Testimonials = () => {
-  const testimonialsRef = useRef<HTMLDivElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const testimonialList = [
-    {
-      title: `"Zero8 got our MVP up and running in virtually no time."`,
-      author: "-Vex Lexter, Aerotropic",
-    },
-    {
-      title: `"Zero8 got our MVP up and running in virtually no time."`,
-      author: "-Vex Lexter, Aerotropic",
-    },
-    {
-      title: `“Could not have deployed our vision better or sooner without Zero8.”`,
-      author: "-Wren Tedder, Navajo",
-    },
-  ];
-
-  const handleScroll = () => {
-    if (testimonialsRef.current) {
-      const scrollLeft = testimonialsRef.current.scrollLeft;
-      const width = testimonialsRef.current.offsetWidth;
-      const index = Math.round(scrollLeft / width);
-      setActiveIndex(index);
-    }
-  };
-
-  const scrollToIndex = (index: number) => {
-    if (testimonialsRef.current) {
-      testimonialsRef.current.scrollTo({
-        left: index * testimonialsRef.current.offsetWidth,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  useEffect(() => {
-    const ref = testimonialsRef.current;
-    if (ref) {
-      ref.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (ref) {
-        ref.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
-  return (
-    <section className=" mb-4 col-span-1 h-auto">
-      <div
-        className="font-extralight flex w-full overflow-x-hidden snap-x 
-        snap-mandatory lg:grid lg:grid-cols-3 lg:gap-x-4"
-        ref={testimonialsRef}
-      >
-        {testimonialList.map((testimonial, index) => (
-          <div
-            key={index}
-            className="min-w-full p-2 h-56 bg-charcoal rounded text-desc 
-            text-base lg:text-xl flex flex-col justify-center items-center 
-            snap-center lg:p-4"
-          >
-            <div>
-              <p>{testimonial.title}</p>
-              <p className="text-base text-right">{testimonial.author}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex justify-center gap-x-2 my-2 lg:hidden">
-        {testimonialList.map((_, index) => (
-          <div
-            key={index}
-            className={`w-4 h-4 rounded-full ${
-              index === activeIndex ? "bg-red-500" : "bg-desc"
-            } cursor-pointer`}
-            onClick={() => scrollToIndex(index)}
-          ></div>
-        ))}
       </div>
     </section>
   );

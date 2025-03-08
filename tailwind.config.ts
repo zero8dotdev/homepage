@@ -13,9 +13,9 @@ const config: Config = {
         charcoal: "#212121",
         primary: "#FFB8A8",
         stroke: "#FFB8A8",
-        desc: "#EDEDED",
+        description: "#EDEDED",
         headerBlur: "#00000029",
-        menuIcon: "#CDFF41",
+        iconGreen: "#CDFF41",
       },
 
       backgroundImage: {

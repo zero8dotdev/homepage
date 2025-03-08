@@ -8,8 +8,26 @@ import Footer from "./_components/footer";
 const assistant = Assistant({ subsets: ["latin"], weight: "600" });
 
 export const metadata: Metadata = {
-  title: "Zero8.Dev",
-  description: "Building elegant web experiences",
+  title: "Home - Zero8.Dev",
+  description: "We Build Elegant Websites.",
+  openGraph: {
+    title: "Zero8.Dev",
+    description: "We Build Elegant Websites.",
+    images: [
+      {
+        url: "/ogtest.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Zero8.Dev default image",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zero8.Dev",
+    description: "We Build Elegant Websites.",
+    images: ["/ogtest.jpg"],
+  },
 };
 
 export default function RootLayout({
