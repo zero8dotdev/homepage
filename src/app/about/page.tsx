@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const AboutUs = () => {
   return (
-    <div className=" col-span-full">
+    <div className=" col-span-full px-5">
       {/* we are a team thats made of imagination */}
       <div className="grid grid-cols-4">
         <h1 className="primary-heading leading-none col-span-4">
@@ -18,7 +18,7 @@ const AboutUs = () => {
               <p className="text-gridTextColor text-base lg:text-2xl col-span-1">
                 Culture
               </p>
-              <span className="col-span-1 text-gridTextColor grid justify-self-center">
+              <span className="col-span-1 text-gridTextColor grid justify-self-end">
                 <ArrowRight />
               </span>
             </div>
@@ -35,7 +35,7 @@ const AboutUs = () => {
               <p className="text-gridTextColor text-base lg:text-2xl col-span-2">
               Tech we work with
               </p>
-              <span className="col-span-1 text-gridTextColor justify-self-center ">
+              <span className="col-span-1 text-gridTextColor justify-self-end ">
                 <ArrowRight />
               </span>
             </div>
@@ -52,7 +52,7 @@ const AboutUs = () => {
               <p className="text-gridTextColor text-base lg:text-2xl col-span-1">
                 Our Team
               </p>
-              <span className="col-span-1 text-gridTextColor lg:justify-self-center">
+              <span className="col-span-1 text-gridTextColor justify-self-end">
                 <ArrowRight />
               </span>
             </div>
@@ -144,7 +144,7 @@ const AboutUs = () => {
       </div>
 
       {/* Our People */}
-      <div className=" ring-1 lg:mt-20 grid gap-5 lg:grid-cols-4 ">
+      <div className="  lg:mt-20 grid gap-5 lg:grid-cols-4 ">
         <p className="grid-heading-with-primary-color col-span-2 ">
           Our People
         </p>
