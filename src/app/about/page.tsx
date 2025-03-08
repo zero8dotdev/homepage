@@ -15,7 +15,7 @@ const AboutUs = () => {
         <div className=" grid gap-6 mt-14 lg:grid-cols-3 col-span-3  lg:mt-20 ">
           <div className="lg:pr-10">
             <div className="grid grid-cols-2">
-              <p className="text-gridTextColor text-base sm:text-2xl col-span-1">
+              <p className="text-gridTextColor text-base lg:text-2xl col-span-1">
                 Culture
               </p>
               <span className="col-span-1 text-gridTextColor grid justify-self-center">
@@ -32,7 +32,7 @@ const AboutUs = () => {
 
           <div className="lg:pr-10">
             <div className="grid grid-cols-3">
-              <p className="text-gridTextColor text-base sm:text-2xl col-span-2">
+              <p className="text-gridTextColor text-base lg:text-2xl col-span-2">
               Tech we work with
               </p>
               <span className="col-span-1 text-gridTextColor justify-self-center ">
@@ -49,7 +49,7 @@ const AboutUs = () => {
 
           <div className="lg:pr-10">
             <div className="grid grid-cols-2">
-              <p className="text-gridTextColor text-base sm:text-2xl col-span-1">
+              <p className="text-gridTextColor text-base lg:text-2xl col-span-1">
                 Our Team
               </p>
               <span className="col-span-1 text-gridTextColor lg:justify-self-center">
