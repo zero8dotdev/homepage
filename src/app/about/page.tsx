@@ -33,7 +33,7 @@ const AboutUs = () => {
           <div className="lg:pr-10">
             <div className="grid grid-cols-3">
               <p className="text-gridTextColor text-base lg:text-2xl col-span-2">
-              Tech we work with
+                Tech we work with
               </p>
               <span className="col-span-1 text-gridTextColor justify-self-end ">
                 <ArrowRight />
@@ -85,31 +85,61 @@ const AboutUs = () => {
           </div>
         </div>
         {/* 2nd grid box */}
-        <div className="col-span-1 ring-1">
-          <Image src="" alt="Home Image" width={300} height={300} />
+        <div className="col-span-1  relative w-full min-h-[200px] ">
+          <Image
+            src="/home.png"
+            alt="Home Image"
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
         {/* 3rd grid box */}
-        <div className="grid gap-5 grid-cols-2">
+        <div className="grid gap-5 grid-cols-2 ">
           {/* 3rd grid --> 1st grid */}
-          <div className="col-span-1 ring-1 ">
-            <Image src="" alt="Home Image" width={200} height={200} />
+          <div className="col-span-1  relative w-full  ">
+            <Image
+              src="/ourCultureThirdGridFirstBox.png"
+              alt="Home Image"
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
           {/* 3rd grid --> 2st grid */}
-          <div className="col-span-1 ring-1">
-            <Image src="" alt="Home Image" width={200} height={200} />
+          <div className="col-span-1  relative w-full min-h-[200px]">
+            <Image
+              src="/ourCultureThirdGridSecondBox.png"
+              alt="Home Image"
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
           {/* 3rd grid --> 3st grid */}
-          <div className="col-span-1  ring-1">
-            <Image src="" alt="Home Image" width={200} height={200} />
+          <div className="col-span-1  relative w-full h-full">
+            <Image
+              src="/tea.png"
+              alt="Home Image"
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
           {/* 3rd grid --> 4st grid */}
-          <div className="col-span-1 ring-1">
-            <Image src="" alt="Home Image" width={200} height={200} />
+          <div className="col-span-1 relative w-full min-h-[200px] ">
+            <Image
+              src="/ourCultureThirdGridFourthBox.png"
+              alt="Home Image"
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
         </div>
         {/* 4th grid box */}
-        <div className="ring-1">
-          <Image src="" alt="Home Image" width={300} height={300} />
+        <div className=" col-span-1 relative w-full min-h-[200px] ">
+          <Image
+            src="/ourCultureMeetingPeople.png"
+            alt="Home Image"
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
       </div>
 
@@ -130,16 +160,31 @@ const AboutUs = () => {
           </span>
         </div>
         {/* 2nd grid box */}
-        <div className="col-span-1 ring-1">
-          <Image src="" alt="Home Image" width={300} height={300} />
+        <div className="col-span-1  relative w-full min-h-[200px] ">
+          <Image
+            src="/react.png"
+            alt="Home Image"
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
         {/* 3nd grid box */}
-        <div className="col-span-1 ring-1">
-          <Image src="" alt="Home Image" width={300} height={300} />
+        <div className="col-span-1 relative w-full min-h-[200px] ">
+          <Image
+            src="/kotlin.png"
+            alt="Home Image"
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
         {/* 4nd grid box */}
-        <div className="col-span-1 ring-1">
-          <Image src="" alt="Home Image" width={300} height={300} />
+        <div className="col-span-1 relative w-full min-h-[300px] ">
+          <Image
+            src="/technologiesWeWorkWithPeopleImage.png"
+            alt="Home Image"
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
       </div>
 
