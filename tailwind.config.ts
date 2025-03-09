@@ -15,7 +15,7 @@ const config: Config = {
       desc: "#EDEDED",
       textSecondary: "#9F9E9E",
       iconGreen: "#CDFF41",
-      gridTextColor: "#EDEDED",
+      description: "#EDEDED",
     },
     fontFamily: {},
 
