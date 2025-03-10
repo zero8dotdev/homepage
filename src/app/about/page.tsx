@@ -1,4 +1,4 @@
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import React from "react";
 import SlideButton from "../_components/SlideButton";
 import Image from "next/image";
@@ -27,6 +27,15 @@ export const metadata: Metadata = {
   },
 };
 
+const ourPeoples = [
+  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+];
 const AboutUs = () => {
   return (
     <div className=" col-span-full px-5 py-8 space-y-10 lg:space-y-28">
@@ -211,7 +220,7 @@ const AboutUs = () => {
       </div>
 
       {/* Our People */}
-      <div className="   grid gap-5 lg:grid-cols-4 ">
+      <div className="grid gap-5 lg:grid-cols-4 ">
         <p className="grid-heading-with-primary-color col-span-2 ">
           Our People
         </p>
@@ -222,7 +231,7 @@ const AboutUs = () => {
             fringilla, mattis ligula consectetur, ultrices mauris.
           </p>
         </div>
-        <div className="col-span-1">
+        {/* <div className="col-span-1">
           <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
           <p className="text-description">Name LastName</p>
         </div>
@@ -249,7 +258,26 @@ const AboutUs = () => {
         <div className="col-span-1">
           <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
           <p className="text-description">Name LastName</p>
-        </div>
+        </div> */}
+        {ourPeoples.map((el, index) => {
+          return (
+            <div key={index} className="col-span-1">
+              <Image
+                src={el.photo}
+                width={263}
+                height={150}
+                alt="CEO"
+                className="bg-iconGreen"
+              />
+              <div className="flex justify-between text-description max-w-[73%]">
+                <p>{el.fullName}</p>
+                <p className="border border-iconGreen px-2 hover:cursor-pointer">
+                  in
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
