@@ -2,6 +2,30 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import React from "react";
 import SlideButton from "../_components/SlideButton";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About - Zero8.Dev",
+  description: "We Build Elegant Websites.",
+  openGraph: {
+    title: "Zero8.Dev",
+    description: "We Build Elegant Websites.",
+    images: [
+      {
+        url: "/home.png",
+        width: 1200,
+        height: 630,
+        alt: "Zero8.Dev about image",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zero8.Dev",
+    description: "We Build Elegant Websites.",
+    images: ["/home.png"],
+  },
+};
 
 const AboutUs = () => {
   return (
@@ -67,23 +91,21 @@ const AboutUs = () => {
       </div>
 
       {/* our culture */}
-      <div className="grid gap-5  lg:grid-cols-2 ">
-        <div className=" col-span-1 ">
-          <div className="grid grid-cols-3">
-            <p className="grid-heading-with-primary-color col-span-3">
-              Our Culture
-            </p>
-            <p className="text-description col-span-full lg:col-span-2 mb-5">
+      <div className="grid  gap-2 lg:grid-cols-4 ">
+        <div className=" col-span-2 ">
+          <div className="max-w-lg flex flex-col justify-between">
+            <p className="grid-heading-with-primary-color ">Our Culture</p>
+            <p className="text-description mb-5">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
               massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
               fringilla, mattis ligula consectetur, ultrices mauris.
             </p>
-            <span className="col-span-3">
+            <div className="">
               <SlideButton title="View our tech stack" />
-            </span>
+            </div>
           </div>
         </div>
-        <div className="col-span-1 relative w-full min-h-[200px] ring-1">
+        <div className="hidden lg:block col-span-2 relative w-full min-h-[100px] lg:min-h-[200px] ">
           <Image
             src="/home.png"
             alt="Home Image"
@@ -91,8 +113,8 @@ const AboutUs = () => {
             objectFit="cover"
           />
         </div>
-        <div className="grid gap-5 grid-cols-2 ">
-          <div className="col-span-1  relative w-full  ">
+        <div className="gap-2 grid grid-cols-3 lg:grid-cols-2  col-span-2">
+          <div className="col-span-1 relative w-full  ">
             <Image
               src="/ourCultureThirdGridFirstBox.png"
               alt="Home Image"
@@ -100,7 +122,7 @@ const AboutUs = () => {
               objectFit="cover"
             />
           </div>
-          <div className="col-span-1  relative w-full min-h-[200px] ">
+          <div className="col-span-1  relative w-full  min-h-[100px] lg:min-h-[200px] ">
             <Image
               src="/ourCultureThirdGridSecondBox.png"
               alt="Home Image"
@@ -116,7 +138,7 @@ const AboutUs = () => {
               objectFit="cover"
             />
           </div>
-          <div className="col-span-1 relative w-full min-h-[200px]">
+          <div className="col-span-2 lg:col-span-1 relative w-full  min-h-[100px] lg:min-h-[200px]">
             <Image
               src="/ourCultureThirdGridFourthBox.png"
               alt="Home Image"
@@ -124,8 +146,16 @@ const AboutUs = () => {
               objectFit="cover"
             />
           </div>
+          <div className="lg:hidden  col-span-1 relative w-full  min-h-[100px] lg:min-h-[200px]">
+            <Image
+              src="/home.png"
+              alt="Home Image"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
         </div>
-        <div className=" col-span-1 relative w-full min-h-[200px] ">
+        <div className=" col-span-2 relative w-full  min-h-[100px] lg:min-h-[200px] ">
           <Image
             src="/ourCultureMeetingPeople.png"
             alt="Home Image"
@@ -136,23 +166,23 @@ const AboutUs = () => {
       </div>
 
       {/* Technologies we work with */}
-      <div className="  grid gap-5 lg:grid-cols-2 ">
+      <div className="  grid gap-5 lg:grid-cols-4 ">
         {/* 1st grid box */}
-        <div className=" grid grid-cols-3 col-span-1">
-          <p className="grid-heading-with-primary-color col-span-3 leading-none ">
-            Technologies <br /> we work with
+        <div className="col-span-2 flex flex-col justify-between gap-y-2 row-start-1 row-end-2">
+          <p className="grid-heading-with-primary-color leading-none">
+            Technologies we work with
           </p>
-          <p className="text-description lg:mt-10 col-span-full lg:col-span-2 lg:pr-8 mb-10 ">
+          <p className="text-description ">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla, mattis ligula consectetur, ultrices mauris.
           </p>
-          <span className="row-start-3 col-span-2">
+          <span className="">
             <SlideButton title="View our tech stack" />
           </span>
         </div>
         {/* 2nd grid box */}
-        <div className="col-span-1  relative w-full min-h-[200px] ">
+        <div className="col-span-2  relative w-full min-h-[200px] ">
           <Image
             src="/react.png"
             alt="Home Image"
@@ -161,7 +191,7 @@ const AboutUs = () => {
           />
         </div>
         {/* 3nd grid box */}
-        <div className="col-span-1 relative w-full min-h-[200px] ">
+        <div className="col-span-2 relative w-full min-h-[200px] ">
           <Image
             src="/kotlin.png"
             alt="Home Image"
@@ -170,7 +200,7 @@ const AboutUs = () => {
           />
         </div>
         {/* 4nd grid box */}
-        <div className="col-span-1 relative w-full min-h-[300px] ">
+        <div className="col-span-2 relative w-full min-h-[300px] ">
           <Image
             src="/technologiesWeWorkWithPeopleImage.png"
             alt="Home Image"
