@@ -5,7 +5,7 @@ export default function WorkSection() {
   return (
     <div className="bg-onyx text-white p-6 col-span-full">
       {/* Title */}
-      <h2 className="text-4xl lg:text-6xl font-bold  text-stroke mb-8">
+      <h2 className="text-4xl lg:text-6xl font-bold  text-primary mb-8">
         Our life&apos;s work
       </h2>
 

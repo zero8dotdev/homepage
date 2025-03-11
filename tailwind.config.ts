@@ -12,7 +12,7 @@ const config: Config = {
         onyx: "#121212",
         charcoal: "#212121",
         primary: "#FFB8A8",
-        stroke: "#FFB8A8",
+        textSecondary: "#9F9E9E",
         description: "#EDEDED",
         headerBlur: "#00000029",
         iconGreen: "#CDFF41",
@@ -23,6 +23,8 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+
+      fontFamily: {},
     },
   },
   plugins: [],
