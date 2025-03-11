@@ -3,7 +3,7 @@ import MobileNav from "./mobilenav";
 
 export const navLinks = [
   { href: "/about", text: "About" },
-  { href: "/contact", text: "Contact Us" },
+  { href: "#contact", text: "Contact Us" },
   { href: "/work", text: "Work" },
 ];
 

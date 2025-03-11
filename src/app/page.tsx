@@ -10,7 +10,7 @@ import {
 
 export default function Home() {
   return (
-    <main className="col-span-full space-y-12">
+    <main className="col-span-full space-y-12 lg:space-y-24">
       <First />
       <div className="pt-10">
         <Second />

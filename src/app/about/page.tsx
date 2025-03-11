@@ -28,13 +28,13 @@ export const metadata: Metadata = {
 };
 
 const ourPeoples = [
-  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
+  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
 ];
 const AboutUs = () => {
   return (
@@ -101,7 +101,7 @@ const AboutUs = () => {
 
       {/* our culture */}
       <div className="grid  gap-2 lg:grid-cols-4 ">
-        <div className=" col-span-2 ">
+        <div className="col-span-2 ">
           <div className="max-w-lg flex flex-col justify-between">
             <p className="grid-heading-with-primary-color ">Our Culture</p>
             <p className="text-description mb-5">
@@ -120,6 +120,7 @@ const AboutUs = () => {
             alt="Home Image"
             layout="fill"
             objectFit="cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
         <div className="gap-2 grid grid-cols-3 lg:grid-cols-2  col-span-2">
@@ -131,7 +132,7 @@ const AboutUs = () => {
               objectFit="cover"
             />
           </div>
-          <div className="col-span-1  relative w-full  min-h-[100px] lg:min-h-[200px] ">
+          <div className="col-span-1  relative w-full  min-h-[140px] lg:min-h-[200px] ">
             <Image
               src="/ourCultureThirdGridSecondBox.png"
               alt="Home Image"
@@ -147,7 +148,7 @@ const AboutUs = () => {
               objectFit="cover"
             />
           </div>
-          <div className="col-span-2 lg:col-span-1 relative w-full  min-h-[100px] lg:min-h-[200px]">
+          <div className="col-span-2 lg:col-span-1 relative w-full  min-h-[140px] lg:min-h-[200px]">
             <Image
               src="/ourCultureThirdGridFourthBox.png"
               alt="Home Image"
@@ -155,7 +156,7 @@ const AboutUs = () => {
               objectFit="cover"
             />
           </div>
-          <div className="lg:hidden  col-span-1 relative w-full  min-h-[100px] lg:min-h-[200px]">
+          <div className="lg:hidden  col-span-1 relative w-full  min-h-[140px] lg:min-h-[200px]">
             <Image
               src="/home.png"
               alt="Home Image"
@@ -164,7 +165,7 @@ const AboutUs = () => {
             />
           </div>
         </div>
-        <div className=" col-span-2 relative w-full  min-h-[100px] lg:min-h-[200px] ">
+        <div className="col-span-2 relative w-full  min-h-[140px] lg:min-h-[200px] ">
           <Image
             src="/ourCultureMeetingPeople.png"
             alt="Home Image"
@@ -175,7 +176,7 @@ const AboutUs = () => {
       </div>
 
       {/* Technologies we work with */}
-      <div className="  grid gap-5 lg:grid-cols-4 ">
+      <div className="grid gap-2 grid-cols-2 lg:grid-cols-4 ">
         {/* 1st grid box */}
         <div className="col-span-2 flex flex-col justify-between gap-y-2 row-start-1 row-end-2">
           <p className="grid-heading-with-primary-color leading-none">
@@ -191,7 +192,7 @@ const AboutUs = () => {
           </span>
         </div>
         {/* 2nd grid box */}
-        <div className="col-span-2  relative w-full min-h-[200px] ">
+        <div className="col-span-1 lg:col-span-2  relative w-full min-h-[140px] lg:min-h-[200px] ">
           <Image
             src="/react.png"
             alt="Home Image"
@@ -200,7 +201,7 @@ const AboutUs = () => {
           />
         </div>
         {/* 3nd grid box */}
-        <div className="col-span-2 relative w-full min-h-[200px] ">
+        <div className="col-span-1 lg:col-span-2 relative w-full min-h-[140px] lg:min-h-[300px] ">
           <Image
             src="/kotlin.png"
             alt="Home Image"
@@ -208,76 +209,72 @@ const AboutUs = () => {
             objectFit="cover"
           />
         </div>
+
         {/* 4nd grid box */}
-        <div className="col-span-2 relative w-full min-h-[300px] ">
-          <Image
-            src="/technologiesWeWorkWithPeopleImage.png"
-            alt="Home Image"
-            layout="fill"
-            objectFit="cover"
-          />
+
+        <div className="col-span-full lg:col-span-2 grid grid-cols-3 lg:grid-cols-none gap-2 min-h-[140px] lg:min-h-[300px]">
+          <div className="col-span-2 relative w-full  ">
+            <Image
+              src="/technologiesWeWorkWithPeopleImage.png"
+              alt="Home Image"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          {/* for only mobile */}
+          <div className="lg:hidden col-span-1 relative w-full min-h-[140px] ">
+            <Image
+              src="/technologiesWeWorkWithPeopleImage.png"
+              alt="Home Image"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
         </div>
       </div>
 
       {/* Our People */}
-      <div className="grid gap-5 lg:grid-cols-4 ">
-        <p className="grid-heading-with-primary-color col-span-2 ">
-          Our People
-        </p>
-        <div className="col-span-2 grid place-items-center">
-          <p className="text-description  lg:pr-5 ">
+      <div className="grid  lg:grid-cols-4 space-y-4">
+        <div className="space-y-2 col-span-full flex flex-col lg:flex-row  justify-between items-start lg:items-center">
+          <h1 className="grid-heading-with-primary-color text-nowrap">
+            Our People
+          </h1>
+          <p className="text-description w-full lg:max-w-[60%]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla, mattis ligula consectetur, ultrices mauris.
           </p>
         </div>
-        {/* <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div> */}
-        {ourPeoples.map((el, index) => {
-          return (
-            <div key={index} className="col-span-1">
+        <div className="col-span-full grid lg:grid-cols-4 gap-2 lg:gap-y-10">
+          {ourPeoples.map((mem, index) => (
+            <div
+              key={index}
+              className="flex lg:flex-col lg:col-span-1  gap-x-2 text-description"
+            >
               <Image
-                src={el.photo}
+                src={mem.photo}
                 width={263}
-                height={150}
+                height={263}
                 alt="CEO"
-                className="bg-iconGreen"
+                className="bg-iconGreen w-24 h-24 lg:w-full lg:h-auto aspect-square"
               />
-              <div className="flex justify-between text-description max-w-[73%]">
-                <p>{el.fullName}</p>
-                <p className="border border-iconGreen px-2 hover:cursor-pointer">
-                  in
-                </p>
+              <div className="flex justify-between items-center text-description  flex-1">
+                <div>
+                  <p className="text-description">{mem.fullName}</p>
+                  <p className="text-description">{mem.designation}</p>
+                </div>
+
+                <Image
+                  alt="linkedIn"
+                  src="/linkedIn.png"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5 self-end"
+                />
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </div>
   );

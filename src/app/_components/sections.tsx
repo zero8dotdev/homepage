@@ -307,7 +307,7 @@ const Five = () => {
 
 const ContactsUs = () => {
   return (
-    <section className="col-span-full">
+    <section className="col-span-full" id="contact">
       <h3 className="text-[42px] lg:text-[96px] leading-[96px]">
         With Us, <span className="text-primary">it happens.</span>
       </h3>
@@ -337,6 +337,128 @@ const ContactsUs = () => {
         <button className="border-[2px] rounded-full p-2 lg:p-3 border-primary text-primary">
           Frontend Pluggable Team
         </button>
+      </div>
+      <div className="my-8">
+        <form className="space-y-4 flex flex-col justify-start ">
+          {/* Name Field */}
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-description"
+            >
+              Your Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="mt-1 block p-2  bg-transparent rounded-md shadow-sm  focus:border-primary sm:text-sm"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+
+          {/* Email Field */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-description"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="mt-1 block p-2  bg-transparent rounded-md shadow-sm  focus:border-primary sm:text-sm"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          {/* Phone Field */}
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-description"
+            >
+              Phone
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              className="mt-1 block p-2  bg-transparent rounded-md shadow-sm  focus:border-primary sm:text-sm"
+              placeholder="Enter your phone number"
+              required
+            />
+          </div>
+
+          {/* About Text Area */}
+          <div>
+            <label
+              htmlFor="about"
+              className="block text-sm font-medium text-description"
+            >
+              Tell us about your project/requirements
+            </label>
+            <textarea
+              id="about"
+              name="about"
+              className="mt-1 block w-full p-2 bg-transparent rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+              placeholder="Tell us something about you"
+              required
+            ></textarea>
+          </div>
+
+          {/* File Upload */}
+          <div>
+            <label
+              htmlFor="file"
+              className="block text-sm font-medium text-description"
+            >
+              Attach Files
+            </label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              className="mt-1  text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-primary file:text-white hover:file:bg-primary-dark"
+              required
+            />
+          </div>
+
+          {/* Terms and Conditions Checkbox */}
+          <div className="flex items-start">
+            <div className="flex items-center h-5">
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
+                className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
+                required
+              />
+            </div>
+            <div className="ml-3 text-sm">
+              <label htmlFor="terms" className="font-medium text-description">
+                I have read and agree to the{" "}
+                <a href="#" className="text-primary hover:underline">
+                  terms and conditions
+                </a>
+                .
+              </label>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="self-end py-2 px-4 bg-primary text-description font-semibold rounded-md 
+              shadow-md focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            Submit
+          </button>
+        </form>
       </div>
     </section>
   );
