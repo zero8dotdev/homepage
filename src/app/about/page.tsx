@@ -220,60 +220,49 @@ const AboutUs = () => {
       </div>
 
       {/* Our People */}
-      <div className="grid gap-5 lg:grid-cols-4 ">
-        <p className="grid-heading-with-primary-color col-span-2 ">
+      <div className="grid gap-5 lg:grid-cols-4">
+        <p className="grid-heading-with-primary-color col-span-2 block ">
           Our People
         </p>
-        <div className="col-span-2 grid place-items-center">
+        <div className="lg:col-span-2 grid place-items-center">
           <p className="text-description  lg:pr-5 ">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
             fringilla, mattis ligula consectetur, ultrices mauris.
           </p>
         </div>
-        {/* <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div>
-        <div className="col-span-1">
-          <Image src="/ourPeople1.png" width={263} height={150} alt="CEO" />
-          <p className="text-description">Name LastName</p>
-        </div> */}
+      </div>
+      <div className="grid gap-5 lg:grid-cols-4">
         {ourPeoples.map((el, index) => {
           return (
-            <div key={index} className="col-span-1">
-              <Image
-                src={el.photo}
-                width={263}
-                height={150}
-                alt="CEO"
-                className="bg-iconGreen"
-              />
-              <div className="flex justify-between text-description max-w-[73%]">
-                <p>{el.fullName}</p>
-                <p className="border border-iconGreen px-2 hover:cursor-pointer">
-                  in
-                </p>
+            <div key={index}>
+              <div className="flex lg:flex-col gap-x-10 bg-charcoal">
+                <div className="inline-block">
+                  <Image
+                    alt="team"
+                    src={el.photo}
+                    width={100}
+                    height={100}
+                    className="bg-iconGreen w-[100px] lg:w-[400px] h-auto"
+                  />
+                </div>
+                <div className="flex-col w-full text-description">
+                  <div className="lg:flex lg:justify-between">
+                    <p>Name Lastname</p>
+                    <p className="hidden lg:block border border-iconGreen  px-1 ">
+                      in
+                    </p>
+                  </div>
+                  <div>
+                    <p>CEO</p>
+                  </div>
+                  <div className="lg:hidden w-[95%] flex justify-between items-center ">
+                    <div></div> {/* Empty div to push "in" to the end */}
+                    <p className="border border-iconGreen inline-block px-1 ">
+                      in
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           );
