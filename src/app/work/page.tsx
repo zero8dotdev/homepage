@@ -83,14 +83,12 @@ export default function WorkSection() {
   ];
 
   return (
-    <div className="bg-onyx text-description space-y-8 col-span-full relative">
-      <h1 className="primary-heading font-bold text-primary mb-8">
-        Our life&apos;s work
-      </h1>
+    <div className="space-y-8 col-span-full relative">
+      <h1 className="primary-heading font-bold mb-8">Our life&apos;s work</h1>
 
       <Dropdowns dropdowns={dropdownData} />
 
-      <div className="grid lg:grid-cols-4 gap-3 z-10 ">
+      <div className="grid lg:grid-cols-4 gap-4 ">
         {projects.map((project) => (
           <div
             key={project.id}
@@ -118,14 +116,6 @@ export default function WorkSection() {
           </div>
         ))}
       </div>
-      {/* <div className="grid lg:grid-cols-4 gap-3 absolute inset-0 z-0 pointer-events-none">
-        {[1, 2, 3, 4].map((_, index) => (
-          <div
-            key={index}
-            className="w-full min-h-[100vh] border border-charcoal"
-          ></div>
-        ))}
-      </div> */}
     </div>
   );
 }

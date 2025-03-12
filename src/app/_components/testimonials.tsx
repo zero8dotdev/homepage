@@ -63,7 +63,7 @@ const Testimonials = () => {
         {testimonialList.map((testimonial, index) => (
           <article
             key={index}
-            className="min-w-full p-2 h-56 bg-charcoal rounded text-description 
+            className="min-w-full p-2 h-56 bg-charcoal rounded text-description/70 
               text-base lg:text-xl flex flex-col justify-center items-center 
               snap-center lg:p-4"
           >
@@ -74,12 +74,12 @@ const Testimonials = () => {
           </article>
         ))}
       </div>
-      <div className="flex justify-center gap-x-2 my-2 lg:hidden">
+      <div className="flex justify-center gap-x-2 my-4 lg:hidden">
         {testimonialList.map((_, index) => (
           <button
             key={index}
             className={`w-4 h-4 rounded-full ${
-              index === activeIndex ? "bg-red-500" : "bg-description"
+              index === activeIndex ? "bg-iconGreen" : "bg-description"
             } cursor-pointer`}
             aria-label={`Go to testimonial ${index + 1}`}
             onClick={() => scrollToIndex(index)}

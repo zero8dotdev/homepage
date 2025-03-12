@@ -33,8 +33,32 @@ body {
 .secondary-heading {
   @apply text-primary lg:text-[96px] text-[42px];
 }
-
-.grid-heading-with-primary-color{
-  @apply text-primary lg:text-[80px] text-[40px]
+.third-heading {
+  @apply text-description text-[22px] lg:text-4xl;
 }
 
+.grid-heading-with-primary-color {
+  @apply text-primary lg:text-[80px] text-[40px];
+}
+.description-primary {
+  @apply text-description text-base lg:text-2xl;
+}
+.description-secondary {
+  @apply text-description/70 text-base lg:text-xl;
+}
+
+@keyframes mirror-reflection {
+  0% {
+    transform: scale(1) translateZ(0);
+  }
+  100% {
+    transform: scale(0.1) translateZ(-1000px);
+  }
+}
+
+.animate-mirror-reflection {
+  animation: mirror-reflection 10s infinite linear;
+}
+.relative1 {
+  perspective: 1000px;
+}
