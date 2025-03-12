@@ -175,7 +175,7 @@ const AboutUs = () => {
       </div>
 
       {/* Technologies we work with */}
-      <div className="  grid gap-5 lg:grid-cols-4 ">
+      <div className="  grid gap-2 lg:gap-5 grid-cols-2 lg:grid-cols-4 ">
         {/* 1st grid box */}
         <div className="col-span-2 flex flex-col justify-between gap-y-2 row-start-1 row-end-2">
           <p className="grid-heading-with-primary-color leading-none">
@@ -191,7 +191,7 @@ const AboutUs = () => {
           </span>
         </div>
         {/* 2nd grid box */}
-        <div className="col-span-2  relative w-full min-h-[200px] ">
+        <div className="col-span-1 lg:col-span-2  relative w-full  min-h-[100px] lg:min-h-[300px]  ">
           <Image
             src="/react.png"
             alt="Home Image"
@@ -200,7 +200,7 @@ const AboutUs = () => {
           />
         </div>
         {/* 3nd grid box */}
-        <div className="col-span-2 relative w-full min-h-[200px] ">
+        <div className="col-span-1 lg:col-span-2 relative w-full  min-h-[100px] lg:min-h-[300px]  ">
           <Image
             src="/kotlin.png"
             alt="Home Image"
@@ -209,7 +209,7 @@ const AboutUs = () => {
           />
         </div>
         {/* 4nd grid box */}
-        <div className="col-span-2 relative w-full min-h-[300px] ">
+        <div className="col-span-1 lg:col-span-2 relative w-full min-h-[100px] lg:min-h-[300px] ">
           <Image
             src="/technologiesWeWorkWithPeopleImage.png"
             alt="Home Image"
