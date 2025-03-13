@@ -17,7 +17,6 @@ const config: Config = {
         headerBlur: "#00000029",
         iconGreen: "#CDFF41",
       },
-
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

@@ -41,10 +41,22 @@ export default function RootLayout({
         <body
           className={`${assistant.className} bg-onyx flex justify-center items-center`}
         >
-          <div className="container p-2 lg:p-0 mx-auto grid grid-cols-4 grid-rows-[64px_repeat(5,_minmax(400px,_1fr)_400px] gap-x-4 pt-4">
+          <div className="container z-10 relative px-2  mx-auto grid grid-cols-2 lg:grid-cols-4 grid-rows-[64px_repeat(5,_minmax(400px,_1fr)_400px] gap-x-4 pt-4">
             <Header />
             {children}
             <Footer />
+            <div className="absolute px-2  h-full mx-auto top-0 left-0 right-0 gap-x-4 z-[-1] grid grid-cols-2 lg:grid-cols-4">
+              {[1, 2].map((each, i) => (
+                <div key={i} className="border border-charcoal w-full"></div>
+              ))}
+
+              {[3, 4].map((each, i) => (
+                <div
+                  key={i + 2}
+                  className="hidden lg:block  border border-charcoal w-full"
+                ></div>
+              ))}
+            </div>
           </div>
         </body>
       </CSPostHogProvider>

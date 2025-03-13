@@ -23,7 +23,7 @@ const Dropdown = ({
     <div className="relative">
       <button
         type="button"
-        className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-charcoal px-3 py-2 text-sm text-description cursor-pointer"
+        className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-charcoal px-3 py-2 text-sm text-description/70 cursor-pointer"
         onClick={onToggle}
       >
         {selected || label}
@@ -31,7 +31,7 @@ const Dropdown = ({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 w-full rounded-md bg-charcoal text-description shadow-lg">
+        <div className="absolute right-0 z-10 mt-2 w-full rounded-md bg-charcoal text-description/70 shadow-lg">
           <div className="py-1">
             {options.map((option, idx) => (
               <button
