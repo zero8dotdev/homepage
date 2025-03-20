@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
@@ -8,8 +9,9 @@ const AboutTech = () => {
       <div>
         <h1 className="primary-heading ">Tech Stack</h1>
       </div>
-      {/* Flutter */}
-      <div className="grid gap-5 lg:grid-cols-2">
+     <div className="space-y-14">
+         {/* Flutter */}
+      <div className="grid gap-5 lg:grid-cols-2 ">
         {/* flutter logo */}
         <div className="col-span-2">
           <Image
@@ -49,21 +51,21 @@ const AboutTech = () => {
         </div>
       </div>
 
-      {/* Flutter */}
+      {/* React Native */}
       <div className="grid gap-5 lg:grid-cols-2">
-        {/* flutter logo */}
+        {/* React Native logo */}
         <div className="col-span-2">
           <Image
-            alt="flutter-logo"
-            src="/flutterIcon.png"
+            alt="react-native-logo"
+            src="/reactNativeIcon.png"
             width={52}
             height={52}
             className="w-[52px] h-[52px] lg:w-[77px] lg:h-[78px] "
           />
         </div>
-        {/* flutter heading */}
+        {/* React Native heading */}
         <div className="col-span-2">
-          <p className="text-5xl text-description">Flutter</p>
+          <p className="text-5xl text-description">React Native</p>
         </div>
         {/* description */}
         <div className="col-span-2 lg:col-span-1">
@@ -90,21 +92,21 @@ const AboutTech = () => {
         </div>
       </div>
 
-      {/* Flutter */}
+      {/* Next.js */}
       <div className="grid gap-5 lg:grid-cols-2">
-        {/* flutter logo */}
+        {/* Next.js logo */}
         <div className="col-span-2">
           <Image
-            alt="flutter-logo"
-            src="/flutterIcon.png"
+            alt="Next.js-logo"
+            src="/nextJsIcon.png"
             width={52}
             height={52}
             className="w-[52px] h-[52px] lg:w-[77px] lg:h-[78px] "
           />
         </div>
-        {/* flutter heading */}
+        {/* Next.js heading */}
         <div className="col-span-2">
-          <p className="text-5xl text-description">Flutter</p>
+          <p className="text-5xl text-description">Next.js</p>
         </div>
         {/* description */}
         <div className="col-span-2 lg:col-span-1">
@@ -131,21 +133,21 @@ const AboutTech = () => {
         </div>
       </div>
 
-      {/* Flutter */}
+      {/* PostgreSQL */}
       <div className="grid gap-5 lg:grid-cols-2">
-        {/* flutter logo */}
+        {/* PostgreSQL logo */}
         <div className="col-span-2">
           <Image
-            alt="flutter-logo"
-            src="/flutterIcon.png"
+            alt="PostgreSQL-logo"
+            src="/postgreSql.png"
             width={52}
             height={52}
             className="w-[52px] h-[52px] lg:w-[77px] lg:h-[78px] "
           />
         </div>
-        {/* flutter heading */}
+        {/* PostgreSQL heading */}
         <div className="col-span-2">
-          <p className="text-5xl text-description">Flutter</p>
+          <p className="text-5xl text-description">PostgreSQL</p>
         </div>
         {/* description */}
         <div className="col-span-2 lg:col-span-1">
@@ -172,21 +174,21 @@ const AboutTech = () => {
         </div>
       </div>
 
-      {/* Flutter */}
+      {/* GraphQL */}
       <div className="grid gap-5 lg:grid-cols-2">
-        {/* flutter logo */}
+        {/* GraphQL logo */}
         <div className="col-span-2">
           <Image
-            alt="flutter-logo"
-            src="/flutterIcon.png"
+            alt="GraphQL-logo"
+            src="/graphQlIcon.png"
             width={52}
             height={52}
             className="w-[52px] h-[52px] lg:w-[77px] lg:h-[78px] "
           />
         </div>
-        {/* flutter heading */}
+        {/* GraphQL heading */}
         <div className="col-span-2">
-          <p className="text-5xl text-description">Flutter</p>
+          <p className="text-5xl text-description">GraphQL</p>
         </div>
         {/* description */}
         <div className="col-span-2 lg:col-span-1">
@@ -213,21 +215,21 @@ const AboutTech = () => {
         </div>
       </div>
 
-      {/* Flutter */}
+      {/* SQL */}
       <div className="grid gap-5 lg:grid-cols-2">
-        {/* flutter logo */}
+        {/* SQL logo */}
         <div className="col-span-2">
           <Image
-            alt="flutter-logo"
-            src="/flutterIcon.png"
+            alt="SQL-logo"
+            src="/sqlIcon.png"
             width={52}
             height={52}
             className="w-[52px] h-[52px] lg:w-[77px] lg:h-[78px] "
           />
         </div>
-        {/* flutter heading */}
+        {/* SQL heading */}
         <div className="col-span-2">
-          <p className="text-5xl text-description">Flutter</p>
+          <p className="text-5xl text-description">SQL</p>
         </div>
         {/* description */}
         <div className="col-span-2 lg:col-span-1">
@@ -253,6 +255,7 @@ const AboutTech = () => {
           </p>
         </div>
       </div>
+     </div>
     </div>
   );
 };
