@@ -5,6 +5,7 @@ export const navLinks = [
   { href: "/about", text: "About" },
   { href: "#contact", text: "Contact Us" },
   { href: "/work", text: "Work" },
+  { href: "/blogs", text: "Blogs" },
 ];
 
 const Header = () => {
