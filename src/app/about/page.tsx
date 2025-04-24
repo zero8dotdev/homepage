@@ -1,8 +1,9 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Target } from "lucide-react";
 import React from "react";
 import SlideButton from "../_components/SlideButton";
 import Image from "next/image";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About - Zero8.Dev",
@@ -28,13 +29,17 @@ export const metadata: Metadata = {
 };
 
 const ourPeoples = [
-  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
-  { fullName: "Name Lastname", designation: "CEO", photo: "/ourPeople1.png" },
+  { fullName: "Ashutosh Tripathi", designation: "CEO", photo: "/ashu.jpeg", link: "https://www.linkedin.com/in/itszero8/" },
+  { fullName: "Yaswanth Banomuddi", designation: "Full Stack Developer", photo: "/yaswanth.jpeg", link: "https://www.linkedin.com/in/yaswanthbonumaddi/" },
+  { fullName: "Gnani Konda", designation: "Full Stack Developer", photo: "/ourPeople1.png", link: "https://www.linkedin.com/in/gnaneshwar-konda/" },
+  { fullName: "Sri Hari Boya", designation: "Full Stack Developer", photo: "/srihari.jpeg", link: "https://www.linkedin.com/in/sri-hari-boya62/" },
+  { fullName: "Neelima Banomuddi", designation: "Software Developer Intern", photo: "/neelima.jpeg", link: "https://www.linkedin.com/in/neelima-bonumaddi-015009352/" },
+  { fullName: "Shubham Nautiyal", designation: "Software QA Developer Intern", photo: "/shubham.jpeg", link: "https://www.linkedin.com/in/shubham-nautiyal-436221313/" },
+  { fullName: "Arun Aswal", designation: "Software QA Developer Intern", photo: "/arun.jpeg", link: "https://www.linkedin.com/in/arun-aswal-02a850126/" },
+  { fullName: "Jaykrishna Poojari", designation: "Software QA Developer Intern", photo: "/ourPeople1.png", link: "https://www.linkedin.com/company/zero8dotdev/" },
+  { fullName: "Naman Tripathi", designation: "Full Stack Developer", photo: "/namanCropped.jpeg", link: "https://www.linkedin.com/in/naman-tripathi-a53b43222/"},
+  { fullName: "Rohit Koktare", designation: "Product Manager", photo: "/rohit.jpeg" , link: "https://www.linkedin.com/in/rohit-koktare/" },
+
 ];
 const AboutUs = () => {
   return (
@@ -105,9 +110,7 @@ const AboutUs = () => {
           <div className="max-w-lg flex flex-col justify-between">
             <p className="grid-heading-with-primary-color ">Our Culture</p>
             <p className="text-description/70 mb-5">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
-              massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-              fringilla, mattis ligula consectetur, ultrices mauris.
+            Our team reflects the vastness of India—from Dehradun’s northern serenity to Carnol’s southern charm, Maharashtra’s western energy, and beyond. This diversity sparks creativity and resilience, driving us to excel in a fully remote environment. We nurture a culture of collaboration, continuous learning, and innovation, reinforced by annual in-person meetups that celebrate our unity and shared goals.
             </p>
             <div className="">
               <SlideButton title="View our tech stack" />
@@ -183,9 +186,7 @@ const AboutUs = () => {
             Technologies we work with
           </p>
           <p className="text-description/70 ">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla, mattis ligula consectetur, ultrices mauris.
+          We harness the power of modern tools to deliver top-tier web applications. Our tech stack includes Node.js with TypeScript for robust backend logic, React for dynamic and responsive frontends, Supabase for seamless database management, Ant Design for intuitive UI, Vercel for swift deployments, PostgreSQL for secure data handling, and Google App Script for automation. This arsenal empowers us to build scalable, efficient, and user-focused solutions.
           </p>
           <span className="">
             <SlideButton title="View our tech stack" />
@@ -240,9 +241,7 @@ const AboutUs = () => {
             Our People
           </h1>
           <p className="text-description/70 w-full lg:max-w-[60%]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla, mattis ligula consectetur, ultrices mauris.
+          At zero8.dev, we pride ourselves on a dynamic and diverse team of professionals hailing from every corner of India. Our CEO, Ashutosh Tripati, brings visionary leadership from the tranquil hills of Dehradun. Gnani Konda and Yaswanth Banumuddi, both from the vibrant south, fuel our full-stack development with their technical expertise and innovative spirit. Sri Hari Boya, from Carnol in the southern region, ensures our backend systems are rock-solid and scalable. Rohit Koktare, from the bustling state of Maharashtra, keeps our team seamlessly connected with his collaboration skills. Together, we embody India’s rich diversity, united by a passion for crafting exceptional software solutions.
           </p>
         </div>
         <div className="col-span-full grid lg:grid-cols-4 gap-4 lg:gap-y-10">
@@ -263,7 +262,7 @@ const AboutUs = () => {
                   <p className="text-description/70">{mem.fullName}</p>
                   <p className="text-description/70">{mem.designation}</p>
                 </div>
-
+                <Link href={mem.link} target="_black" >
                 <Image
                   alt="linkedIn"
                   src="/linkedIn.png"
@@ -271,6 +270,8 @@ const AboutUs = () => {
                   height={20}
                   className="w-5 h-5 self-end"
                 />
+
+                </Link>
               </div>
             </div>
           ))}
