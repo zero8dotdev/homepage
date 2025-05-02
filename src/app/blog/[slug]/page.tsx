@@ -8,11 +8,12 @@ export default async function BlogPost({
 }) {
   const { slug } = await params;
   try {
-    const { default: Post, metadata } = await import(`../../../../content/${slug}.mdx`);
-    console.log(`========>`, Post);
+    const { default: Post, metadata } = await import(
+      `../../../../content/${slug}.mdx`
+    );
 
     return (
-      <div>
+      <div className="col-start-2 col-end-4">
         <h1>{metadata.title}</h1>
         <p>Date: {metadata.date}</p>
         <Post />

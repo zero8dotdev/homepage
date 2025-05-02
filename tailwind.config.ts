@@ -5,6 +5,7 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./content/**/*.{mdx}",
   ],
   theme: {
     extend: {
@@ -32,6 +33,11 @@ const config: Config = {
       },
 
       fontFamily: {},
+      fontSize: {
+        '7xl': '4.5rem',  // 72px
+        '8xl': '6rem',    // 96px
+        '9xl': '8rem',    // 128px
+      },
     },
   },
   plugins: [],

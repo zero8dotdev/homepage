@@ -1,33 +1,29 @@
 import { readdirSync } from "fs";
 import { join } from "path";
+import BlogCard from "@/app/_components/BlogCard";
 
 export default async function BlogIndex() {
   const contentDir = join(process.cwd(), "content");
+  console.log("Content directory:", contentDir);
   let files: string[] = [];
 
-  // Read content directory
   try {
     files = readdirSync(contentDir).filter((f) => f.endsWith(".mdx"));
+    console.log("Found files:", files);
   } catch (error) {
     console.error("Error reading content directory:", error);
-    return (
-      <div>
-        No posts found. Please add some MDX files to the content directory.
-      </div>
-    );
+    return <div>No posts found. Check if the content directory exists.</div>;
   }
 
-  // Import metadata for each post
   const posts = await Promise.all(
     files.map(async (file) => {
       try {
-        // const { metadata } = await import(`@/content/${file.replace('.mdx', '')}`);
-        const { metadata } = await import(`../../../content/${file}`);
-
+        const { metadata } = await import(`@/../content/${file}`);
+        console.log(`Imported metadata for ${file}:`, metadata);
         return { slug: file.replace(".mdx", ""), ...metadata };
       } catch (error) {
         console.error(`Error importing ${file}:`, error);
-        return null; // Skip invalid files
+        return null;
       }
     })
   );
@@ -35,18 +31,29 @@ export default async function BlogIndex() {
   const validPosts = posts.filter((post) => post !== null);
 
   return (
-    <div>
-      <h1>Blog Posts</h1>
+    <div className="col-span-full">
+      <h1 style={{ fontSize: "2rem", marginBottom: "2rem", color: "#333" }}>
+        Blog Posts
+      </h1>
       {validPosts.length > 0 ? (
-        <ul>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gap: "1.5rem",
+            padding: "0 1rem",
+          }}
+        >
           {validPosts.map((post) => (
-            <li key={post.slug}>
-              <a href={`/blog/${post.slug}`}>
-                {post.title} ({post.date})
-              </a>
-            </li>
+            <BlogCard
+              key={post.slug}
+              slug={post.slug}
+              title={post.title}
+              date={post.date}
+              image={post.image}
+            />
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No valid posts found.</p>
       )}
