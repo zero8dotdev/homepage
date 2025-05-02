@@ -4,12 +4,12 @@ import Testimonials from "./testimonials";
 
 const First = () => {
   return (
-    <div className="h-auto col-span-full ">
+    <div className="ml-grid-content-spacing h-auto col-span-full ">
       <h1 className="primary-heading py-8 leading-none max-w-6xl ">
         Digital company building future forward software.
       </h1>
 
-      <div className="h-auto description-secondary grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-4 gap-y-4  ">
+      <div className=" h-auto description-secondary grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-4 gap-y-4  ">
         <p className="col-span-1 ">
           Building with Flutter, Rust. Fully DevSecOps Compliant work. Pluggable
           teams, which mean no overheads and short turnaround times from
@@ -23,7 +23,7 @@ const First = () => {
           10+ teams around the world are running 12 B2B software solutions
           designed and delivered by Zero8.Dev.
         </p>
-        <div className="row-start-2 lg:row-start-auto col-span-1 flex justify-end items-center lg:items-end align-start">
+        <div className=" ml-grid-content-spacing row-start-2 lg:row-start-auto col-span-1 flex justify-end items-center lg:items-end align-start">
           <button className="bg-primary text-charcoal  px-4 py-2 flex justify-around ">
             Build Now
             <ChevronRight />
@@ -403,7 +403,7 @@ const Second = () => {
 
 const Fourth = () => {
   return (
-    <div className=" h-auto grid grid-rows-[auto_auto] grid-cols-4 gap-4 mt-12">
+    <div className="ml-grid-content-spacing h-auto grid grid-rows-[auto_auto] grid-cols-4 gap-4 mt-12">
       <section className="col-span-4 lg:col-span-1">
         <h2 className="flex-nowrap border lg:border-none border-charcoal description-primary py-1">
           Phases of product we are involved in:
@@ -494,7 +494,7 @@ const FeaturedProjects = () => {
           <p className="bg-[#232323] py-4 px-6 rounded-full">React Js</p>
         </div>
 
-        <div className=" col-span-1  my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
+        <div className="ml-grid-content-spacing col-span-1  my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
           <p className="description-secondary">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
             mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
@@ -560,8 +560,8 @@ const FeaturedProjects = () => {
 };
 const Five = () => {
   return (
-    <section className="col-span-full space-y-8">
-      <h2 className="secondary-heading leading-tight lg:leading-[96px] col-span-full">
+    <section className=" col-span-full space-y-8">
+      <h2 className="ml-grid-content-spacing secondary-heading leading-tight lg:leading-[96px] col-span-full">
         The Zero8 difference
       </h2>
       <div className="grid col-span-full gap-4 grid-cols-2 lg:grid-cols-4 grid-rows-4 lg:grid-rows-2">
@@ -652,7 +652,7 @@ const Five = () => {
 const ContactsUs = () => {
   return (
     <section
-      className="col-span-full bg-onyx border border-charcoal lg:border-none lg:bg-transparent"
+      className="ml-grid-content-spacing col-span-full bg-onyx border border-charcoal lg:border-none lg:bg-transparent"
       id="contact"
     >
       <h3 className="text-[42px] lg:text-[96px] leading-[96px]">
