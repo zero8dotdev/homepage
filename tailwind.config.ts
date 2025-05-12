@@ -18,6 +18,9 @@ const config: Config = {
         headerBlur: "#00000029",
         iconGreen: "#CDFF41",
       },
+      spacing: {
+        "grid-content-spacing": "0.5rem",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

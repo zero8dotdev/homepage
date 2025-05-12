@@ -4,12 +4,12 @@ import Testimonials from "./testimonials";
 
 const First = () => {
   return (
-    <div className="h-auto col-span-full ">
+    <div className="ml-grid-content-spacing h-auto col-span-full ">
       <h1 className="primary-heading py-8 leading-none max-w-6xl ">
         Digital company building future forward software.
       </h1>
 
-      <div className="h-auto description-secondary grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-4 gap-y-4  ">
+      <div className=" h-auto description-secondary grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-x-4 gap-y-4  ">
         <p className="col-span-1 ">
           Building with Flutter, Rust. Fully DevSecOps Compliant work. Pluggable
           teams, which mean no overheads and short turnaround times from
@@ -23,7 +23,7 @@ const First = () => {
           10+ teams around the world are running 12 B2B software solutions
           designed and delivered by Zero8.Dev.
         </p>
-        <div className="row-start-2 lg:row-start-auto col-span-1 flex justify-end items-center lg:items-end align-start">
+        <div className=" ml-grid-content-spacing row-start-2 lg:row-start-auto col-span-1 flex justify-end items-center lg:items-end align-start">
           <button className="bg-primary text-charcoal  px-4 py-2 flex justify-around ">
             Build Now
             <ChevronRight />
@@ -403,7 +403,7 @@ const Second = () => {
 
 const Fourth = () => {
   return (
-    <div className=" h-auto grid grid-rows-[auto_auto] grid-cols-4 gap-4 mt-12">
+    <div className="ml-grid-content-spacing h-auto grid grid-rows-[auto_auto] grid-cols-4 gap-4 mt-12">
       <section className="col-span-4 lg:col-span-1">
         <h2 className="flex-nowrap border lg:border-none border-charcoal description-primary py-1">
           Phases of product we are involved in:
@@ -412,50 +412,38 @@ const Fourth = () => {
       <section className="grid row-span-2 col-span-full grid-cols-2 lg:grid-cols-4 gap-6 gap-y-10 ">
         <div className="col-span-1">
           <p className="h-9 w-9">
-            <img src="/LightbulbFilament.png" />
+            <Image src="/LightbulbFilament.png" alt="lightbulb" width={100} height={100} />
           </p>
           <h2 className="my-2 description-primary">Ideation</h2>
           <div className="description-secondary">
-            <p>We get to know your idea and vision.</p>
-            <p>We understand the target audience.</p>
-            <p>We identify problems we can solve for you and your users.</p>
-            <p>We propose ways for differentiation.</p>
+            <p>Great ideas are the foundation of great software. <br /> We partner with you to refine your vision through collaborative workshops, aligning your business goals with practical solutions. <br /> Our ideation process ensures every project starts with a clear, actionable roadmap.</p>
           </div>
         </div>
         <div className="col-span-1">
           <p className="h-9 w-9 ">
-            <img src="/Headset.png" />
+            <Image src="/Headset.png" alt='headset' width={100} height={100} />
           </p>
           <h2 className="my-2 description-primary">Development</h2>
           <div className="description-secondary">
-            <p>We get to know your idea and vision.</p>
-            <p>We understand the target audience.</p>
-            <p>We identify problems we can solve for you and your users.</p>
-            <p>We propose ways for differentiation.</p>
+            <p>Using an agile approach, <br /> we craft high-performance web applications with technologies like React, Node.js, and Supabase. <br /> Our developers emphasize clean code, security, and scalability, delivering solutions that evolve with your needs.</p>
           </div>
         </div>
         <div className="col-span-1">
           <p className="h-9 w-9 ">
-            <img src="/SealCheck.png" />
+            <Image src="/SealCheck.png" alt="sealcheck" width={100} height={100} />
           </p>
           <h2 className="my-2 description-primary">Quality Assurance</h2>
           <div className="description-secondary">
-            <p>We get to know your idea and vision.</p>
-            <p>We understand the target audience.</p>
-            <p>We identify problems we can solve for you and your users.</p>
-            <p>We propose ways for differentiation.</p>
+            <p>We leave no stone unturned in ensuring quality. <br /> Through comprehensive testing—unit, integration, and user acceptance—we guarantee flawless performance. <br />Tools like Jest and Cypress help us deliver bug-free, cross-device compatible applications.</p>
           </div>
         </div>
         <div className="col-span-1">
           <p className="h-9 w-9 ">
-            <img src="/CodeBlock.png" />
+            <Image src="/CodeBlock.png" alt="codeblock" width={100} height={100} />
           </p>
           <h2 className="my-2 description-primary">Support & Maintenance</h2>
           <div className="description-secondary">
-            <p>We get to know your idea and vision.</p>
-            <p>We understand the target audience.</p>
-            <p>We identify problems we can solve for you and your users.</p>
-            <p>We propose ways for differentiation.</p>
+            <p>Every project comes with 3 months of complimentary support, ensuring a smooth launch and prompt issue resolution. <br /> Our maintenance plans include updates, security enhancements, and performance tuning, fostering long-term success for your application.</p>
           </div>
         </div>
       </section>
@@ -472,9 +460,9 @@ const FeaturedProjects = () => {
             Health Plus
           </h3>
           <div className="hidden lg:flex justify-end lg:text-xl items-center lg:gap-x-2">
-            <p className="bg-[#232323] py-4 px-6 rounded-full">View Js</p>
-            <p className="bg-[#232323] py-4 px-6 rounded-full">MongoDB</p>
-            <p className="bg-[#232323] py-4 px-6 rounded-full">React Js</p>
+            <p className="bg-[#232323] py-4 px-6 rounded-full">Next JS</p>
+            <p className="bg-[#232323] py-4 px-6 rounded-full">Supabase</p>
+            <p className="bg-[#232323] py-4 px-6 rounded-full">Ant-D</p>
           </div>
         </div>
 
@@ -494,20 +482,18 @@ const FeaturedProjects = () => {
           <p className="bg-[#232323] py-4 px-6 rounded-full">React Js</p>
         </div>
 
-        <div className=" col-span-1  my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
+        <div className="ml-grid-content-spacing col-span-1  my-4 lg:my-0 lg:pt-6 lg:row-start-2 lg:row-end-2 lg:space-y-6 lg:border-t border-[#CDFF41]">
           <p className="description-secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla.
+            A healthcare app enabling doctors to manage patient workout regimens with real-time motion detection.
           </p>
-          <div>
+          {/* <div>
             <h1 className="text-2xl text-primary">120M</h1>
             <p className="description-secondary">Lorem ipsum dolor sit amet.</p>
           </div>
           <div>
             <h1 className="text-2xl text-primary">1500+</h1>
             <p className="description-secondary">Lorem ipsum dolor sit amet.</p>
-          </div>
+          </div> */}
         </div>
 
         <div className="lg:hidden border border-[#CDFF41] my-4"></div>
@@ -521,9 +507,9 @@ const FeaturedProjects = () => {
               width={500}
               height={500}
             ></Image>
-            <p className=" leading-4">Service 1</p>
-            <p className=" leading-4">Service 2</p>
-            <p className=" leading-4">Service3</p>
+            <p className=" leading-4">Front end UI improvement</p>
+            <p className=" leading-4">AI video tracking feature</p>
+            <p className=" leading-4">Backend Code improvement</p>
           </div>
           <div className="lg:col-span-1">
             <Image
@@ -560,21 +546,20 @@ const FeaturedProjects = () => {
 };
 const Five = () => {
   return (
-    <section className="col-span-full space-y-8">
-      <h2 className="secondary-heading leading-tight lg:leading-[96px] col-span-full">
+    <section className=" col-span-full space-y-8">
+      <h2 className="ml-grid-content-spacing secondary-heading leading-tight lg:leading-[96px] col-span-full">
         The Zero8 difference
       </h2>
       <div className="grid col-span-full gap-4 grid-cols-2 lg:grid-cols-4 grid-rows-4 lg:grid-rows-2">
         <div className="bg-primary relative col-span-2 rounded p-2 lg:p-6 flex justify-between items-start lg:items-center gap-x-2">
           <div className="text-charcoal w-[60%] space-y-5 ">
             <h2 className="text-[22px] lg:text-4xl  whitespace-nowrap">
-              Development Process
+              Our Mission
             </h2>
             <p className="text-base lg:text-xl">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
-              massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-              fringilla.
+              To empower businesses and individuals through innovative software solutions, leveraging the latest technologies and best practices in software development.
             </p>
+            <p>We believe in the power of connection and innovation. Our distributed model allows us to harness diverse talent and foster collaboration beyond geographical boundaries. Operating entirely remotely, we convene annually to strengthen our bonds, share knowledge, and celebrate our achievements.</p>
             <p className="my-4 text-base lg:text-xl">Learn More</p>
           </div>
           <div className="self-end w-[40%] flex justify-end items-end">
@@ -582,8 +567,8 @@ const Five = () => {
               alt="develop"
               src="/developprocess.png"
               className=" translate-x-1 translate-y-2 lg:translate-x-6 lg:translate-y-10 "
-              width={100}
-              height={100}
+              width={400}
+              height={400}
               layout="responsive"
             />
             {/* <img
@@ -596,25 +581,19 @@ const Five = () => {
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="third-heading">Support</h4>
           <p className="description-secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla.
+            Our support goes beyond the initial 3 months. <br /> With 24/7 monitoring, proactive fixes, and regular audits, we keep your application running at peak performance, adapting to your evolving business demands.
           </p>
         </div>
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="third-heading">Testing</h4>
           <p className="description-secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla.
+            We employ advanced tools like Selenium for automation, Postman for API validation, and BrowserStack for cross-browser testing. This ensures your application is robust, secure, and delivers a consistent user experience.
           </p>
         </div>
         <div className="bg-charcoal col-span-2 rounded p-2 lg:p-6 space-y-5">
           <h4 className="third-heading">Technology</h4>
           <p className="description-secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla.
+            We harness the power of modern tools to deliver top-tier web applications. Our tech stack includes Node.js with TypeScript for robust backend logic, React for dynamic and responsive frontends, Supabase for seamless database management, Ant Design for intuitive UI, Vercel for swift deployments, PostgreSQL for secure data handling, and Google App Script for automation. This arsenal empowers us to build scalable, efficient, and user-focused solutions.
           </p>
           {/* <Image
             src="/rocket.png"
@@ -624,24 +603,19 @@ const Five = () => {
             height={200}
           /> */}
           <div className="flex w-full justify-center items-center ">
-            <img src="/rocket.png" alt="develop" className="" />
+            <Image src="/rocket.png" alt="develop" width={400} height={400}  />
           </div>
         </div>
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="third-heading">Consulting / Strategy</h4>
           <p className="description-secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla.
+            From tech stack choices to system architecture, our consulting services optimize your digital strategy. We tailor solutions to enhance efficiency and ROI, whether you’re launching a startup or scaling an enterprise.
           </p>
         </div>
-
         <div className="bg-charcoal col-span-1 rounded p-2 lg:p-6 space-y-5">
           <h4 className="third-heading">Frameworks</h4>
           <p className="description-secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-            mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien
-            fringilla.
+            We adhere to Agile and DevOps methodologies, leveraging CI/CD pipelines for rapid, reliable deployments. This framework minimizes risks and accelerates your time-to-market.
           </p>
         </div>
       </div>
@@ -652,7 +626,7 @@ const Five = () => {
 const ContactsUs = () => {
   return (
     <section
-      className="col-span-full bg-onyx border border-charcoal lg:border-none lg:bg-transparent"
+      className="ml-grid-content-spacing col-span-full bg-onyx border border-charcoal lg:border-none lg:bg-transparent"
       id="contact"
     >
       <h3 className="text-[42px] lg:text-[96px] leading-[96px]">
