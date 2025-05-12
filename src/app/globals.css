@@ -105,3 +105,145 @@ body {
   color: inherit;
   text-decoration: none;
 }
+
+
+
+
+/* Basic list reset */
+.blog-ul,
+.blog-ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Main bullets for unordered lists */
+.blog-ul > .blog-li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #9ca3af; /* gray-400 */
+}
+
+.blog-ul > .blog-li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #bdf441; /* pink-500 */
+}
+
+/* Main numbers for ordered lists */
+.blog-ol {
+  counter-reset: main-counter;
+}
+
+.blog-ol > .blog-li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #9ca3af; /* gray-400 */
+  counter-increment: main-counter;
+}
+
+.blog-ol > .blog-li::before {
+  content: counter(main-counter) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #bdf441; /* pink-500 */
+  font-weight: bold;
+}
+
+/* Fix for nested lists */
+/* This is the key fix: more specific selectors to target only direct children */
+
+/* Nested unordered lists */
+.blog-ul .blog-li .blog-ul,
+.blog-ol .blog-li .blog-ul {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+/* Nested unordered list items */
+/* Use child combinator (>) to target only direct children */
+.blog-ul .blog-li .blog-ul > .blog-li,
+.blog-ol .blog-li .blog-ul > .blog-li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Specific styling for the bullet of nested unordered list items */
+.blog-ul .blog-li .blog-ul > .blog-li::before,
+.blog-ol .blog-li .blog-ul > .blog-li::before {
+  content: "○"; /* Open circle for sub-bullets */
+  position: absolute;
+  left: 0;
+  top: 0.1rem; /* Better alignment with text */
+  font-size: 0.8rem;
+  width: auto;
+  height: auto;
+  background-color: transparent; /* No background */
+  border-radius: 0;
+  color: #bdf441; /* pink-500 */
+}
+
+/* Nested ordered lists */
+.blog-ul .blog-li .blog-ol,
+.blog-ol .blog-li .blog-ol {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+  counter-reset: sub-counter;
+}
+
+/* Nested ordered list items */
+.blog-ul .blog-li .blog-ol > .blog-li,
+.blog-ol .blog-li .blog-ol > .blog-li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  counter-increment: sub-counter;
+}
+
+/* Specific styling for the numbering of nested ordered list items */
+.blog-ul .blog-li .blog-ol > .blog-li::before,
+.blog-ol .blog-li .blog-ol > .blog-li::before {
+  content: counter(sub-counter, lower-alpha) ")";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #bdf441; /* pink-500 */
+  font-weight: bold;
+  background: none;
+  width: auto;
+  height: auto;
+}
+
+/* Fix for deeply nested lists (level 3) */
+.blog-ul .blog-li .blog-ul .blog-li .blog-ul > .blog-li::before,
+.blog-ol .blog-li .blog-ul .blog-li .blog-ul > .blog-li::before,
+.blog-ul .blog-li .blog-ol .blog-li .blog-ul > .blog-li::before,
+.blog-ol .blog-li .blog-ol .blog-li .blog-ul > .blog-li::before {
+  content: "▪"; /* Square for third level */
+  font-size: 0.7rem;
+}
+
+/* Ensure all text in lists has proper color */
+.blog-li, 
+.blog-li p, 
+.blog-li span, 
+.blog-li a:not([href]) {
+  color: #9ca3af; /* gray-400 */
+}
+
+/* For code inside list items */
+.blog-li code {
+  color: #ff9d8a; /* purple-600 */
+  background-color: transparent; /* gray-100 */
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}

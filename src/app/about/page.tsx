@@ -39,7 +39,6 @@ const ourPeoples = [
   { fullName: "Jaykrishna Poojari", designation: "Software QA Developer Intern", photo: "/ourPeople1.png", link: "https://www.linkedin.com/company/zero8dotdev/" },
   { fullName: "Naman Tripathi", designation: "Full Stack Developer", photo: "/namanCropped.jpeg", link: "https://www.linkedin.com/in/naman-tripathi-a53b43222/"},
   { fullName: "Rohit Koktare", designation: "Product Manager", photo: "/rohit.jpeg" , link: "https://www.linkedin.com/in/rohit-koktare/" },
-
 ];
 const AboutUs = () => {
   return (
