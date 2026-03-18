@@ -1,0 +1,36 @@
+---
+title: "Building Modern React Applications"
+description: "Learn how to build scalable React applications with modern patterns and best practices. We explore hooks, context, and state management."
+date: "2025-01-15"
+readTime: "5 min read"
+featured: true
+---
+
+# Building Modern React Applications
+
+Modern React development has evolved significantly with the introduction of hooks and the concurrent features in React 18.
+
+## Key Patterns
+
+### Custom Hooks
+
+Extract reusable stateful logic into custom hooks:
+
+```js
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
+}
+```
+
+### Context for Global State
+
+For lightweight global state, React Context works well. For complex state, reach for Zustand or Jotai.
+
+## Conclusion
+
+The ecosystem has matured — pick the simplest tool that solves your problem.

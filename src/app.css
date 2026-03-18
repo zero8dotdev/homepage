@@ -1,0 +1,136 @@
+/* ─── Design tokens ─────────────────────────────────────────── */
+:root {
+	--color-onyx: #121212;
+	--color-charcoal: #212121;
+	--color-primary: #ffa794;
+	--color-text-secondary: #9f9e9e;
+	--color-description: #ededed;
+	--color-icon-green: #cdff41;
+	--color-header-blur: rgba(0, 0, 0, 0.16);
+}
+
+/* ─── Theme tokens ──────────────────────────────────────────── */
+html.light {
+	--bg: #ffffff;
+	--text: #111827;
+	--surface: #f3f4f6;
+	--border: #f3f4f6;
+	--text-secondary: #374151;
+	--desc-muted: rgba(17, 24, 39, 0.7);
+}
+
+html.dark {
+	--bg: var(--color-onyx);
+	--text: var(--color-description);
+	--surface: var(--color-charcoal);
+	--border: var(--color-charcoal);
+	--text-secondary: var(--color-description);
+	--desc-muted: rgba(237, 237, 237, 0.7);
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: 'Assistant', sans-serif;
+	font-weight: 600;
+	background-color: var(--bg);
+	color: var(--text);
+	transition:
+		background-color 0.2s,
+		color 0.2s;
+	min-height: 100dvh;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* ─── Typography utility classes ────────────────────────────── */
+.primary-heading {
+	font-size: clamp(55px, 10vw, 128px);
+	line-height: 1;
+	color: var(--color-primary);
+}
+
+.secondary-heading {
+	font-size: clamp(42px, 7.5vw, 96px);
+	line-height: 1.05;
+	color: var(--color-primary);
+}
+
+.third-heading {
+	font-size: clamp(22px, 2.5vw, 36px);
+	color: var(--text);
+}
+
+.grid-heading {
+	font-size: clamp(40px, 6.25vw, 80px);
+	color: var(--color-primary);
+}
+
+.desc-primary {
+	font-size: clamp(16px, 1.875vw, 24px);
+	color: var(--text);
+}
+
+.desc-secondary {
+	font-size: clamp(16px, 1.5625vw, 20px);
+	color: var(--desc-muted);
+}
+
+.text-balance {
+	text-wrap: balance;
+}
+
+/* ─── Root grid ─────────────────────────────────────────────── */
+.grid-layout {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 0 16px;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 16px;
+}
+
+@media (min-width: 1024px) {
+	.grid-layout {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+.col-full {
+	grid-column: 1 / -1;
+}
+
+/* ─── Animations ────────────────────────────────────────────── */
+@keyframes mirror-reflection {
+	0% {
+		transform: scale(1) translateZ(0);
+	}
+	100% {
+		transform: scale(0.1) translateZ(-1000px);
+	}
+}
+
+.animate-mirror-reflection {
+	animation: mirror-reflection 10s infinite linear;
+}
