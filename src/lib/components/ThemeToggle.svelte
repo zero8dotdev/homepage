@@ -66,23 +66,19 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 8px;
+		padding: 4px;
 		border: none;
 		background: transparent;
 		cursor: pointer;
-		border-radius: 6px;
-		transition: background-color 0.2s;
+		transition: opacity 0.15s;
 	}
 
 	.theme-btn:hover {
-		background-color: rgba(33, 33, 33, 0.2);
+		opacity: 0.6;
 	}
 
-	.icon-dim {
-		color: rgba(33, 33, 33, 0.5);
-	}
-
+	.icon-dim,
 	.icon-bright {
-		color: var(--color-primary);
+		color: var(--muted);
 	}
 </style>

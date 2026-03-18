@@ -1,111 +1,59 @@
 <footer>
-	<div class="col">
-		<a href="#contact" class="label">Contact Us</a>
-		<a href="mailto:hello@zero8.dev">hello@zero8.dev</a>
-		<a href="tel:+910000000000">+91 00000 00000</a>
-	</div>
-
-	<div class="col center">
-		<span class="label">Social</span>
-		<a href="https://github.com/zero8dotdev" target="_blank" rel="noopener">Github</a>
-		<a href="https://twitter.com/zero8dotdev" target="_blank" rel="noopener">Twitter</a>
-		<a href="https://instagram.com/zero8dotdev" target="_blank" rel="noopener">Instagram</a>
-		<a href="https://youtube.com/@zero8dotdev" target="_blank" rel="noopener">Youtube</a>
-	</div>
-
-	<div class="col end">
-		<span class="label">More Zero8</span>
-		<a href="/blog">Blog</a>
-		<a href="/careers">Careers</a>
-	</div>
-
-	<div class="copyright">© Zero8 2025</div>
-
-	<div class="logo-wrap">
-		<img src="/footerlogodesk.png" alt="Zero8" width="150" height="50" />
+	<div class="grid-layout footer-inner">
+		<span class="wordmark">zero8.dev</span>
+		<nav class="footer-nav">
+			<a href="/blog">Writing</a>
+			<a href="/#work">Work</a>
+			<a href="mailto:hello@zero8.dev">Email</a>
+			<a href="https://github.com/zero8dotdev" target="_blank" rel="noopener">GitHub</a>
+			<a href="https://twitter.com/zero8dotdev" target="_blank" rel="noopener">Twitter</a>
+		</nav>
+		<span class="copy">© 2025 Zero8 Dot Dev Pvt Ltd</span>
 	</div>
 </footer>
 
 <style>
 	footer {
-		grid-column: 1 / -1;
-		background: var(--bg);
-		border-top: 1px solid var(--border);
-		border-bottom: 1px solid var(--border);
-		padding: 24px 16px;
-		display: grid;
-		grid-template-rows: auto 20px auto;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 16px 16px;
-		margin-top: 80px;
-		font-size: clamp(14px, 1.5vw, 18px);
-		color: var(--desc-muted);
+		border-top: 1px solid var(--rule);
+		padding: 32px 0;
+		margin-top: 40px;
 	}
 
-	@media (min-width: 768px) {
-		footer {
-			grid-template-columns: repeat(6, 1fr);
-		}
-	}
-
-	.col {
+	.footer-inner {
 		display: flex;
-		flex-direction: column;
-		gap: 4px;
-	}
-
-	.col.center {
+		flex-wrap: wrap;
 		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
 	}
 
-	.col.end {
-		align-items: flex-end;
+	.wordmark {
+		font-family: 'Lora', serif;
+		font-size: 18px;
+		font-weight: 500;
+		color: var(--fg);
 	}
 
-	.label {
-		color: var(--color-primary);
+	.footer-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
 	}
 
-	footer a {
+	.footer-nav a {
+		font-size: 16px;
+		color: var(--muted);
 		text-decoration: none;
-		color: inherit;
+		transition: color 0.15s;
 	}
 
-	footer a:hover {
-		color: var(--color-primary);
+	.footer-nav a:hover {
+		color: var(--fg);
 	}
 
-	span.label {
-		display: block;
-	}
-
-	.copyright {
-		grid-row: 2;
-		grid-column: 1;
-		display: flex;
-		align-items: center;
-	}
-
-	@media (min-width: 768px) {
-		.copyright {
-			text-align: left;
-		}
-	}
-
-	.logo-wrap {
-		grid-row: 3;
-		grid-column: 1 / 4;
-		display: flex;
-		justify-content: center;
-	}
-
-	@media (min-width: 768px) {
-		.logo-wrap {
-			grid-row: 2;
-			grid-column: 3 / 7;
-			grid-row-end: 4;
-			justify-content: center;
-			align-items: center;
-		}
+	.copy {
+		font-size: 14px;
+		color: var(--muted);
+		opacity: 0.6;
 	}
 </style>

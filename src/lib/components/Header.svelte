@@ -1,103 +1,73 @@
 <script lang="ts">
-	import ThemeToggle from './ThemeToggle.svelte';
 	import MobileNav from './MobileNav.svelte';
 	import { navLinks } from '$lib/data/site';
-	import { onMount } from 'svelte';
-
-	let scrolled = $state(false);
-
-	onMount(() => {
-		const handler = () => {
-			scrolled = window.scrollY > 10;
-		};
-		window.addEventListener('scroll', handler, { passive: true });
-		return () => window.removeEventListener('scroll', handler);
-	});
 </script>
 
-<!-- Desktop header -->
-<header class="desktop-header" class:scrolled>
-	<div class="inner">
-		<a href="/" class="logo">
-			<img src="/footerlogodesk.png" alt="Zero8 Logo" width="150" height="50" />
-		</a>
-		<nav>
-			<ul>
-				{#each navLinks as link}
-					<li><a href={link.href}>{link.text}</a></li>
-				{/each}
-			</ul>
-			<ThemeToggle />
+<header class="site-header">
+	<div class="grid-layout inner">
+		<a href="/" class="wordmark" aria-label="zero8.dev home">zero8.dev</a>
+		<nav class="desktop-nav">
+			{#each navLinks as link}
+				<a href={link.href}>{link.text}</a>
+			{/each}
 		</nav>
+		<div class="mobile-right">
+			<MobileNav />
+		</div>
 	</div>
 </header>
 
-<!-- Mobile header -->
-<MobileNav />
-
 <style>
-	.desktop-header {
-		display: none;
-	}
-
-	@media (min-width: 1024px) {
-		.desktop-header {
-			display: flex;
-			position: sticky;
-			top: 0;
-			z-index: 50;
-			width: 100%;
-			border-bottom: 1px solid var(--border);
-			transition: background-color 0.3s;
-		}
-	}
-
-	.desktop-header.scrolled {
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
-		background: rgba(255, 255, 255, 0.4);
-	}
-
-	:global(html.dark) .desktop-header.scrolled {
-		background: rgba(18, 18, 18, 0.4);
+	.site-header {
+		border-bottom: 1px solid var(--rule);
+		padding: 20px 0;
 	}
 
 	.inner {
-		max-width: 1280px;
-		width: 100%;
-		margin: 0 auto;
-		padding: 0 16px;
-		height: 48px;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
-		align-items: center;
 	}
 
-	.logo img {
-		display: block;
-	}
-
-	nav {
-		display: flex;
-		align-items: center;
-		gap: 32px;
-	}
-
-	nav ul {
-		list-style: none;
-		display: flex;
-		align-items: center;
-		gap: 32px;
-	}
-
-	nav a {
+	.wordmark {
+		font-family: 'Lora', serif;
 		font-size: 20px;
-		color: var(--text);
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		color: var(--fg);
 		text-decoration: none;
-		transition: opacity 0.2s;
 	}
 
-	nav a:hover {
-		opacity: 0.7;
+	.desktop-nav {
+		display: none;
+	}
+
+	@media (min-width: 640px) {
+		.desktop-nav {
+			display: flex;
+			align-items: center;
+			gap: 32px;
+		}
+
+		.mobile-right {
+			display: none;
+		}
+	}
+
+	.desktop-nav a {
+		font-size: 18px;
+		color: var(--muted);
+		text-decoration: none;
+		transition: color 0.15s;
+	}
+
+	.desktop-nav a:hover {
+		color: var(--fg);
+	}
+
+	.mobile-right {
+		display: flex;
+		align-items: center;
+		gap: 16px;
 	}
 </style>

@@ -1,34 +1,12 @@
-/* ─── Design tokens ─────────────────────────────────────────── */
+/* ─── Tokens ─────────────────────────────────────────────────── */
 :root {
-	--color-onyx: #121212;
-	--color-charcoal: #212121;
-	--color-primary: #ffa794;
-	--color-text-secondary: #9f9e9e;
-	--color-description: #ededed;
-	--color-icon-green: #cdff41;
-	--color-header-blur: rgba(0, 0, 0, 0.16);
-}
-
-/* ─── Theme tokens ──────────────────────────────────────────── */
-html.light {
 	--bg: #ffffff;
-	--text: #111827;
-	--surface: #f3f4f6;
-	--border: #f3f4f6;
-	--text-secondary: #374151;
-	--desc-muted: rgba(17, 24, 39, 0.7);
+	--fg: #1a1a1a;
+	--muted: #6b6b6b;
+	--rule: #e2e2e2;
 }
 
-html.dark {
-	--bg: var(--color-onyx);
-	--text: var(--color-description);
-	--surface: var(--color-charcoal);
-	--border: var(--color-charcoal);
-	--text-secondary: var(--color-description);
-	--desc-muted: rgba(237, 237, 237, 0.7);
-}
-
-/* ─── Reset ─────────────────────────────────────────────────── */
+/* ─── Reset ──────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -37,20 +15,18 @@ html.dark {
 	padding: 0;
 }
 
-/* ─── Base ──────────────────────────────────────────────────── */
+/* ─── Base ───────────────────────────────────────────────────── */
 html {
 	scroll-behavior: smooth;
 }
 
 body {
-	font-family: 'Assistant', sans-serif;
-	font-weight: 600;
+	font-family: 'Lora', Georgia, serif;
+	font-size: 20px;
+	line-height: 1.7;
+	font-weight: 400;
 	background-color: var(--bg);
-	color: var(--text);
-	transition:
-		background-color 0.2s,
-		color 0.2s;
-	min-height: 100dvh;
+	color: var(--fg);
 }
 
 a {
@@ -64,73 +40,52 @@ img {
 	display: block;
 }
 
-/* ─── Typography utility classes ────────────────────────────── */
+/* ─── Typography ─────────────────────────────────────────────── */
 .primary-heading {
-	font-size: clamp(55px, 10vw, 128px);
-	line-height: 1;
-	color: var(--color-primary);
+	font-size: clamp(44px, 8vw, 88px);
+	line-height: 1.05;
+	font-weight: 500;
+	letter-spacing: -0.01em;
+	color: var(--fg);
 }
 
 .secondary-heading {
-	font-size: clamp(42px, 7.5vw, 96px);
-	line-height: 1.05;
-	color: var(--color-primary);
-}
-
-.third-heading {
-	font-size: clamp(22px, 2.5vw, 36px);
-	color: var(--text);
-}
-
-.grid-heading {
-	font-size: clamp(40px, 6.25vw, 80px);
-	color: var(--color-primary);
+	font-size: clamp(13px, 1.2vw, 15px);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	font-weight: 500;
+	color: var(--muted);
 }
 
 .desc-primary {
-	font-size: clamp(16px, 1.875vw, 24px);
-	color: var(--text);
+	font-size: clamp(18px, 1.8vw, 22px);
+	color: var(--fg);
 }
 
 .desc-secondary {
-	font-size: clamp(16px, 1.5625vw, 20px);
-	color: var(--desc-muted);
+	font-size: clamp(17px, 1.6vw, 20px);
+	color: var(--muted);
+	line-height: 1.65;
 }
 
-.text-balance {
-	text-wrap: balance;
-}
-
-/* ─── Root grid ─────────────────────────────────────────────── */
+/* ─── Layout ─────────────────────────────────────────────────── */
 .grid-layout {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 0 16px;
-	max-width: 1280px;
+	max-width: 720px;
 	margin: 0 auto;
-	padding: 0 16px;
-}
-
-@media (min-width: 1024px) {
-	.grid-layout {
-		grid-template-columns: repeat(4, 1fr);
-	}
+	padding: 0 24px;
 }
 
 .col-full {
-	grid-column: 1 / -1;
+	/* full column in document flow */
 }
 
-/* ─── Animations ────────────────────────────────────────────── */
-@keyframes mirror-reflection {
-	0% {
-		transform: scale(1) translateZ(0);
-	}
-	100% {
-		transform: scale(0.1) translateZ(-1000px);
-	}
+/* ─── Focus ──────────────────────────────────────────────────── */
+:focus-visible {
+	outline: 2px solid var(--fg);
+	outline-offset: 3px;
 }
 
-.animate-mirror-reflection {
-	animation: mirror-reflection 10s infinite linear;
+/* ─── Utility ────────────────────────────────────────────────── */
+.text-balance {
+	text-wrap: balance;
 }
