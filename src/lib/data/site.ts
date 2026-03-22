@@ -5,9 +5,10 @@ export const navLinks = [
 ];
 
 export const hero = {
+	eyebrow: 'Ashutosh Tripathi · Frontend Engineer',
 	headline: 'I build software people\ncan reason about.',
 	subline:
-		'10 years across frontend engineering, developer tools, and the video streaming space. Fully remote.',
+		'Frontend engineer. React, browser-native video streaming, and developer tools. A decade of remote and async work.',
 	ctas: [
 		{ label: 'Read my writing', href: '/blog' },
 		{ label: 'See my work', href: '/#work' }

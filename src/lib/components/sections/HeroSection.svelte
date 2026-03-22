@@ -3,6 +3,7 @@
 </script>
 
 <section class="hero">
+	<p class="eyebrow">{hero.eyebrow}</p>
 	<h1 class="primary-heading">{@html hero.headline.replace('\n', '<br />')}</h1>
 	<p class="sub">{hero.subline}</p>
 	<div class="cta">
@@ -16,6 +17,15 @@
 <style>
 	.hero {
 		padding-top: 24px;
+	}
+
+	.eyebrow {
+		font-size: clamp(11px, 1vw, 13px);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--muted);
+		font-weight: 500;
+		margin-bottom: 20px;
 	}
 
 	.sub {
