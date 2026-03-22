@@ -5,8 +5,9 @@
 			<a href="/blog">Writing</a>
 			<a href="/#work">Work</a>
 			<a href="mailto:hello@zero8.dev">Email</a>
-			<a href="https://github.com/zero8dotdev" target="_blank" rel="noopener">GitHub</a>
-			<a href="https://twitter.com/zero8dotdev" target="_blank" rel="noopener">Twitter</a>
+			<a href="https://github.com/ashu17706" target="_blank" rel="noopener">GitHub</a>
+			<a href="https://x.com/zero8dotdev" target="_blank" rel="noopener">X</a>
+			<a href="https://www.linkedin.com/in/itszero8/" target="_blank" rel="noopener">LinkedIn</a>
 		</nav>
 		<span class="copy">© 2025 Zero8 Dot Dev Pvt Ltd</span>
 	</div>

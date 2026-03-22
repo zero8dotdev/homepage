@@ -19,6 +19,46 @@
 	<meta name="twitter:title" content="zero8.dev · A decade of making hard things feel simple." />
 	<meta name="twitter:description" content="Frontend engineer and developer tools specialist. 10 years building software people can reason about." />
 	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />
+	{@html `<script type="application/ld+json">${JSON.stringify([
+		{
+			"@context": "https://schema.org",
+			"@type": "Person",
+			"name": "Ashutosh Tripathi",
+			"url": "https://zero8.dev",
+			"email": "hello@zero8.dev",
+			"jobTitle": "Frontend Engineer",
+			"description": "Frontend engineer and developer tools specialist with 10 years of experience across frontend engineering, video infrastructure, and developer tools. Creator of Smriti, an AI memory tool for engineering teams.",
+			"knowsAbout": [
+				"Frontend Engineering",
+				"Developer Tools",
+				"API Design",
+				"Video Streaming",
+				"HLS",
+				"Browser Internals",
+				"TypeScript",
+				"React",
+				"SvelteKit",
+				"Open Source",
+				"AI Memory"
+			],
+			"sameAs": [
+				"https://github.com/ashu17706",
+				"https://x.com/zero8dotdev",
+				"https://www.linkedin.com/in/itszero8/"
+			]
+		},
+		{
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			"name": "zero8.dev",
+			"url": "https://zero8.dev",
+			"description": "Personal site of Ashutosh Tripathi — frontend engineer, developer tools specialist, and open source builder.",
+			"author": {
+				"@type": "Person",
+				"name": "Ashutosh Tripathi"
+			}
+		}
+	])}</script>`}
 </svelte:head>
 
 <HeroSection />
