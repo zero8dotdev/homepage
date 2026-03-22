@@ -18,6 +18,30 @@
 	<meta name="twitter:title" content="{data.meta.title} · zero8.dev" />
 	<meta name="twitter:description" content={data.meta.description} />
 	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />
+	{@html `<script type="application/ld+json">${JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		"headline": data.meta.title,
+		"description": data.meta.description,
+		"datePublished": data.meta.date,
+		"dateModified": data.meta.date,
+		"url": `https://zero8.dev/blog/${data.meta.slug ?? ''}`,
+		"author": {
+			"@type": "Person",
+			"name": "Ashutosh Tripathi",
+			"url": "https://zero8.dev"
+		},
+		"publisher": {
+			"@type": "Person",
+			"name": "Ashutosh Tripathi",
+			"url": "https://zero8.dev"
+		},
+		"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": `https://zero8.dev/blog/${data.meta.slug ?? ''}`
+		},
+		"image": "https://zero8.dev/og-image.jpg"
+	})}</script>`}
 </svelte:head>
 
 <article class="post col-full">
