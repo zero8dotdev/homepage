@@ -9,14 +9,15 @@
 <svelte:head>
 	<title>{data.meta.title} · zero8.dev</title>
 	<meta name="description" content={data.meta.description} />
+	<link rel="canonical" href="https://zero8.dev/blog/{data.meta.slug ?? ''}" />
 	<meta property="og:title" content="{data.meta.title} · zero8.dev" />
 	<meta property="og:description" content={data.meta.description} />
 	<meta property="og:url" content="https://zero8.dev/blog/{data.meta.slug ?? ''}" />
 	<meta property="og:type" content="article" />
-	<meta property="og:image" content="https://zero8.dev/ogtest.jpg" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
 	<meta name="twitter:title" content="{data.meta.title} · zero8.dev" />
 	<meta name="twitter:description" content={data.meta.description} />
+	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />
 </svelte:head>
 
 <article class="post col-full">

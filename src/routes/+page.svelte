@@ -10,14 +10,15 @@
 <svelte:head>
 	<title>zero8.dev · A decade of making hard things feel simple.</title>
 	<meta name="description" content="I build software people can reason about. 10 years across frontend engineering, developer tools, and the video streaming space." />
+	<link rel="canonical" href="https://zero8.dev" />
 	<meta property="og:title" content="zero8.dev · A decade of making hard things feel simple." />
 	<meta property="og:description" content="Frontend engineer and developer tools specialist. 10 years building software people can reason about." />
 	<meta property="og:url" content="https://zero8.dev" />
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content="https://zero8.dev/ogtest.jpg" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
 	<meta name="twitter:title" content="zero8.dev · A decade of making hard things feel simple." />
 	<meta name="twitter:description" content="Frontend engineer and developer tools specialist. 10 years building software people can reason about." />
+	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />
 </svelte:head>
 
 <HeroSection />

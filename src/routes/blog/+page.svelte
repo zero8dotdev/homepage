@@ -7,14 +7,15 @@
 <svelte:head>
 	<title>Writing · zero8.dev</title>
 	<meta name="description" content="Writing on frontend engineering, developer tools, open source, and AI memory." />
+	<link rel="canonical" href="https://zero8.dev/blog" />
 	<meta property="og:title" content="Writing · zero8.dev" />
 	<meta property="og:description" content="Writing on frontend engineering, developer tools, open source, and AI memory." />
 	<meta property="og:url" content="https://zero8.dev/blog" />
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content="https://zero8.dev/ogtest.jpg" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
 	<meta name="twitter:title" content="Writing · zero8.dev" />
 	<meta name="twitter:description" content="Writing on frontend engineering, developer tools, open source, and AI memory." />
+	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />
 </svelte:head>
 
 <section class="blog-index col-full">

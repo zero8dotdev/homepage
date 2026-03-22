@@ -15,18 +15,6 @@
 </script>
 
 <svelte:head>
-	<title>zero8.dev · A decade of making hard things feel simple.</title>
-	<meta
-		name="description"
-		content="Frontend engineer and developer tools specialist. 10 years across frontend engineering, video infrastructure, and developer tools."
-	/>
-	<meta property="og:title" content="zero8.dev" />
-	<meta
-		property="og:description"
-		content="Frontend engineer and developer tools specialist. Writing about DX, frontend craft, and the browser."
-	/>
-	<meta property="og:image" content="/ogtest.jpg" />
-	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
