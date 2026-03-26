@@ -1,3 +1,18 @@
+export const siteConfig = {
+	url: 'https://zero8.dev',
+	title: 'zero8.dev',
+	description:
+		'Personal site of Ashutosh Tripathi — frontend engineer, developer tools specialist, and open source builder.',
+	author: 'Ashutosh Tripathi',
+	email: 'hello@zero8.dev',
+	twitter: '@zero8dotdev',
+	ogImage: {
+		url: 'https://zero8.dev/og-image.jpg',
+		width: 1200,
+		height: 630
+	}
+};
+
 export const navLinks = [
 	{ href: '/blog', text: 'Writing' },
 	{ href: '/#work', text: 'Work' },

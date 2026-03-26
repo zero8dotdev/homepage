@@ -17,6 +17,8 @@
 	<meta property="og:url" content="https://zero8.dev" />
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta name="twitter:title" content="zero8.dev · A decade of making hard things feel simple." />
 	<meta name="twitter:description" content="Frontend engineer and developer tools specialist. 10 years building software people can reason about." />
 	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />

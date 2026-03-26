@@ -15,6 +15,8 @@
 	<meta property="og:url" content="https://zero8.dev/blog/{data.meta.slug ?? ''}" />
 	<meta property="og:type" content="article" />
 	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta name="twitter:title" content="{data.meta.title} · zero8.dev" />
 	<meta name="twitter:description" content={data.meta.description} />
 	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />

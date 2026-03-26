@@ -1,29 +1,18 @@
 import type { RequestHandler } from '@sveltejs/kit';
-
-interface PostModule {
-	metadata: {
-		title: string;
-		date: string;
-	};
-}
+import { getAllPosts } from '$lib/data/posts';
+import { siteConfig } from '$lib/data/site';
 
 export const GET: RequestHandler = () => {
-	const modules = import.meta.glob<PostModule>('/src/content/blog/*.svx', { eager: true });
-
-	const posts = Object.entries(modules).map(([path, mod]) => {
-		const slug = path.split('/').at(-1)!.replace('.svx', '');
-		return { slug, date: mod.metadata.date };
-	});
-
+	const posts = getAllPosts();
 	const today = new Date().toISOString().split('T')[0];
 
 	const staticPages = [
-		{ loc: 'https://zero8.dev/', priority: '1.0', changefreq: 'weekly', lastmod: today },
-		{ loc: 'https://zero8.dev/blog', priority: '0.8', changefreq: 'weekly', lastmod: today }
+		{ loc: `${siteConfig.url}/`, priority: '1.0', changefreq: 'weekly', lastmod: today },
+		{ loc: `${siteConfig.url}/blog`, priority: '0.8', changefreq: 'weekly', lastmod: today }
 	];
 
 	const postPages = posts.map(({ slug, date }) => ({
-		loc: `https://zero8.dev/blog/${slug}`,
+		loc: `${siteConfig.url}/blog/${slug}`,
 		priority: '0.7',
 		changefreq: 'monthly',
 		lastmod: date ? new Date(date).toISOString().split('T')[0] : today

@@ -13,6 +13,8 @@
 	<meta property="og:url" content="https://zero8.dev/blog" />
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta name="twitter:title" content="Writing · zero8.dev" />
 	<meta name="twitter:description" content="Writing on frontend engineering, developer tools, open source, and AI memory." />
 	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />

@@ -1,3 +1,7 @@
+<script>
+	const year = new Date().getFullYear();
+</script>
+
 <footer>
 	<div class="grid-layout footer-inner">
 		<span class="wordmark">zero8.dev</span>
@@ -9,7 +13,7 @@
 			<a href="https://x.com/zero8dotdev" target="_blank" rel="noopener">X</a>
 			<a href="https://www.linkedin.com/in/itszero8/" target="_blank" rel="noopener">LinkedIn</a>
 		</nav>
-		<span class="copy">© 2025 Zero8 Dot Dev Pvt Ltd</span>
+		<span class="copy">© {year} Zero8 Dot Dev Pvt Ltd</span>
 	</div>
 </footer>
 

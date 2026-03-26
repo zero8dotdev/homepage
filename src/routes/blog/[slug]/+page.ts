@@ -6,7 +6,7 @@ export const load: PageLoad = async ({ params }) => {
 		const post = await import(`../../../content/blog/${params.slug}.svx`);
 		return {
 			content: post.default,
-			meta: post.metadata
+			meta: { ...post.metadata, slug: params.slug }
 		};
 	} catch {
 		error(404, `Post "${params.slug}" not found`);
