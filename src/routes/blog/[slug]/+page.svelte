@@ -2,8 +2,6 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-
-	const PostContent = $derived(data.content);
 </script>
 
 <svelte:head>
@@ -63,7 +61,7 @@
 	</header>
 
 	<div class="post-content">
-		<PostContent />
+		{@html data.html}
 	</div>
 
 	<footer class="post-footer">

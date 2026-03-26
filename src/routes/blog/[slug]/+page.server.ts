@@ -1,11 +1,13 @@
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import { render } from 'svelte/server';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	try {
 		const post = await import(`../../../content/blog/${params.slug}.svx`);
+		const { body } = render(post.default);
 		return {
-			content: post.default,
+			html: body,
 			meta: { ...post.metadata, slug: params.slug }
 		};
 	} catch {
