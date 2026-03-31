@@ -1,0 +1,213 @@
+---
+title: "The Tax Knowledge Most Solo Developers Never Get"
+description: "What 9 months at a leasing startup taught me about GST credits, car leasing, and device leasing. A practical guide for Indian solo founders."
+date: "2026-03-31"
+featured: false
+draft: false
+tags: ["solo-founder", "taxes", "gst", "india", "leasing"]
+---
+
+I spent about nine months as the founding engineer at [Automint](https://automint.in), a company that helps corporate employees lease cars and devices through their employer. Nine months is not long. But when you are building the entire product — the payroll integration, the lease structuring engine, the compliance logic — you absorb the domain at an absurd rate. Every edge case in the code is a tax rule. Every validation check is a section of the CGST Act. Every dropdown option maps to an Income Tax Rule.
+
+By the time I left to run my own one-person software company, I had accidentally become fluent in a corner of Indian tax law that most developers never encounter. And the first thing I realized is: the structures I had been building for employees at large corporates — they work for solo founders too. Nobody had told me.
+
+This post is what I wish someone had told me before I started invoicing clients through my Pvt Ltd.
+
+---
+
+## The basic idea, in plain English
+
+When you buy a car or a laptop as an individual, you pay from money that has already been taxed as income. A Rs 15 lakh car actually costs you around Rs 21 lakh in pre-tax earnings if you are in the 30% bracket. The GST baked into the price (28% on cars, 18% on electronics) is a dead cost — you cannot recover it.
+
+But there is a legal structure, designed for employers, that changes this equation completely. Here is the short version:
+
+1. **Your company leases the car or device** from a leasing company (not you personally).
+2. **The lease rental is deducted from your salary before income tax** is calculated. So you are paying with pre-tax money.
+3. **The tax department adds back only a tiny flat amount** as a "perquisite" (perk) to your taxable income — not the actual lease cost, but a fixed number defined in the Income Tax Rules.
+4. **The gap between what you deducted and what got added back** is your tax saving.
+
+That is it. The rest of this post is the math, the legal references, and the specific numbers.
+
+---
+
+## Example 1: Leasing a car worth Rs 15 lakh
+
+Let us say you want a mid-range SUV. On-road price around Rs 15 lakh. Engine above 1600cc. You are in the 30% tax bracket (plus 4% cess, effective rate ~31.2%). Four-year lease.
+
+### Buying it yourself
+
+You take a car loan at ~10% interest for 4 years.
+
+| Item | Amount |
+|------|--------|
+| On-road price (including 28% GST) | Rs 15,00,000 |
+| GST embedded in the price | ~Rs 3,28,000 |
+| Monthly EMI | ~Rs 38,000 |
+| Total loan repayment over 4 years | ~Rs 18,24,000 |
+| Insurance + maintenance (4 years) | ~Rs 2,50,000 |
+| **Total outflow** | **~Rs 20,74,000** |
+| Can you recover the GST? | No |
+| Can you deduct any of this from taxable income? | No |
+| Pre-tax income needed to fund this (at 31.2% tax) | **~Rs 30,14,000** |
+
+You need to earn over Rs 30 lakh (before tax) just to afford a Rs 15 lakh car.
+
+### Leasing it through your company
+
+Your Pvt Ltd enters a lease agreement with a leasing company. The lease rental is structured as part of your CTC.
+
+| Item | Amount |
+|------|--------|
+| Monthly lease rental (deducted from gross salary) | Rs 35,000 |
+| Total lease payments over 4 years | Rs 16,80,000 |
+| Buyback at end of lease (you keep the car) | ~Rs 4,50,000 |
+| **Total outflow** | **~Rs 21,30,000** |
+
+Now here is where the tax savings kick in.
+
+**Income tax saved on the salary deduction:**
+You deducted Rs 16,80,000 from your gross salary over 4 years. At your 31.2% effective tax rate, that saves you:
+
+> Rs 16,80,000 x 31.2% = **Rs 5,24,160**
+
+**But wait — the perquisite addition:**
+The tax department does not let this go completely tax-free. Under [Rule 3(2) of the Income Tax Rules](https://incometaxindia.gov.in/Rules/Income-Tax%20Rules/103120000000007059.htm), when a company provides a car for an employee's personal use, a fixed monthly amount is added to taxable income:
+
+| Car type | Monthly perquisite (employer pays running costs) |
+|----------|--------------------------------------------------|
+| Engine up to 1600cc | Rs 1,800/month |
+| Engine above 1600cc | Rs 2,400/month |
+| If driver also provided | + Rs 900/month |
+
+For our example (above 1600cc, with driver): Rs 2,400 + Rs 900 = **Rs 3,300/month**.
+
+Over 4 years: Rs 3,300 x 48 = Rs 1,58,400 added back as taxable income.
+Tax on that: Rs 1,58,400 x 31.2% = **Rs 49,420**
+
+**Net tax saving:** Rs 5,24,160 - Rs 49,420 = **Rs 4,74,740**
+
+**Your effective cost:** Rs 21,30,000 - Rs 4,74,740 = **~Rs 16,55,000**
+
+| | Personal purchase | Company lease | Difference |
+|---|---|---|---|
+| Total outflow | Rs 20,74,000 | Rs 21,30,000 | |
+| Tax saved | Rs 0 | Rs 4,74,740 | |
+| **Effective cost** | **Rs 20,74,000** | **~Rs 16,55,000** | **Rs 4,19,000 saved** |
+
+That is roughly **20% savings** on the same car. And this is a conservative estimate — if your company also deducts driver salary and maintenance costs from your CTC, the savings go higher. [Zerodha Varsity's analysis](https://zerodhavarsity.substack.com/p/car-leasing-vs-buying-whats-better) shows savings of Rs 4.5-6.6 lakh on a Rs 10 lakh car over 4 years, depending on how many expenses are routed through the structure.
+
+**Why is the company cost-neutral?** Whether the Rs 35,000/month goes to the leasing company or to you as salary, the employer's total CTC stays exactly the same. The company is just redirecting money from one bucket (salary) to another (lease rental). No extra cost.
+
+### Where does the GST benefit come from?
+
+This is the part that confused me until I built the product. Here is the chain:
+
+**The leasing company buys the car.** They pay Rs 15 lakh, which includes ~Rs 3.28 lakh of GST. Normally, GST on motor vehicles is "blocked credit" — you cannot claim it back. But [Section 17(5) of the CGST Act](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter5/section17_v1.00.html) has a critical exception:
+
+> ITC is available when the motor vehicle is acquired for **"further supply of such motor vehicles"**.
+
+Leasing is legally a "further supply." So the leasing company recovers the Rs 3.28 lakh GST as Input Tax Credit. This lowers their cost basis, which means your lease rental is lower than what an equivalent bank EMI would be. The GST saving does not come to you directly — it flows through as a lower lease price.
+
+**On the lease rentals themselves:** The leasing company charges GST (18%) on each monthly rental. Whether your company (the employer) can claim ITC on those rentals depends on the business. For most non-leasing businesses, [GST on car lease rentals paid by the employer is blocked credit](https://cleartax.in/s/gst-on-cars). But the income tax saving more than compensates for this.
+
+---
+
+## Example 2: Leasing a MacBook Pro and an iPhone
+
+This is where it gets even better. Devices have two advantages over cars:
+
+### Advantage 1: Zero perquisite tax on phones and laptops
+
+Under [Rule 3(7)(viii) of the Income Tax Rules](https://incometaxindia.gov.in/Rules/Income-Tax%20Rules/103120000000007059.htm), mobile phones and telephones provided by the employer are **completely exempt** from perquisite tax. Laptops provided as work tools are similarly exempt (they are not listed in the taxable movable assets category, which specifically excludes computers and laptops).
+
+This means: the full lease rental is deducted from your pre-tax salary, and **nothing** is added back as a perk. Unlike cars, there is no flat perquisite to erode your savings.
+
+### Advantage 2: No blocked GST credit on devices
+
+Section 17(5) only blocks ITC on motor vehicles. Electronics are not blocked. So your company (the employer) can directly claim ITC on the device lease rentals. That is an additional 18% recovery.
+
+### The math on a Rs 2 lakh MacBook + Rs 1.5 lakh iPhone
+
+Total device cost: Rs 3,50,000. Lease term: 12 months.
+
+| | Buy personally | Lease through company |
+|---|---|---|
+| Price paid | Rs 3,50,000 | Rs 3,50,000 (spread as ~Rs 32,000/month lease rental) |
+| GST embedded (18%) | ~Rs 53,390 (dead cost) | Recovered by employer as ITC: **Rs 53,390 saved** |
+| Paid from pre-tax or post-tax income? | Post-tax | Pre-tax (lease deducted from salary) |
+| Income tax saved (at 31.2%) | Rs 0 | Rs 3,50,000 x 31.2% = **Rs 1,09,200** |
+| Perquisite tax added back | N/A | **Rs 0** (phones and laptops exempt) |
+| **Effective cost** | **Rs 3,50,000** | **Rs 3,50,000 - Rs 1,09,200 - Rs 53,390 = Rs 1,87,410** |
+| **Savings** | | **~Rs 1,62,590 (46%)** |
+
+This is why [Automint claims up to 40% savings on devices](https://help.empuls.xoxoday.com/en/articles/12797875-automint-s-tax-saving-car-and-device-leasing-program) — and it is not marketing. It is the actual tax math. In fact, with higher-bracket employees, the savings can exceed 40%.
+
+The [Vinod Kothari Consultants analysis](https://vinodkothari.com/2025/05/a-brief-on-the-law-and-mechanics-of-ctc-based-device-leasing/) explains the mechanics well: the employee's CTC stays the same, the lease rental reduces taxable salary, and at the end of the lease term (usually 12 months), the employee buys the device from the lessor at a nominal residual value. You get to keep the MacBook.
+
+---
+
+## The 2026 update: car perquisites are going up
+
+The government noticed the car leasing arbitrage was too generous. The [Income Tax Rules 2026](https://www.incometaxindia.gov.in/documents/d/guest/en-notified-it-rules-2026-20-03-2026-pdf), notified on March 20, 2026 and effective from **April 1, 2026**, [significantly increase the flat perquisite values](https://m.economictimes.com/wealth/tax/using-company-car-for-personal-use-income-tax-rules-2026-may-increase-your-tax-heres-how/articleshow/129819190.cms):
+
+| Scenario | Old rule | New rule (April 2026) |
+|----------|----------|-----------------------|
+| Car up to 1600cc, employer pays expenses | Rs 1,800/month | **Rs 5,000/month** |
+| Car above 1600cc, employer pays expenses | Rs 2,400/month | **Rs 7,000/month** |
+| Driver provided by employer | + Rs 900/month | **+ Rs 3,000/month** |
+| Car up to 1600cc, employee pays expenses | Rs 600/month | **Rs 2,000/month** |
+| Car above 1600cc, employee pays expenses | Rs 900/month | **Rs 3,000/month** |
+
+Source: [Faceless Compliance analysis](https://facelesscompliance.com/income-tax-rules-2026-a-comprehensive-reset-of-employee-perquisites-and-allowances/), [News18 coverage](https://www.news18.com/business/tax/salaried-employees-to-face-higher-tax-on-company-cars-what-draft-rule-2026-proposes-9891443.html)
+
+**How does this affect our Rs 15 lakh car example?**
+
+With the new rules (above 1600cc, employer pays expenses + driver):
+- Monthly perquisite: Rs 7,000 + Rs 3,000 = **Rs 10,000/month** (up from Rs 3,300)
+- Annual perquisite: Rs 1,20,000 (up from Rs 39,600)
+- Tax on perquisite over 4 years: Rs 4,80,000 x 31.2% = **Rs 1,49,760** (up from Rs 49,420)
+- Net tax saving: Rs 5,24,160 - Rs 1,49,760 = **Rs 3,74,400**
+
+The savings shrink from ~Rs 4.75 lakh to ~Rs 3.74 lakh. Still **18% savings** on the same car. The fundamental arbitrage survives because you are still deducting Rs 4.2 lakh/year from pre-tax salary while only Rs 1.2 lakh/year gets added back as perquisite.
+
+**On the flip side:** [GST 2.0 (September 2025)](https://vinodkothari.com/2025/09/gst-changes-double-dhamaka-for-car-lessees-lessors-to-have-elongated-input-tax-recovery/) abolished the compensation cess on vehicles. Effective GST on small cars dropped from ~29-31% to 18%. This makes leasing cheaper for new leases signed after September 2025, partially offsetting the income tax change.
+
+**Device perquisites are unchanged.** Phones and laptops remain fully exempt. The 2026 rules did not touch this — device leasing remains the most tax-efficient perk.
+
+---
+
+## What solo founders should actually do
+
+If you run a one-person Pvt Ltd or a small company, you are both the employer and the employee. You can structure your own CTC to include these components:
+
+1. **A car lease component** — route your next car purchase through a leasing company. [Quiklyz](https://www.quiklyz.com/) (Mahindra), [Orix](https://www.orixindia.com/), and [Automint](https://automint.in) all offer corporate leasing. Some have minimum employee thresholds, but the structure works even for a single-director company.
+
+2. **A device lease component** — your MacBook, iPhone, iPad, monitors. Zero perquisite tax, plus your company claims GST ITC on the lease rentals.
+
+3. **RCM compliance on foreign SaaS** — if you are paying Anthropic, Vercel, or Stripe, you owe 18% IGST under the Reverse Charge Mechanism. But you claim it back as ITC in the same month. I wrote a [detailed guide with the exact procedure](/blog/rcm-on-import-of-services-cloud-saas-india).
+
+4. **Talk to your CA about salary restructuring.** Specifically mention CTC-based leasing. If they have not heard of it, find a CA who works with startups. The [Jify guide](https://www.jify.co/blog/tax-benefits-employer-provided-car/) and [ClearTax explainer](https://cleartax.in/s/tax-benefit-salaried-employee-car-provided-employer) are good starting points to share with them.
+
+Most solo developers pay themselves a flat salary and buy everything from personal savings. Post-tax money, no ITC, no salary structuring. They are leaving 15-40% on the table because nobody told them these structures exist.
+
+None of this is tax avoidance. The perquisite valuation rules exist specifically to encourage employers to provide cars and devices to employees. The GST ITC provisions exist to prevent tax cascading in leasing supply chains. The RCM provisions exist to ensure tax parity on cross-border services. You are using the law as designed.
+
+---
+
+## What a founding engineer actually takes away
+
+Here is the thing people get wrong about being a founding engineer at an early-stage startup. They think the value is in the tech — the frameworks you learn, the systems you design, the scale you handle.
+
+It is not.
+
+Nine months at Automint taught me more about Indian tax law, leasing regulations, perquisite valuation, and GST credit chains than years of running my own company would have. Not because I sat in a classroom, but because every feature I built forced me to understand the domain deeply enough to encode it in software. You cannot build a perquisite calculator without understanding Rule 3. You cannot build a lease structuring engine without understanding Section 17(5). You cannot build payroll integration without understanding how CTC components interact with income tax slabs.
+
+The code I wrote there is not particularly useful to me now. The domain knowledge is priceless.
+
+If you are considering a founding engineer role, look beyond the tech stack. Ask what domain the company operates in. The best founding engineer gigs are the ones where the domain knowledge you absorb — finance, healthcare, logistics, compliance — compounds for the rest of your career. The code you write will be rewritten. The understanding of how industries actually work stays with you.
+
+This entire post exists because I built a leasing product. That is the real return on those nine months.
+
+---
+
+*This post is for educational purposes. Tax law changes frequently and the numbers here are illustrative. Always verify with a qualified Chartered Accountant before restructuring your salary or setting up leasing arrangements. The Income Tax Rules 2026 take effect April 1, 2026 — confirm the final notified values with your CA.*
