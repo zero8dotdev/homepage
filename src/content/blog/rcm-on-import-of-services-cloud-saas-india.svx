@@ -1,0 +1,266 @@
+---
+title: "RCM on Import of Services from Foreign Cloud Providers"
+description: "Your Indian Pvt Ltd buys Anthropic, OpenAI, or Vercel and the invoice has no GST. That does not mean no GST liability. Here is exactly what the law says."
+date: "2026-03-31"
+featured: true
+draft: false
+tags: ["gst", "rcm", "compliance", "india", "saas"]
+---
+
+Your CA says there is no provision of RCM on purchases from foreign cloud providers because they do not charge IGST on their invoices. That advice is wrong, and acting on it can attract 18% interest per annum plus penalties on audit.
+
+This post breaks down the exact legal provisions, the B2B vs B2C distinction that causes the confusion, and the step-by-step compliance procedure for Indian companies buying cloud services from abroad.
+
+## The one-line answer
+
+When an Indian registered business buys cloud services, API access, or SaaS subscriptions from a foreign provider, the business must **self-assess and pay 18% IGST under the Reverse Charge Mechanism (RCM)**. The foreign provider not charging GST is not an exemption. It is the reason RCM exists.
+
+> "Reverse Charge means the liability to pay tax is on the recipient of supply of goods or services instead of the supplier."
+>
+> — [GST Council Official Flyer on RCM](https://gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/Reverse%20charge%20Mechanism.pdf)
+
+---
+
+## What is import of services?
+
+[Section 2(11) of the IGST Act, 2017](https://indiankanoon.org/doc/86210542/) defines "import of services" as the supply of any service where:
+
+| # | Condition | Example |
+|---|-----------|---------|
+| 1 | Supplier is located **outside India** | Anthropic is a US company |
+| 2 | Recipient is located **in India** | Your Pvt Ltd is in India |
+| 3 | Place of supply is **in India** | Default rule under Section 13 IGST: location of recipient |
+
+All three must be true simultaneously. There must also be consideration (payment) and the service must be used for business purposes.
+
+### Which cloud purchases qualify?
+
+| Service | Provider | Country | Import? |
+|---------|----------|---------|---------|
+| Claude API | Anthropic | USA | **Yes** |
+| GPT API | OpenAI | USA | **Yes** |
+| GitHub Copilot | Microsoft (US) | USA | **Yes** |
+| Vercel Hosting | Vercel Inc. | USA | **Yes** |
+| Stripe Payments | Stripe Inc. | USA | **Yes** |
+| AWS (Indian entity) | Amazon Internet Services Pvt Ltd | India | **No** |
+| Google Cloud (Indian entity) | Google Cloud India Pvt Ltd | India | **No** |
+
+**Critical check:** Many large providers (AWS, Google Cloud, Azure) invoice through **Indian subsidiaries** with an Indian GSTIN. That is a domestic B2B transaction, not an import. RCM does not apply. Always check which entity is on the invoice.
+
+---
+
+## How RCM works
+
+In normal GST, the supplier collects tax and deposits it with the government. Under RCM, the flow reverses because the foreign supplier has no GST registration in India:
+
+```
+Normal:   Supplier charges GST → Buyer pays Price + GST → Supplier remits to Govt
+RCM:      Foreign supplier charges NO GST → Buyer pays Price → Buyer self-assesses → Buyer pays GST to Govt
+```
+
+The legal basis is **Section 5(3) of the IGST Act**, activated by **[Notification No. 10/2017-Integrated Tax (Rate)](https://d23z1tp9il9etb.cloudfront.net/download/gstlaw/NOTIFICATION%20NO.%2010_2017-INTEGRATED%20TAX%20(RATE)1731047532.pdf)**, Entry No. 1:
+
+> "Any service supplied by any person who is located in a non-taxable territory to any person other than non-taxable online recipient."
+
+Breaking that down: "non-taxable territory" means outside India. "Other than non-taxable online recipient" means the recipient is a registered taxpayer (like your Pvt Ltd). So the registered Indian recipient must pay IGST under RCM.
+
+> [India Briefing](https://www.india-briefing.com/news/gst-compliance-for-saas-and-cloud-computing-in-india-explained-39021.html/) confirms: "When a registered Indian business receives digital services from a foreign provider, the tax liability shifts to the recipient, who must self-assess and pay IGST under the RCM."
+
+---
+
+## The OIDAR confusion: B2B vs B2C
+
+This is where most CAs get confused. The treatment differs based on whether the Indian recipient is a registered business or an individual consumer.
+
+**OIDAR** (Online Information and Database Access or Retrieval) services include cloud computing, API services, SaaS platforms, streaming services, and online advertising. Essentially any digital service delivered over the internet with minimal human intervention.
+
+| Scenario | Who pays GST? | Mechanism |
+|----------|--------------|-----------|
+| **B2B:** Foreign provider to Indian registered business | Indian business | RCM under Section 5(3) IGST |
+| **B2C:** Foreign OIDAR provider to Indian individual | Foreign provider | Forward charge, provider registers in India |
+
+For B2C, the foreign provider must [register for GST in India](https://www.gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/51_GST_Flyer_Chapter42.pdf) (simplified registration via Principal Commissioner, Bengaluru West) and charge GST. Some providers like Anthropic [reportedly charge 18% GST on invoices to Indian users](https://x.com/ajayguptaca/status/2032139422779748523). That is the B2C OIDAR mechanism at work.
+
+But for B2B, the law says RCM. Not forward charge. Not OIDAR registration. **RCM.**
+
+### What to do in practice
+
+| Invoice type | Action |
+|-------------|--------|
+| Foreign invoice, **no GST** charged | Pay IGST @ 18% under RCM, claim ITC |
+| Foreign invoice, **GST charged** with valid Indian GSTIN | Treat as B2B, claim ITC normally |
+| Foreign invoice, **GST charged** but no valid GSTIN | Grey area — consult your CA, may need to discharge RCM |
+| Invoice from **Indian subsidiary** with GSTIN | Domestic B2B, no RCM, claim ITC normally |
+
+---
+
+## Step-by-step compliance
+
+Here is the exact procedure for each foreign cloud invoice you receive:
+
+**1. Classify the service.** Most cloud and API services fall under SAC codes [998313 to 998316](https://www.india-briefing.com/news/gst-compliance-for-saas-and-cloud-computing-in-india-explained-39021.html/) (IT infrastructure, consulting, hosting, and development services). The GST rate is 18%.
+
+**2. Convert to INR.** Use the exchange rate as per generally accepted accounting principles (GAAP) on the date of time of supply. This is [Rule 34(2) of CGST Rules](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/rules/cgst_rules/active/chapter4/rule34_v1.00.html). In practice, use the RBI reference rate or your bank's selling rate.
+
+**3. Determine time of supply.** Under [Section 13(3) of the CGST Act](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter4/section13_v1.00.html), the time of supply is the earliest of:
+- Date of payment to the foreign provider
+- 60 days from the supplier's invoice date
+- Date of entry in your books
+
+**4. Calculate IGST.** Taxable value (INR) multiplied by 18%. No CGST/SGST split — imports are always inter-state, so IGST only.
+
+**5. Pay through Electronic Cash Ledger.** This is critical: [RCM tax must be paid 100% through cash](https://www.taxilla.com/rcm-gst-compliance-guide). You cannot use your existing ITC balance (Electronic Credit Ledger) to pay RCM liability.
+
+**6. Issue a self-invoice.** Required under Section 31(3)(f) of the CGST Act. The self-invoice should contain your GSTIN, the foreign supplier's details, SAC code, taxable value, and IGST amount. Mark it as "Supply under Reverse Charge."
+
+**7. Report in GSTR-3B.** Two tables matter:
+- **Table 3.1(d)** — Inward supplies liable to reverse charge (your RCM liability)
+- **Table 4(A)(3)** — ITC on inward supplies liable to reverse charge (your ITC claim)
+
+Both are [auto-drafted from GSTR-2B](https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm) but you should verify the amounts.
+
+**8. Claim ITC.** The IGST paid under RCM is eligible for ITC in the [same month](https://gsthero.com/blog/reverse-charge-mechanism-rcm-under-gst-20-toughest-faqs-answered/). Use it to offset your output GST liability.
+
+### Worked example
+
+```
+Anthropic invoice: $500
+Exchange rate (RBI reference, date of payment): 85.50 INR/USD
+Taxable value: $500 x 85.50 = Rs 42,750
+IGST @ 18%: Rs 7,695
+
+Pay Rs 7,695 via Electronic Cash Ledger
+Claim Rs 7,695 as ITC in same month
+Net cash impact: Rs 0 (if you have output liability to offset)
+```
+
+---
+
+## Accounting entries
+
+**On receipt of foreign invoice and payment:**
+
+```
+Dr. Cloud Service Expense       Rs 42,750
+Dr. IGST Input (RCM)            Rs 7,695
+    Cr. Bank (foreign remittance)       Rs 42,750
+    Cr. IGST Output (RCM)              Rs 7,695
+```
+
+**When RCM IGST is deposited via Cash Ledger:**
+
+```
+Dr. IGST Output (RCM)           Rs 7,695
+    Cr. Electronic Cash Ledger          Rs 7,695
+```
+
+**When ITC is claimed:**
+
+```
+Dr. IGST Input Tax Credit        Rs 7,695
+    Cr. IGST Input (RCM)               Rs 7,695
+```
+
+Maintain [separate RCM ledgers](https://gsthero.com/blog/reverse-charge-mechanism-rcm-under-gst-20-toughest-faqs-answered/) for IGST-Output-RCM and IGST-Input-RCM.
+
+---
+
+## Six myths that need to die
+
+**"No GST on invoice means no GST liability"** — Wrong. The absence of GST on a foreign invoice is the normal case. That is why RCM exists. [Section 5(3) IGST](https://comtax.wb.gov.in/GST/GST_FAQ/Reverse_Charge_Mechanism_under_GST.pdf) makes the recipient liable.
+
+**"There is no provision of RCM for cloud purchases"** — Wrong. [Entry 1 of Notification 10/2017-IT(R)](https://d23z1tp9il9etb.cloudfront.net/download/gstlaw/NOTIFICATION%20NO.%2010_2017-INTEGRATED%20TAX%20(RATE)1731047532.pdf) covers "any service" from a non-taxable territory. Cloud services are not exempt.
+
+**"RCM is an additional cost"** — Mostly wrong. You pay IGST in cash but claim ITC in the same month. If you have output liability, the [net cost is zero](https://www.binarysemantics.com/blogs/reverse-charge-mechanism-rcm-under-gst-applicability-e-invoicing-import-of-services/). It is a compliance obligation, not a tax cost.
+
+**"We can pay RCM from our ITC balance"** — Wrong. [RCM must be paid through Electronic Cash Ledger only](https://www.taxilla.com/rcm-gst-compliance-guide). You cannot use credit ledger to discharge RCM.
+
+**"If the provider charges GST, RCM does not apply"** — Nuanced. For B2C transactions via OIDAR-registered providers, the provider correctly charges GST. For B2B, the legal mechanism is RCM. If a foreign provider charges GST on a B2B invoice without a valid GSTIN, the treatment is a [grey area requiring CA consultation](https://x.com/ajayguptaca/status/2032139422779748523).
+
+**"Small amounts are exempt from RCM"** — Wrong. There is no threshold. Even a Rs 500 subscription triggers the obligation. Interest and [penalties apply regardless of amount](https://www.avalara.com/in/en/resources/whitepapers/consequences-gst-non-compliance-offences-penalties.html).
+
+---
+
+## Penalties for getting it wrong
+
+| Non-compliance | Consequence |
+|---------------|-------------|
+| Non-payment of RCM | Tax + interest @ 18% p.a. from due date (Section 50 CGST) |
+| Late payment | Tax + interest for the delay period |
+| Non-filing of return | Late fee Rs 50/day CGST + Rs 50/day SGST, max Rs 10,000 (Section 47) |
+| Suppression or fraud | Tax + interest + penalty equal to 100% of tax (Section 73/74) |
+
+---
+
+## Monthly compliance checklist
+
+- Identify all foreign service invoices for the month
+- Verify which invoices come from entities outside India (check the invoice entity, not just the brand name)
+- Confirm none have a valid Indian GSTIN (if they do, it is domestic supply)
+- Classify under correct SAC code (998313-998316 for most cloud/IT)
+- Convert to INR using GAAP exchange rate on date of time of supply
+- Calculate IGST @ 18%
+- Issue self-invoice for each transaction
+- Pay IGST via Electronic Cash Ledger
+- Report in GSTR-3B: Table 3.1(d) for liability, Table 4(A)(3) for ITC
+- Maintain records: foreign invoices, self-invoices, payment proofs, exchange rate documentation
+
+---
+
+## The legal framework at a glance
+
+| Section | Act | What it covers |
+|---------|-----|---------------|
+| Section 2(11) | IGST | Definition of import of services |
+| Section 5(3) | IGST | RCM on notified categories |
+| Section 7(1)(b) | IGST | Import treated as inter-state supply |
+| Section 13 | IGST | Place of supply for cross-border services |
+| Section 13(3) | CGST | Time of supply under reverse charge |
+| Section 14 | IGST | Special provisions for OIDAR |
+| Section 24(iii) | CGST | Compulsory registration for RCM payers |
+| Section 31(3)(f) | CGST | Self-invoice requirement |
+| Rule 34(2) | CGST Rules | Exchange rate for services valuation |
+| Notification 10/2017-IT(R) | IGST | Categories of services under RCM |
+
+---
+
+## SAC codes for cloud and IT services
+
+| SAC | Description |
+|-----|-------------|
+| 998313 | IT infrastructure and support services |
+| 998314 | IT consulting, design, and solutions |
+| 998315 | Hosting and IT infrastructure setup |
+| 998316 | IT design and development services |
+
+---
+
+## References
+
+1. [GST Council — RCM Official Flyer (PDF)](https://gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/Reverse%20charge%20Mechanism.pdf)
+2. [GST Council — OIDAR Services Flyer (PDF)](https://www.gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/51_GST_Flyer_Chapter42.pdf)
+3. [GST Council — Imports in GST Regime (PDF)](https://gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/Imports_in_GST_Regime.pdf)
+4. [Notification No. 10/2017-IT(R) — ICAI Updated (PDF)](https://d23z1tp9il9etb.cloudfront.net/download/gstlaw/NOTIFICATION%20NO.%2010_2017-INTEGRATED%20TAX%20(RATE)1731047532.pdf)
+5. [Section 2(11) IGST Act — Indian Kanoon](https://indiankanoon.org/doc/86210542/)
+6. [CGST Section 13 — Time of Supply — CBIC](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter4/section13_v1.00.html)
+7. [Rule 34 CGST — Exchange Rate — CBIC](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/rules/cgst_rules/active/chapter4/rule34_v1.00.html)
+8. [GST Portal — GSTR-3B FAQ](https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm)
+9. [ClearTax — GST on Import of Services](https://cleartax.in/s/gst-on-import-of-services)
+10. [ClearTax — Reverse Charge under GST](https://cleartax.in/s/reverse-charge-gst)
+11. [India Briefing — GST for SaaS and Cloud Computing](https://www.india-briefing.com/news/gst-compliance-for-saas-and-cloud-computing-in-india-explained-39021.html/)
+12. [Binary Semantics — RCM Import of Services 2025](https://www.binarysemantics.com/blogs/reverse-charge-mechanism-rcm-under-gst-applicability-e-invoicing-import-of-services/)
+13. [Tax Guru — GST on Foreign Software Purchases](https://taxguru.in/goods-and-service-tax/gst-income-tax-software-purchases-foreign-vendors-pe-india.html)
+14. [GST Hero — RCM 20 Toughest FAQs](https://gsthero.com/blog/reverse-charge-mechanism-rcm-under-gst-20-toughest-faqs-answered/)
+15. [HNA & Co LLP — RCM on Import of Service](https://hnallp.com/a/rcm-on-import-of-service-intellectual-property-right)
+16. [Taxilla — RCM Compliance Guide](https://www.taxilla.com/rcm-gst-compliance-guide)
+17. [Cashflo — OIDAR Services Guide](https://www.cashflo.io/magazine/oidar-services-under-gst-a-complete-guide-for-digital-businesses)
+18. [Ledgers.cloud — Self-Invoice Guide](https://ledgers.cloud/in/invoice/rcm-invoice)
+19. [Avalara — GST Non-Compliance Penalties](https://www.avalara.com/in/en/resources/whitepapers/consequences-gst-non-compliance-offences-penalties.html)
+20. [N.P. Ahilwani — RCM Legal Compliance](https://npahilwani.com/reverse-charge-import-of-services-gst-legal-compliance-itc/)
+21. [West Bengal Commercial Taxes — RCM FAQ (PDF)](https://comtax.wb.gov.in/GST/GST_FAQ/Reverse_Charge_Mechanism_under_GST.pdf)
+22. [Global VAT Compliance — India Supreme Court on OIDAR](https://www.globalvatcompliance.com/globalvatnews/gst-foreign-digital-services-india/)
+23. [Ampuesto — GST on SaaS in India](https://ampuesto.in/blog/gst-on-saas-digital-services-india/)
+
+---
+
+*This post is for educational purposes. Tax law is nuanced and fact-specific. Always verify with a qualified Chartered Accountant before acting on any of this.*

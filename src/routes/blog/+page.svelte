@@ -1,23 +1,29 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { siteConfig } from '$lib/data/site';
 
 	let { data }: { data: PageData } = $props();
+	let activeTag = $state<string | null>(null);
+
+	const filteredPosts = $derived(
+		activeTag ? data.posts.filter((p) => p.tags.includes(activeTag!)) : data.posts
+	);
 </script>
 
 <svelte:head>
 	<title>Writing · zero8.dev</title>
 	<meta name="description" content="Writing on frontend engineering, developer tools, open source, and AI memory." />
-	<link rel="canonical" href="https://zero8.dev/blog" />
+	<link rel="canonical" href="{siteConfig.url}/blog" />
 	<meta property="og:title" content="Writing · zero8.dev" />
 	<meta property="og:description" content="Writing on frontend engineering, developer tools, open source, and AI memory." />
-	<meta property="og:url" content="https://zero8.dev/blog" />
+	<meta property="og:url" content="{siteConfig.url}/blog" />
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
+	<meta property="og:image" content={siteConfig.ogImage.url} />
+	<meta property="og:image:width" content="{siteConfig.ogImage.width}" />
+	<meta property="og:image:height" content="{siteConfig.ogImage.height}" />
 	<meta name="twitter:title" content="Writing · zero8.dev" />
 	<meta name="twitter:description" content="Writing on frontend engineering, developer tools, open source, and AI memory." />
-	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />
+	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
 
 <section class="blog-index col-full">
@@ -29,9 +35,30 @@
 		<p>The next few months I'm pulling the good things out of the vault and bringing them here. Keep watching this space.</p>
 	</div>
 
-	{#if data.posts.length > 0}
+	{#if data.tags.length > 0}
+		<div class="tag-bar">
+			<button
+				class="tag-pill"
+				class:active={activeTag === null}
+				onclick={() => activeTag = null}
+			>
+				All
+			</button>
+			{#each data.tags as t}
+				<button
+					class="tag-pill"
+					class:active={activeTag === t.tag}
+					onclick={() => activeTag = activeTag === t.tag ? null : t.tag}
+				>
+					{t.tag} <span class="tag-pill-count">{t.count}</span>
+				</button>
+			{/each}
+		</div>
+	{/if}
+
+	{#if filteredPosts.length > 0}
 		<ul class="post-list">
-			{#each data.posts as post}
+			{#each filteredPosts as post}
 				<li class="post-item">
 					<a href="/blog/{post.slug}" class="post-link">
 						<span class="post-title">{post.title}</span>
@@ -39,10 +66,19 @@
 							<time datetime={post.date}>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
 							· {post.readTime}
 						</span>
+						{#if post.tags.length > 0}
+							<span class="post-tags">
+								{#each post.tags as tag}
+									<span class="post-tag">{tag}</span>
+								{/each}
+							</span>
+						{/if}
 					</a>
 				</li>
 			{/each}
 		</ul>
+	{:else}
+		<p class="no-posts">No posts found{activeTag ? ` tagged "${activeTag}"` : ''}.</p>
 	{/if}
 </section>
 
@@ -59,7 +95,7 @@
 		flex-direction: column;
 		gap: 16px;
 		max-width: 60ch;
-		margin-bottom: 48px;
+		margin-bottom: 40px;
 	}
 
 	.intro p {
@@ -71,6 +107,44 @@
 	.intro em {
 		font-style: italic;
 		color: var(--fg);
+	}
+
+	.tag-bar {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 36px;
+	}
+
+	.tag-pill {
+		font-family: inherit;
+		font-size: 13px;
+		padding: 4px 12px;
+		border: 1px solid var(--rule);
+		border-radius: 100px;
+		color: var(--muted);
+		background: none;
+		cursor: pointer;
+		transition: all 0.15s;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+	}
+
+	.tag-pill:hover {
+		border-color: var(--fg);
+		color: var(--fg);
+	}
+
+	.tag-pill.active {
+		background: var(--fg);
+		color: var(--bg);
+		border-color: var(--fg);
+	}
+
+	.tag-pill-count {
+		font-size: 11px;
+		opacity: 0.6;
 	}
 
 	.post-list {
@@ -108,5 +182,26 @@
 		font-size: 15px;
 		color: var(--muted);
 		font-style: italic;
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 4px;
+	}
+
+	.post-tag {
+		font-size: 11px;
+		padding: 2px 8px;
+		border: 1px solid var(--rule);
+		border-radius: 100px;
+		color: var(--muted);
+	}
+
+	.no-posts {
+		font-size: 16px;
+		color: var(--muted);
+		padding: 24px 0;
 	}
 </style>

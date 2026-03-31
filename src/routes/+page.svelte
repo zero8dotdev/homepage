@@ -6,22 +6,23 @@
 	import FrontendBlogs from '$lib/components/sections/FrontendBlogs.svelte';
 	import ContactSection from '$lib/components/sections/ContactSection.svelte';
 	import FaqSection from '$lib/components/sections/FaqSection.svelte';
+	import { siteConfig } from '$lib/data/site';
 </script>
 
 <svelte:head>
 	<title>zero8.dev · A decade of making hard things feel simple.</title>
 	<meta name="description" content="I build software people can reason about. 10 years across frontend engineering, developer tools, and the video streaming space." />
-	<link rel="canonical" href="https://zero8.dev" />
+	<link rel="canonical" href={siteConfig.url} />
 	<meta property="og:title" content="zero8.dev · A decade of making hard things feel simple." />
 	<meta property="og:description" content="Frontend engineer and developer tools specialist. 10 years building software people can reason about." />
-	<meta property="og:url" content="https://zero8.dev" />
+	<meta property="og:url" content={siteConfig.url} />
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content="https://zero8.dev/og-image.jpg" />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
+	<meta property="og:image" content={siteConfig.ogImage.url} />
+	<meta property="og:image:width" content="{siteConfig.ogImage.width}" />
+	<meta property="og:image:height" content="{siteConfig.ogImage.height}" />
 	<meta name="twitter:title" content="zero8.dev · A decade of making hard things feel simple." />
 	<meta name="twitter:description" content="Frontend engineer and developer tools specialist. 10 years building software people can reason about." />
-	<meta name="twitter:image" content="https://zero8.dev/og-image.jpg" />
+	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 	{@html `<script type="application/ld+json">${JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "FAQPage",
@@ -73,7 +74,7 @@
 			"@context": "https://schema.org",
 			"@type": "Person",
 			"name": "Ashutosh Tripathi",
-			"url": "https://zero8.dev",
+			"url": siteConfig.url,
 			"email": "hello@zero8.dev",
 			"jobTitle": "Frontend Engineer",
 			"description": "Frontend engineer specializing in React, browser-native video streaming, and developer tools. A decade of remote and async work across open source and product engineering.",
@@ -103,7 +104,7 @@
 			"@context": "https://schema.org",
 			"@type": "WebSite",
 			"name": "zero8.dev",
-			"url": "https://zero8.dev",
+			"url": siteConfig.url,
 			"description": "Personal site of Ashutosh Tripathi — frontend engineer, developer tools specialist, and open source builder.",
 			"author": {
 				"@type": "Person",

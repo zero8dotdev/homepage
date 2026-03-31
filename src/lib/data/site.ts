@@ -1,5 +1,7 @@
+const SITE_URL = 'https://zero8.dev';
+
 export const siteConfig = {
-	url: 'https://zero8.dev',
+	url: SITE_URL,
 	title: 'zero8.dev',
 	description:
 		'Personal site of Ashutosh Tripathi — frontend engineer, developer tools specialist, and open source builder.',
@@ -7,7 +9,7 @@ export const siteConfig = {
 	email: 'hello@zero8.dev',
 	twitter: '@zero8dotdev',
 	ogImage: {
-		url: 'https://zero8.dev/og-image.jpg',
+		url: `${SITE_URL}/og-image.jpg`,
 		width: 1200,
 		height: 630
 	}

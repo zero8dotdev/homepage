@@ -4,6 +4,7 @@
 	--fg: #1a1a1a;
 	--muted: #6b6b6b;
 	--rule: #e2e2e2;
+	--link: #2563eb;
 }
 
 /* ─── Reset ──────────────────────────────────────────────────── */
@@ -73,6 +74,10 @@ img {
 	max-width: 720px;
 	margin: 0 auto;
 	padding: 0 24px;
+}
+
+.grid-layout:has(.post) {
+	max-width: 960px;
 }
 
 .col-full {

@@ -1,0 +1,135 @@
+---
+title: "State of Agentic Harnesses — March 2026"
+description: "The most popular AI coding agents ranked by GitHub stars, with a feature comparison across models, MCP support, autonomy, and pricing."
+date: "2026-03-26"
+featured: true
+draft: false
+tags: ["agentic-ai", "developer-tools", "claude-code", "cursor", "codex", "open-source"]
+---
+
+<script>
+	import GhCard from '$lib/components/blog/GhCard.svelte';
+	import XCard from '$lib/components/blog/XCard.svelte';
+	import Hl from '$lib/components/blog/Hl.svelte';
+	import Legend from '$lib/components/blog/Legend.svelte';
+</script>
+
+Six months ago, picking an agentic coding tool was straightforward: you used Cursor or Copilot. Today there are fifteen credible options, seven of them open source, and the landscape shifts every few weeks.
+
+This is a snapshot of where things stand in March 2026 — ranked by GitHub stars, compared by features, and filtered through what actually matters when you're choosing a harness for real work.
+
+## The leaderboard
+
+GitHub stars are a popularity signal, not a quality metric. But combined with issue velocity and open PRs, they paint a picture of where developer energy is going. Data pulled from the GitHub API on March 26, 2026.
+
+<div class="gh-grid">
+	<GhCard name="OpenCode" repo="anomalyco/opencode" desc="Open-source terminal coding agent. The closest alternative to Claude Code." stars="130.7K" issues="4.7K issues" prs="1.8K PRs" lang="TypeScript" langColor="#3178c6" />
+	<GhCard name="Gemini CLI" repo="google-gemini/gemini-cli" desc="Google's open-source terminal coding agent. 1M token context window." stars="99.2K" issues="2.6K issues" prs="590 PRs" lang="TypeScript" langColor="#3178c6" />
+	<GhCard name="Claude Code" repo="anthropics/claude-code" desc="Anthropic's terminal-native agentic coding tool. Deep reasoning, extreme autonomy." stars="83.0K" issues="7.5K issues" prs="393 PRs" lang="Shell" langColor="#89e051" />
+	<GhCard name="Codex CLI" repo="openai/codex" desc="OpenAI's open-source coding agent. Built in Rust, fastest token throughput." stars="67.7K" issues="2.0K issues" prs="194 PRs" lang="Rust" langColor="#dea584" />
+	<GhCard name="Cline" repo="cline/cline" desc="Autonomous coding agent as a VS Code extension. Human-in-the-loop approval." stars="59.4K" issues="404 issues" prs="290 PRs" lang="TypeScript" langColor="#3178c6" />
+	<GhCard name="Aider" repo="Aider-AI/aider" desc="Terminal AI pair programmer. Git-first workflow with auto-commit on every edit." stars="42.4K" issues="1.2K issues" prs="269 PRs" lang="Python" langColor="#3572A5" />
+	<GhCard name="Goose" repo="block/goose" desc="Open-source AI agent from Block. MCP-native, recipe-driven extensibility." stars="33.6K" issues="184 issues" prs="117 PRs" lang="Rust" langColor="#dea584" />
+	<GhCard name="Continue" repo="continuedev/continue" desc="AI-powered code checks in CI. Runs agents as GitHub status checks on every PR." stars="32.1K" issues="402 issues" prs="24 PRs" lang="TypeScript" langColor="#3178c6" />
+</div>
+
+Cursor, Windsurf, GitHub Copilot, and Devin are proprietary with no public repos, so they don't appear here — but they're very much in the conversation.
+
+A few things jump out.
+
+**OpenClaw is an outlier.** At 310K stars it has surpassed React as the most-starred software project on GitHub. But it's a general-purpose personal AI agent (WhatsApp, calendar, email, flights) that happens to do coding — not a coding-first harness. Peter Steinberger built it, then joined OpenAI in February. The project moved to a foundation.
+
+**[OpenCode](https://github.com/anomalyco/opencode) is the open-source Claude Code.** 126K stars, 800+ contributors, 5M+ monthly developers. Terminal TUI with desktop and IDE extensions. Supports 75+ model providers. If you want Claude Code's workflow without being locked to Anthropic models, this is the answer.
+
+**[Gemini CLI](https://github.com/google-gemini/gemini-cli) got 50K stars in its first week.** Google's entry hit hard with a 1M token context window and a generous free tier — though that free tier was recently curtailed to Flash models only.
+
+## The feature matrix
+
+One table, everything that matters. Scroll right for the full picture. Data cross-referenced with [Morphllm's agent comparison](https://morphllm.com/ai-coding-agent) and the [LogRocket AI Dev Tool Power Rankings](https://blog.logrocket.com/ai-dev-tool-power-rankings/).
+
+| Tool | Interface | OSS | Models | MCP | Sub-agents | Cloud agents | Config file | Context | Price |
+|------|-----------|-----|--------|-----|------------|--------------|-------------|---------|-------|
+| Claude Code | Terminal | Partial | Anthropic only | Yes | Yes | GitHub Actions | CLAUDE.md | 200K | $20/mo |
+| Cursor | IDE | No | Multi | Yes | Yes | Yes | Rules | Varies | $20/mo |
+| Codex CLI | Terminal | Yes | OpenAI-focused | Yes | Yes | Yes (Web) | AGENTS.md | 200K | ChatGPT sub |
+| OpenCode | Terminal+IDE | Yes | 75+ providers | Yes | — | No | — | Varies | Free (BYOK) |
+| Aider | Terminal | Yes | 75+ providers | Community | No | No | — | Varies | Free (BYOK) |
+| Cline | VS Code | Yes | Any | Yes | No | No | .clinerules | Varies | Free (BYOK) |
+| Gemini CLI | Terminal | Yes | Gemini only | Yes | No | Jules | GEMINI.md | 1M | Free* |
+| Goose | CLI+Desktop | Yes | Any | Yes | — | No | — | Varies | Free (BYOK) |
+| Copilot | IDE ext | No | Multi | Yes | Yes | Yes | AGENTS.md | Varies | $10/mo |
+| Windsurf | IDE | No | Multi | Yes | No | No | Rules | Varies | $15/mo |
+
+A few things stand out.
+
+**Multi-model matters more than it used to.** Claude Code locks you to Anthropic models. Gemini CLI locks you to Google. Everyone else lets you choose — and for cost-sensitive workflows or local model usage, that flexibility is a real advantage.
+
+**MCP support is table stakes now.** Anthropic created the Model Context Protocol and every major tool has adopted it. The outlier is Aider, which still relies on community integrations rather than native support.
+
+**Sub-agents and cloud agents are the new frontier.** Cursor, Claude Code, Codex, and Copilot all support spawning background agents that work on tasks asynchronously — in cloud sandboxes, in parallel. This is the feature that separates the 2026 generation from the 2025 tools.
+
+## The pricing question
+
+Pricing models have fragmented. There are now three distinct approaches:
+
+**Subscription tiers** — Cursor ($20-200/mo), Claude Code ($20-200/mo), Copilot ($10-39/mo), Windsurf ($15/mo). You pay a monthly fee for a usage quota.
+
+**BYOK (Bring Your Own Key)** — Aider, Cline, OpenCode, Goose. The tool is free; you pay your model provider directly. Total cost depends on usage patterns, but heavy users report $50-200/month in API costs.
+
+**Pay-per-compute** — Devin ($2.25/ACU). You pay for autonomous compute units. Costs can be unpredictable.
+
+Cursor moved to credit-based billing in June 2025. The community reaction was mixed — some developers moved to BYOK tools rather than deal with credit metering.
+
+## What developers are saying
+
+The [Pragmatic Engineer's March 2026 survey](https://newsletter.pragmaticengineer.com/p/ai-tooling-2026) of 906+ engineers found Claude Code at 46% "most loved," Cursor at 19%, and GitHub Copilot at 9%. But the real signal is in the individual takes.
+
+<Legend items={[
+	{ label: 'Claude Code', color: '#d97706' },
+	{ label: 'Cursor', color: '#2563eb' },
+	{ label: 'Codex', color: '#059669' },
+	{ label: 'Gemini CLI', color: '#7c3aed' },
+	{ label: 'Windsurf', color: '#0891b2' },
+	{ label: 'Aider', color: '#dc2626' }
+]} />
+
+<div class="xcard-grid">
+	<XCard name="conductr_" handle="@conductr_" date="Mar 21, 2026" href="https://x.com/conductr_/status/2035301404756058602">
+		<Hl c="claude">claude code</Hl> is the best thing that has happened to me in 2026. it's really like a game and i get every day new ideas about what to build
+	</XCard>
+	<XCard name="Todd Saunders" handle="@toddsaunders" date="Mar 18, 2026 · 665K views" href="https://x.com/toddsaunders/status/2034243420147859716">
+		The combination of someone in the trades with deep domain expertise and <Hl c="claude">Claude Code</Hl> will run circles around your generic software.
+	</XCard>
+	<XCard name="Gergely Orosz" handle="@GergelyOrosz" date="Mar 18, 2026 · 268K views" href="https://x.com/GergelyOrosz/status/2034413624790323569">
+		I am hearing tons of complaints from <Hl c="cursor">Cursor</Hl> customers at enterprise companies: a silent change put almost all models behind Max mode. Devs see all credits used up in 1-2 days.
+	</XCard>
+	<XCard name="Manish" handle="@_zenman" date="Mar 24, 2026" href="https://x.com/_zenman/status/2036342468065763557">
+		Using <Hl c="claude">Claude Code</Hl> and OpenAI <Hl c="codex">Codex</Hl> extensively for more than a week. <Hl c="claude">Claude Code</Hl> often gives better results in the first attempt itself.
+	</XCard>
+	<XCard name="netcommah" handle="r/ClaudeCode" date="Mar 2026" brand="reddit" href="https://www.reddit.com/r/ClaudeCode/comments/1pdyq6z/gemini_cli_is_impressive_but_claude_code_is/">
+		<Hl c="gemini">Gemini CLI</Hl> is impressive, but <Hl c="claude">Claude Code</Hl> is acting like the real senior engineer — the one who already read your whole codebase twice.
+	</XCard>
+	<XCard name="Senior Dev" handle="r/windsurf" date="Mar 2026" brand="reddit" href="https://www.reddit.com/r/windsurf/comments/1q3cq8x/windsurf_is_actually_great/">
+		<Hl c="windsurf">Windsurf</Hl> is actually great. I as a Senior Full Stack Developer have used almost every AI Agent coding tool — <Hl c="cursor">Cursor</Hl>, <Hl c="windsurf">Windsurf</Hl>, Warp...
+	</XCard>
+	<XCard name="Anonymous" handle="r/ClaudeCode" date="Mar 2026" brand="reddit" href="https://www.reddit.com/r/ClaudeCode/comments/1r2m6zp/holy_fuck_i_was_burning_money_time_and_braincells/">
+		$40/mo <Hl c="cursor">Cursor</Hl> used to feel expensive. Now $100/mo <Hl c="claude">Claude Max</Hl> + $40/mo Traycer Pro feels like dirt cheap. I'd pay more if needed.
+	</XCard>
+	<XCard name="DEV Community" handle="dev.to" date="Mar 25, 2026" brand="dev" href="https://dev.to/sameer_saleem/claude-code-vs-cursor-vs-aider-the-2026-battle-for-your-terminal-and-ide-3cb4">
+		<Hl c="aider">Aider</Hl> is the git-first refactoring engine. It treats your repository as a living document and every AI change as a reviewable commit.
+	</XCard>
+</div>
+
+The dominant migration story in 2026 is **Cursor to Claude Code** — driven by reasoning quality rather than speed. But plenty of developers are running multi-tool setups: Claude Code for hard problems, Cursor for in-editor flow, Aider for systematic refactors.
+
+## What's next
+
+Three trends are shaping the next six months:
+
+**Multi-agent orchestration** is becoming standard. Tools are adding the ability to spawn specialized sub-agents — a planner, a coder, a tester, a reviewer — that work in parallel on different parts of a task.
+
+**Instruction files are converging.** CLAUDE.md, AGENTS.md, GEMINI.md — every tool has its own repo-level config format. GitHub Copilot already reads both AGENTS.md and CLAUDE.md. Standardization is inevitable.
+
+**Cloud agents are the real unlock.** The ability to assign a task to an agent that runs in a cloud sandbox, works for hours, and opens a PR when it's done — that changes how you plan work. Cursor, Codex, and Copilot are all betting heavily on this.
+
+The harness you pick today probably won't be the harness you're using in six months. And that's fine. The switching costs are low, the markdown is portable, and the agents are getting better at reading whatever instructions you leave them.

@@ -1,6 +1,8 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { siteConfig } from '$lib/data/site';
 
-const robots = `User-agent: *
+export const GET: RequestHandler = () => {
+	const robots = `User-agent: *
 Allow: /
 
 User-agent: Googlebot
@@ -27,10 +29,9 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-Sitemap: https://zero8.dev/sitemap.xml
+Sitemap: ${siteConfig.url}/sitemap.xml
 `;
 
-export const GET: RequestHandler = () => {
 	return new Response(robots, {
 		headers: { 'Content-Type': 'text/plain' }
 	});

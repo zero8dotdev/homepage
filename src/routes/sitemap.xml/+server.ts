@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { getAllPosts } from '$lib/data/posts';
+import { getAllPosts, getAllTags } from '$lib/data/posts';
 import { siteConfig } from '$lib/data/site';
 
 export const GET: RequestHandler = () => {
@@ -18,7 +18,14 @@ export const GET: RequestHandler = () => {
 		lastmod: date ? new Date(date).toISOString().split('T')[0] : today
 	}));
 
-	const urls = [...staticPages, ...postPages]
+	const tagPages = getAllTags().map(({ tag }) => ({
+		loc: `${siteConfig.url}/blog/tag/${tag}`,
+		priority: '0.4',
+		changefreq: 'weekly',
+		lastmod: today
+	}));
+
+	const urls = [...staticPages, ...postPages, ...tagPages]
 		.map(
 			({ loc, priority, changefreq, lastmod }) => `  <url>
     <loc>${loc}</loc>
