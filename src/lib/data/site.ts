@@ -4,7 +4,7 @@ export const siteConfig = {
 	url: SITE_URL,
 	title: 'zero8.dev',
 	description:
-		'Personal site of Ashutosh Tripathi — frontend engineer, developer tools specialist, and open source builder.',
+		'Personal site of Ashutosh Tripathi — software engineer building developer tools, AI memory infrastructure, and self-improving agent systems.',
 	author: 'Ashutosh Tripathi',
 	email: 'hello@zero8.dev',
 	twitter: '@zero8dotdev',
@@ -22,10 +22,10 @@ export const navLinks = [
 ];
 
 export const hero = {
-	eyebrow: 'Ashutosh Tripathi · Frontend Engineer',
+	eyebrow: 'Ashutosh Tripathi · Software Engineer',
 	headline: 'I build software people\ncan reason about.',
 	subline:
-		'Frontend engineer. React, browser-native video streaming, and developer tools. A decade of remote and async work.',
+		'Developer tools and AI-native systems. I design the infrastructure that lets agents — human and automated — operate without friction. A decade of product engineering.',
 	ctas: [
 		{ label: 'Read my writing', href: '/blog' },
 		{ label: 'See my work', href: '/#work' }
@@ -34,16 +34,28 @@ export const hero = {
 
 export const about = {
 	paragraphs: [
-		"I spent the last decade building products across frontend and developer tooling, with a long stretch deep in the video streaming space. The thread through all of it: software should be transparent enough for users to build a mental model of what it's doing.",
-		"Lately I'm spending most of my time in open source, particularly around AI memory and how engineering teams share context across agents and sessions. Smriti came out of that.",
-		'I also consult and take on contracts in frontend engineering and developer tools.'
+		"I build systems where the contract between components is precise enough that both engineers and AI agents can reason about what's happening. As co-founder and CTO of InboxStack, that means a six-stage intelligence pipeline — ingestion, normalization, anomaly detection, knowledge graph reasoning, impact prediction, and a self-improving trust layer — where every stage is a typed worker talking to the next through a strict interface.",
+		"Smriti comes from the same instinct applied to the development layer. Every AI session starts fresh — decisions lost, context duplicated, zero continuity across teammates. Smriti captures Claude Code, Cursor, and Codex sessions locally, indexes them with hybrid search, and synthesises context on demand using a local LLM. Team knowledge syncs through git. Nothing touches the cloud.",
+		'Before that, a decade across frontend engineering, video streaming infrastructure, and developer experience. I also consult on developer tools, API design, and the systems that surround AI-assisted engineering workflows.'
 	]
 };
 
 export const craftAreas = [
 	{
+		title: 'Agent System Design',
+		description: 'Pipelines where every stage operates with clear typed contracts. Designing the interfaces, queue handoffs, and worker boundaries that let automated systems — and the engineers debugging them — always know what to expect.'
+	},
+	{
+		title: 'AI Memory & Context',
+		description: 'The memory layer that stops agents starting from scratch. Indexing, retrieval, and on-demand synthesis — making past decisions and team context available without manual curation.'
+	},
+	{
 		title: 'DX & API Design',
 		description: 'The gap between powerful and learnable. How you name things, shape APIs, and write error messages is a product decision.'
+	},
+	{
+		title: 'Developer Tooling',
+		description: 'CLIs, SDKs, and the feedback loop. Tools shape how developers think. The best ones get out of the way and let you focus.'
 	},
 	{
 		title: 'Frontend Performance',
@@ -52,18 +64,6 @@ export const craftAreas = [
 	{
 		title: 'Video & Streaming',
 		description: 'HLS, adaptive bitrate, player internals, and the infrastructure that makes live and on-demand video feel instant.'
-	},
-	{
-		title: 'Documentation',
-		description: 'Writing that teaches, not just describes. Docs are a product surface. They should meet users where they are.'
-	},
-	{
-		title: 'Browser Internals',
-		description: 'Understanding the platform you build on. Rendering pipelines, layout engines, and what actually happens when you call a DOM API.'
-	},
-	{
-		title: 'Developer Tooling',
-		description: 'CLIs, SDKs, and the feedback loop. Tools shape how developers think. The best ones get out of the way and let you focus.'
 	}
 ];
 

@@ -71,7 +71,7 @@ You deducted Rs 16,80,000 from your gross salary over 4 years. At your 31.2% eff
 > Rs 16,80,000 x 31.2% = **Rs 5,24,160**
 
 **But wait — the perquisite addition:**
-The tax department does not let this go completely tax-free. Under [Rule 3(2) of the Income Tax Rules](https://incometaxindia.gov.in/Rules/Income-Tax%20Rules/103120000000007059.htm), when a company provides a car for an employee's personal use, a fixed monthly amount is added to taxable income:
+The tax department does not let this go completely tax-free. Under [Rule 3(2) of the Income Tax Rules](https://eztax.in/perquisite-valuation-of-motor-car), when a company provides a car for an employee's personal use, a fixed monthly amount is added to taxable income:
 
 | Car type | Monthly perquisite (employer pays running costs) |
 |----------|--------------------------------------------------|
@@ -102,7 +102,7 @@ That is roughly **20% savings** on the same car. And this is a conservative esti
 
 This is the part that confused me until I built the product. Here is the chain:
 
-**The leasing company buys the car.** They pay Rs 15 lakh, which includes ~Rs 3.28 lakh of GST. Normally, GST on motor vehicles is "blocked credit" — you cannot claim it back. But [Section 17(5) of the CGST Act](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter5/section17_v1.00.html) has a critical exception:
+**The leasing company buys the car.** They pay Rs 15 lakh, which includes ~Rs 3.28 lakh of GST. Normally, GST on motor vehicles is "blocked credit" — you cannot claim it back. But [Section 17(5) of the CGST Act](https://cleartax.in/s/section-175-of-cgst-act) has a critical exception:
 
 > ITC is available when the motor vehicle is acquired for **"further supply of such motor vehicles"**.
 
@@ -118,7 +118,7 @@ This is where it gets even better. Devices have two advantages over cars:
 
 ### Advantage 1: Zero perquisite tax on phones and laptops
 
-Under [Rule 3(7)(viii) of the Income Tax Rules](https://incometaxindia.gov.in/Rules/Income-Tax%20Rules/103120000000007059.htm), mobile phones and telephones provided by the employer are **completely exempt** from perquisite tax. Laptops provided as work tools are similarly exempt (they are not listed in the taxable movable assets category, which specifically excludes computers and laptops).
+Under [Rule 3(7)(viii) of the Income Tax Rules](https://eztax.in/perquisite-valuation-of-motor-car), mobile phones and telephones provided by the employer are **completely exempt** from perquisite tax. Laptops provided as work tools are similarly exempt (they are not listed in the taxable movable assets category, which specifically excludes computers and laptops).
 
 This means: the full lease rental is deducted from your pre-tax salary, and **nothing** is added back as a perk. Unlike cars, there is no flat perquisite to erode your savings.
 

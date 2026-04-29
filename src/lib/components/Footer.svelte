@@ -1,10 +1,11 @@
 <script>
+	import Wordmark from '$lib/design/lib/Wordmark.svelte';
 	const year = new Date().getFullYear();
 </script>
 
 <footer>
-	<div class="grid-layout footer-inner">
-		<span class="wordmark">zero8.dev</span>
+	<div class="footer-inner">
+		<Wordmark size={24} />
 		<nav class="footer-nav">
 			<a href="/blog">Writing</a>
 			<a href="/#work">Work</a>
@@ -19,7 +20,7 @@
 
 <style>
 	footer {
-		border-top: 1px solid var(--rule);
+		border-top: 1px solid var(--hairline);
 		padding: 32px 0;
 		margin-top: 40px;
 	}
@@ -32,13 +33,6 @@
 		gap: 16px;
 	}
 
-	.wordmark {
-		font-family: 'Lora', serif;
-		font-size: 18px;
-		font-weight: 500;
-		color: var(--fg);
-	}
-
 	.footer-nav {
 		display: flex;
 		flex-wrap: wrap;
@@ -46,19 +40,19 @@
 	}
 
 	.footer-nav a {
-		font-size: 16px;
-		color: var(--muted);
+		font-size: var(--t-base);
+		color: var(--fg-muted);
 		text-decoration: none;
-		transition: color 0.15s;
+		transition: color var(--dur-fast) var(--ease);
 	}
 
 	.footer-nav a:hover {
 		color: var(--fg);
+		text-decoration: none;
 	}
 
 	.copy {
-		font-size: 14px;
-		color: var(--muted);
-		opacity: 0.6;
+		font-size: var(--t-sm);
+		color: var(--fg-faint);
 	}
 </style>
