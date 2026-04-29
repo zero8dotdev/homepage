@@ -1,6 +1,14 @@
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	const path = event.url.pathname;
+	if (path !== path.replace(/\*+$/, '')) {
+		return new Response(null, {
+			status: 301,
+			headers: { Location: path.replace(/\*+$/, '') }
+		});
+	}
+
 	const response = await resolve(event);
 	response.headers.set('X-Content-Type-Options', 'nosniff');
 	response.headers.set('X-Frame-Options', 'DENY');

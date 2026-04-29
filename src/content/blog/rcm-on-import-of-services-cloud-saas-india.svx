@@ -100,9 +100,9 @@ Here is the exact procedure for each foreign cloud invoice you receive:
 
 **1. Classify the service.** Most cloud and API services fall under SAC codes [998313 to 998316](https://www.india-briefing.com/news/gst-compliance-for-saas-and-cloud-computing-in-india-explained-39021.html/) (IT infrastructure, consulting, hosting, and development services). The GST rate is 18%.
 
-**2. Convert to INR.** Use the exchange rate as per generally accepted accounting principles (GAAP) on the date of time of supply. This is [Rule 34(2) of CGST Rules](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/rules/cgst_rules/active/chapter4/rule34_v1.00.html). In practice, use the RBI reference rate or your bank's selling rate.
+**2. Convert to INR.** Use the exchange rate as per generally accepted accounting principles (GAAP) on the date of time of supply. This is [Rule 34(2) of CGST Rules](https://cleartax.in/s/reverse-charge-gst). In practice, use the RBI reference rate or your bank's selling rate.
 
-**3. Determine time of supply.** Under [Section 13(3) of the CGST Act](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter4/section13_v1.00.html), the time of supply is the earliest of:
+**3. Determine time of supply.** Under [Section 13(3) of the CGST Act](https://cleartax.in/s/time-supply-services-gst), the time of supply is the earliest of:
 - Date of payment to the foreign provider
 - 60 days from the supplier's invoice date
 - Date of entry in your books
@@ -242,8 +242,8 @@ Maintain [separate RCM ledgers](https://gsthero.com/blog/reverse-charge-mechanis
 3. [GST Council — Imports in GST Regime (PDF)](https://gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/Imports_in_GST_Regime.pdf)
 4. [Notification No. 10/2017-IT(R) — ICAI Updated (PDF)](https://d23z1tp9il9etb.cloudfront.net/download/gstlaw/NOTIFICATION%20NO.%2010_2017-INTEGRATED%20TAX%20(RATE)1731047532.pdf)
 5. [Section 2(11) IGST Act — Indian Kanoon](https://indiankanoon.org/doc/86210542/)
-6. [CGST Section 13 — Time of Supply — CBIC](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_CGST_act/active/chapter4/section13_v1.00.html)
-7. [Rule 34 CGST — Exchange Rate — CBIC](https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/rules/cgst_rules/active/chapter4/rule34_v1.00.html)
+6. [CGST Section 13 — Time of Supply — ClearTax](https://cleartax.in/s/time-supply-services-gst)
+7. [Reverse Charge Mechanism — ClearTax](https://cleartax.in/s/reverse-charge-gst)
 8. [GST Portal — GSTR-3B FAQ](https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm)
 9. [ClearTax — GST on Import of Services](https://cleartax.in/s/gst-on-import-of-services)
 10. [ClearTax — Reverse Charge under GST](https://cleartax.in/s/reverse-charge-gst)

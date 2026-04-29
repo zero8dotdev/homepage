@@ -1,0 +1,356 @@
+/* ============================================================
+   zero8.dev — Design Tokens
+   Use these CSS vars across all surfaces.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap');
+
+:root {
+  /* --------- BRAND COLORS (per official guide) --------- */
+  --onyx:      #121212;        /* Bg — default page background */
+  --charcoal:  #212121;        /* Surface — cards, panels, separation */
+  --coral:     #FF8C73;        /* Brand · P1 — headings, primary CTAs, banners */
+  --neon:      #CDFF41;        /* Brand · P0 — keyword highlights, text buttons, top-attention */
+  --text-primary:  #FFB8A8;    /* Body text, secondary CTA default, all CTA hover */
+  --stroke:        #FFB8A8;    /* Strokes, grids, dividers (same as text-primary) */
+
+  /* Tonal scale derived from brand palette */
+  --onyx-deep:    #0A0A0A;
+  --charcoal-2:   #2A2A2A;     /* slightly raised */
+  --charcoal-3:   #333333;     /* heavier surface */
+  --text-strong:  #FFFFFF;     /* headings on dark when not coral */
+  --text-muted:   rgba(255, 184, 168, 0.6);
+  --text-faint:   rgba(255, 184, 168, 0.4);
+  --hairline-soft:    rgba(255, 184, 168, 0.12);
+  --hairline-strong-: rgba(255, 184, 168, 0.24);
+
+  /* Coral tonal range (for hover/press) */
+  --coral-soft:  #FFB29F;
+  --coral-press: #D9745E;
+  --coral-deep:  #5C2E24;
+
+  /* Neon tonal range */
+  --neon-soft:   #DFFF7A;
+  --neon-press:  #A8D633;
+
+  /* --------- LEGACY ALIASES (back-compat with prior cards) --------- */
+  --ink-1000: var(--onyx);
+  --ink-900:  var(--charcoal);
+  --ink-800:  var(--charcoal-2);
+  --ink-700:  var(--hairline-soft);
+  --ink-600:  var(--hairline-strong-);
+  --ink-500:  var(--text-faint);
+  --ink-300:  var(--text-muted);
+  --ink-100:  var(--text-strong);
+  --ink-050:  #F5F2ED;
+  --ink-000:  #FFFFFF;
+  --peach-300: var(--coral-soft);
+  --peach-400: var(--coral-soft);
+  --peach-500: var(--coral);
+  --peach-600: var(--coral-press);
+  --peach-700: var(--coral-press);
+  --peach-900: var(--coral-deep);
+
+  /* --------- SEMANTIC COLOR (dark mode default) --------- */
+  --bg:         var(--onyx);
+  --bg-raised:  var(--charcoal);
+  --bg-sunk:    var(--onyx-deep);
+  --fg:         var(--text-primary);          /* body text uses peach-toned text-primary */
+  --fg-strong:  var(--text-strong);           /* white — headings when not coral */
+  --fg-heading: var(--coral);                 /* default headings = coral (P1) */
+  --fg-muted:   var(--text-muted);
+  --fg-faint:   var(--text-faint);
+  --hairline:   var(--hairline-soft);
+  --hairline-strong: var(--hairline-strong-);
+  --accent:     var(--coral);                 /* P1 brand */
+  --accent-hover: var(--coral-soft);
+  --accent-press: var(--coral-press);
+  --highlight:  var(--neon);                  /* P0 — keyword highlight, top-attention */
+  --highlight-press: var(--neon-press);
+  --focus-ring: rgba(205, 255, 65, 0.32);     /* neon ring — highest attention */
+  --selection-bg: var(--neon);
+  --selection-fg: var(--onyx);
+
+  /* --------- TYPE FAMILIES --------- */
+  --font-sans:  'Onest', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:  'Geist Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-serif: 'Newsreader', Georgia, 'Iowan Old Style', serif;
+
+  /* Direction-specific overrides — change one of these on <html> for B or C */
+  /* [data-dir="B"] sets --font-sans to mono; [data-dir="C"] sets --font-display to serif */
+
+  --font-display: var(--font-sans);
+  --font-body:    var(--font-sans);
+  --font-code:    var(--font-mono);
+  --font-meta:    var(--font-mono);
+
+  /* --------- TYPE SCALE (1.25 minor third) --------- */
+  --t-xs:   12px;
+  --t-sm:   13px;
+  --t-base: 15px;
+  --t-md:   17px;
+  --t-lg:   20px;
+  --t-xl:   24px;
+  --t-2xl:  32px;
+  --t-3xl:  44px;
+  --t-4xl:  60px;
+  --t-5xl:  84px;
+
+  /* Line heights */
+  --lh-tight: 1.1;
+  --lh-snug:  1.25;
+  --lh-base:  1.55;
+  --lh-loose: 1.75;
+
+  /* Tracking */
+  --tr-tight: -0.02em;
+  --tr-snug:  -0.01em;
+  --tr-base:  0;
+  --tr-meta:  0.04em;        /* mono uppercase kickers */
+
+  /* --------- SPACING (4px base) --------- */
+  --s-1:   4px;
+  --s-2:   8px;
+  --s-3:   12px;
+  --s-4:   16px;
+  --s-5:   24px;
+  --s-6:   32px;
+  --s-7:   48px;
+  --s-8:   64px;
+  --s-9:   96px;
+  --s-10:  128px;
+
+  /* --------- RADII --------- */
+  --r-0: 0;
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 14px;     /* logo squircle echo */
+  --r-pill: 9999px;
+
+  /* --------- SHADOWS --------- */
+  --shadow-ring: inset 0 0 0 1px var(--hairline);
+  --shadow-lift: 0 1px 0 rgba(0,0,0,.4), 0 12px 32px -8px rgba(0,0,0,.5);
+  --shadow-focus: 0 0 0 3px var(--focus-ring);
+
+  /* --------- MOTION --------- */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur:      200ms;
+  --dur-slow: 320ms;
+
+  /* --------- LAYOUT --------- */
+  --content-width: 640px;
+  --wide-width:    1200px;
+  --max-width:     1080px;
+  --gutter:        var(--s-5);
+}
+
+/* Light mode (paper) — the brand is dark-first, this is a fallback */
+:root[data-theme="light"] {
+  --bg:         #F5F2ED;
+  --bg-raised:  #FFFFFF;
+  --bg-sunk:    #ECE8E1;
+  --fg:         var(--onyx);
+  --fg-strong:  var(--onyx);
+  --fg-heading: var(--coral-press);
+  --fg-muted:   #2E2E2E;
+  --fg-faint:   #6B6B6B;
+  --hairline:   rgba(18, 18, 18, 0.08);
+  --hairline-strong: rgba(18, 18, 18, 0.16);
+}
+
+/* Direction B — Terminal (everything mono) */
+:root[data-dir="B"] {
+  --font-display: var(--font-mono);
+  --font-body:    var(--font-mono);
+  --tr-tight: 0;
+  --tr-snug: 0;
+}
+
+/* Direction C — Editorial (serif display) */
+:root[data-dir="C"] {
+  --font-display: var(--font-serif);
+  --tr-tight: -0.01em;
+}
+
+/* ============================================================
+   ELEMENT DEFAULTS
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  line-height: var(--lh-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-feature-settings: "ss01", "cv11";
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+main { flex: 1; }
+
+/* Headings — default to coral (P1 brand) per usage guide */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: var(--tr-tight);
+  line-height: var(--lh-tight);
+  margin: 0;
+  color: var(--fg-heading);
+  text-wrap: balance;
+}
+h1 mark, h2 mark, h3 mark, h4 mark, h5 mark, h6 mark {
+  background: transparent;
+  color: var(--neon);
+}
+
+h1 { font-size: var(--t-4xl); font-weight: 700; }
+h2 { font-size: var(--t-2xl); font-weight: 600; }
+h3 { font-size: var(--t-xl);  font-weight: 600; }
+h4 { font-size: var(--t-lg);  font-weight: 500; }
+h5 { font-size: var(--t-md);  font-weight: 500; }
+h6 { font-size: var(--t-sm);  font-weight: 500; text-transform: uppercase; letter-spacing: var(--tr-meta); font-family: var(--font-mono); color: var(--fg-faint); }
+
+p {
+  margin: 0 0 var(--s-4);
+  color: var(--fg-muted);
+  text-wrap: pretty;
+}
+
+/* Links */
+a {
+  color: var(--fg);
+  text-decoration: none;
+  text-decoration-color: var(--hairline);
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) var(--ease), text-decoration-color var(--dur-fast) var(--ease);
+}
+a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--r-1);
+}
+
+/* Mono inline */
+code, kbd, samp {
+  font-family: var(--font-code);
+  font-size: 0.92em;
+  color: var(--fg);
+  background: var(--bg-raised);
+  padding: 0.1em 0.35em;
+  border-radius: var(--r-1);
+  border: 1px solid var(--hairline);
+}
+
+pre {
+  font-family: var(--font-code);
+  font-size: var(--t-sm);
+  background: var(--bg-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-2);
+  padding: var(--s-4);
+  overflow-x: auto;
+  line-height: var(--lh-snug);
+}
+pre code { background: transparent; border: 0; padding: 0; }
+
+/* Horizontal rule */
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--hairline);
+  margin: var(--s-7) 0;
+}
+
+/* Blockquote */
+blockquote {
+  margin: var(--s-5) 0;
+  padding-left: var(--s-4);
+  border-left: 2px solid var(--accent);
+  color: var(--fg);
+  font-style: italic;
+}
+
+/* Buttons (raw default) */
+button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  letter-spacing: var(--tr-snug);
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tr-meta);
+  color: var(--fg-faint);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-sm);
+  color: var(--fg-faint);
+  letter-spacing: var(--tr-snug);
+}
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: middle;
+  margin: 0 0.25em;
+}
+
+.peach { color: var(--accent); }
+
+.hairline-top    { border-top: 1px solid var(--hairline); }
+.hairline-bottom { border-bottom: 1px solid var(--hairline); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Compat aliases — maps old token names used in existing pages */
+:root {
+  --muted: var(--fg-muted);
+  --rule:  var(--hairline);
+  --link:  var(--coral);
+}
+:root[data-theme="light"] {
+  --muted: var(--fg-muted);
+  --rule:  var(--hairline);
+  --link:  var(--coral-press);
+}
