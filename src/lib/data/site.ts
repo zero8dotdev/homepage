@@ -36,7 +36,7 @@ export const hero = {
 
 export const about = {
 	paragraphs: [
-		"I build systems where the contract between components is precise enough that both engineers and AI agents can reason about what's happening. As co-founder and CTO of InboxStack, that means a six-stage intelligence pipeline — ingestion, normalization, anomaly detection, knowledge graph reasoning, impact prediction, and a self-improving trust layer — where every stage is a typed worker talking to the next through a strict interface.",
+		"I build systems where the contract between components is precise enough that both engineers and AI agents can reason about what's happening. As co-founder and CTO of InboxStack, I'm building email deliverability intelligence that turns ESP signals, reputation data, and send patterns into clear explanations — so teams know what broke before it becomes a revenue problem.",
 		"Smriti comes from the same instinct applied to the development layer. Every AI session starts fresh — decisions lost, context duplicated, zero continuity across teammates. Smriti captures Claude Code, Cursor, and Codex sessions locally, indexes them with hybrid search, and synthesises context on demand using a local LLM. Team knowledge syncs through git. Nothing touches the cloud.",
 		'Before that, a decade across frontend engineering, video streaming infrastructure, and developer experience. I also consult on developer tools, API design, and the systems that surround AI-assisted engineering workflows.'
 	]
