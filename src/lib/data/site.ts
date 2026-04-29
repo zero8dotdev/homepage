@@ -9,7 +9,9 @@ export const siteConfig = {
 	email: 'hello@zero8.dev',
 	twitter: '@zero8dotdev',
 	ogImage: {
-		url: `${SITE_URL}/og-image.jpg`,
+		dark: `${SITE_URL}/og-dark.svg`,
+		light: `${SITE_URL}/og-light.svg`,
+		url: `${SITE_URL}/og-dark.svg`,
 		width: 1200,
 		height: 630
 	}

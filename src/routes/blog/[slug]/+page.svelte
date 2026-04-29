@@ -6,7 +6,9 @@
 	let { data }: { data: PageData } = $props();
 
 	const postUrl = `${siteConfig.url}/blog/${data.meta.slug ?? ''}`;
-	const postImage = data.meta.image ? `${siteConfig.url}${data.meta.image}` : siteConfig.ogImage.url;
+	const postImage = data.meta.image
+		? `${siteConfig.url}${data.meta.image}`
+		: `${siteConfig.url}/og/blog/${data.meta.slug}`;
 </script>
 
 <svelte:head>
