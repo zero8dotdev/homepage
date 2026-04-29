@@ -5,7 +5,7 @@
   export let projects = [];
 </script>
 
-<section class="section">
+<section class="section" id="work">
   <h2>{title}</h2>
   <ul>
     {#each projects as p}

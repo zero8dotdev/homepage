@@ -51,25 +51,25 @@
   --peach-700: var(--coral-press);
   --peach-900: var(--coral-deep);
 
-  /* --------- SEMANTIC COLOR (dark mode default) --------- */
-  --bg:         var(--onyx);
-  --bg-raised:  var(--charcoal);
-  --bg-sunk:    var(--onyx-deep);
-  --fg:         var(--text-primary);          /* body text uses peach-toned text-primary */
-  --fg-strong:  var(--text-strong);           /* white — headings when not coral */
-  --fg-heading: var(--coral);                 /* default headings = coral (P1) */
-  --fg-muted:   var(--text-muted);
-  --fg-faint:   var(--text-faint);
-  --hairline:   var(--hairline-soft);
-  --hairline-strong: var(--hairline-strong-);
-  --accent:     var(--coral);                 /* P1 brand */
-  --accent-hover: var(--coral-soft);
-  --accent-press: var(--coral-press);
-  --highlight:  var(--neon);                  /* P0 — keyword highlight, top-attention */
-  --highlight-press: var(--neon-press);
-  --focus-ring: rgba(205, 255, 65, 0.32);     /* neon ring — highest attention */
-  --selection-bg: var(--neon);
-  --selection-fg: var(--onyx);
+  /* --------- SEMANTIC COLOR (light mode default) --------- */
+  --bg:         #F5F2ED;
+  --bg-raised:  #FFFFFF;
+  --bg-sunk:    #ECE8E1;
+  --fg:         var(--onyx);
+  --fg-strong:  var(--onyx);
+  --fg-heading: var(--coral-press);
+  --fg-muted:   #2E2E2E;
+  --fg-faint:   #6B6B6B;
+  --hairline:   rgba(18, 18, 18, 0.08);
+  --hairline-strong: rgba(18, 18, 18, 0.16);
+  --accent:     var(--coral-press);
+  --accent-hover: var(--coral);
+  --accent-press: var(--coral-deep);
+  --highlight:  var(--neon-press);
+  --highlight-press: var(--neon);
+  --focus-ring: rgba(205, 255, 65, 0.5);
+  --selection-bg: var(--coral);
+  --selection-fg: #FFFFFF;
 
   /* --------- TYPE FAMILIES --------- */
   --font-sans:  'Onest', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -145,18 +145,26 @@
   --gutter:        var(--s-5);
 }
 
-/* Light mode (paper) — the brand is dark-first, this is a fallback */
-:root[data-theme="light"] {
-  --bg:         #F5F2ED;
-  --bg-raised:  #FFFFFF;
-  --bg-sunk:    #ECE8E1;
-  --fg:         var(--onyx);
-  --fg-strong:  var(--onyx);
-  --fg-heading: var(--coral-press);
-  --fg-muted:   #2E2E2E;
-  --fg-faint:   #6B6B6B;
-  --hairline:   rgba(18, 18, 18, 0.08);
-  --hairline-strong: rgba(18, 18, 18, 0.16);
+/* Dark mode */
+:root[data-theme="dark"] {
+  --bg:         var(--onyx);
+  --bg-raised:  var(--charcoal);
+  --bg-sunk:    var(--onyx-deep);
+  --fg:         var(--text-primary);
+  --fg-strong:  var(--text-strong);
+  --fg-heading: var(--coral);
+  --fg-muted:   var(--text-muted);
+  --fg-faint:   var(--text-faint);
+  --hairline:   var(--hairline-soft);
+  --hairline-strong: var(--hairline-strong-);
+  --accent:     var(--coral);
+  --accent-hover: var(--coral-soft);
+  --accent-press: var(--coral-press);
+  --highlight:  var(--neon);
+  --highlight-press: var(--neon-press);
+  --focus-ring: rgba(205, 255, 65, 0.32);
+  --selection-bg: var(--neon);
+  --selection-fg: var(--onyx);
 }
 
 /* Direction B — Terminal (everything mono) */
@@ -347,10 +355,10 @@ button {
 :root {
   --muted: var(--fg-muted);
   --rule:  var(--hairline);
-  --link:  var(--coral);
+  --link:  var(--coral-press);
 }
-:root[data-theme="light"] {
+:root[data-theme="dark"] {
   --muted: var(--fg-muted);
   --rule:  var(--hairline);
-  --link:  var(--coral-press);
+  --link:  var(--coral);
 }
