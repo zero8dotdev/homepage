@@ -1,0 +1,240 @@
+---
+title: "I thought gcloud compute ssh was ssh. It's six things"
+description: "It pushes your SSH key into project metadata, makes four API calls, runs under four identities, and silently falls back to IAP. Here's what I missed."
+date: "2026-05-06"
+draft: false
+tags: ["gcloud", "gcp", "ssh", "claude-code", "agentic-ai", "security"]
+---
+
+A few weeks ago I let Claude Code drive a deploy to a staging VM on one of my projects. I had a line in my `.claude/settings.local.json` that I'd been pretty proud of:
+
+```
+"Bash(gcloud compute ssh staging-vm:*)"
+```
+
+Look how scoped that is, I thought. Specific command, specific instance — the agent can ssh into one box and that's it. I felt like a responsible adult.
+
+Then the deploy hung. The token had expired. The agent couldn't refresh it because there was no browser. And while I was un-wedging things I went looking for what `gcloud compute ssh` actually does — because if it's just "ssh with auth helpers", why was the auth this brittle?
+
+What I found is that `gcloud compute ssh` is six things wearing a trench coat. I'd been allowlisting all six and only thinking about one. This is the post I wish someone had handed me three months ago.
+
+## The naive mental model
+
+If you'd asked me before this rabbit hole, I would have said:
+
+> `gcloud compute ssh INSTANCE_NAME` is a thin wrapper around OpenSSH that handles the GCP-specific bits — finds the VM's IP, uses your gcloud-managed key, shells you in.
+
+Read that out loud and it sounds reasonable. It's wrong in seven specific ways, and each one bit me before I learned to see it.
+
+I'm going to walk through them roughly in the order they execute. The instrument I wish I'd discovered earlier is `--log-http`:
+
+```
+gcloud compute ssh staging-vm --zone=asia-south1-b --log-http
+```
+
+This dumps every API call gcloud makes before any TCP byte hits your VM. The first time I ran it I scrolled, and scrolled, and scrolled some more. *That's* when the mental model cracked.
+
+## Surprise 1: it's a write operation
+
+Here's the one that genuinely shocked me. By default, every `gcloud compute ssh` invocation pushes your SSH public key into the project's instance metadata. Project-wide. On every connection.
+
+You can see this in the logs as `Updating project ssh metadata...` — most of us have probably watched that scroll past for years and never wondered what it was doing. What it's doing is writing your key, with whatever username gcloud picks for you, to a piece of state that *every* VM in the project reads. If you have permission to ssh to one VM in the project, you've just registered a key for all of them.
+
+I'd always thought of ssh as a read-shaped operation. Connect, type, leave. `gcloud compute ssh` is read-shaped at the surface and write-shaped underneath. There's a [Stack Overflow thread from 2018](https://stackoverflow.com/questions/49754452/gcloud-compute-ssh-with-local-key-project-restrictions) where someone asks how to skip this step — they're a contractor with access to one VM, but every connection wastes time trying to update project-wide state they don't have permission to touch.
+
+The escape hatches:
+- Set `block-project-ssh-keys=TRUE` on the instance (per-instance keys only)
+- Enable OS Login project-wide (which obsoletes metadata keys entirely)
+- Pass `--ssh-key-file` and pre-arrange the key on the VM
+
+But the *default* — what happens when you just type the command — is a state mutation. That changes how I think about the verb completely.
+
+## Surprise 2: the SSH key isn't the credential
+
+I always thought the credential was the file at `~/.ssh/google_compute_engine` — the one gcloud generates the first time you run `gcloud compute ssh`. Lose that, lose access. Right?
+
+Wrong. The credential that gates everything is the OAuth token in `~/.config/gcloud/credentials.db` (a SQLite file, which becomes important in a minute). The SSH key is a transport-layer detail: it gets pushed into metadata or matched against your OS Login profile *because* you have a valid OAuth token. If your token expires, you can't push the key, can't query OS Login, can't start an IAP tunnel — you're locked out even though the SSH key is sitting right there on your disk.
+
+This was the actual cause of my hung deploy. The OAuth token had expired. The fix is `gcloud auth login`, which opens a browser. The agent had no browser. So the deploy sat there until I noticed.
+
+If I'd been thinking of OAuth-as-credential rather than ssh-key-as-credential, I would have set up token refresh as a separate concern — maybe a service account JSON, maybe `gcloud auth application-default login` somewhere. Instead I was treating the SSH key as the secret to protect and the OAuth token as plumbing. The reverse is closer to true.
+
+## Surprise 3: it's not a local command
+
+Look at the `--log-http` output. Before any TCP connection to your VM, gcloud makes (at least):
+
+1. `compute.instances.get` to find the VM
+2. `oslogin.users.getLoginProfile` to figure out which posix username you have on that VM
+3. A project-metadata read (and possibly write — see Surprise 1)
+4. Optionally, an IAP tunnel start if there's no public IP or you passed `--tunnel-through-iap`
+
+Four API calls minimum. Each can fail. Each leaves an audit log entry. Each consumes a tiny bit of quota.
+
+I'd been thinking of `gcloud compute ssh` like `ssh hostname` — a local invocation that opens a TCP socket and does its thing. It's not. It's a small distributed system that *eventually* opens a TCP socket. When you're on flaky hotel wifi, the connection feels slow because half the latency is your laptop talking to Google's APIs, not your laptop talking to the VM.
+
+Once I saw this I started understanding why the same command would behave differently from the same machine on the same network: the four-step pre-connect dance is sensitive to the state of *several* GCP services. A blip in OS Login and your "ssh hung" really means "OS Login was slow."
+
+## Surprise 4: there's a silent network fallback
+
+There's a [Stack Overflow question](https://stackoverflow.com/questions/58034730/iap-tunnel-to-vm) where someone tries to ssh to a VM without a public IP and gets back:
+
+> External IP address was not found; defaulting to using IAP tunneling.
+
+That's the silent fallback. If your VM has a public IP, gcloud takes the public path. If it doesn't, gcloud quietly switches to IAP. Same command, two completely different network paths, with two completely different audit profiles.
+
+I do not love this. From a security review angle, "did this connection go through IAP" is a question with very different consequences depending on the answer, and the answer should not be a side effect of whether someone happened to attach an external IP to the VM last quarter. Audit logs from `cloudaudit.googleapis.com/data_access` show IAP tunnel starts; they don't show "user ssh'd to VM directly via public IP" with the same fidelity.
+
+The fix, when I figured it out, was to *always* require IAP — strip external IPs, require `--tunnel-through-iap`, set up the firewall rule from `35.235.240.0/20`. Now the path is deterministic. But I had to ask the question first, and the command's defaults didn't make me ask.
+
+## Surprise 5: there are at least four principals on the call
+
+This one took me the longest to internalize. When you run `gcloud compute ssh` to a VM, the resulting connection involves:
+
+1. **Your gcloud OAuth principal** — the human or service account whose token is in `credentials.db`. This authorizes the API calls (instance lookup, OS Login query, IAP tunnel).
+2. **Your OS Login posix user** — what you become *on* the VM. Derived from your IAM identity, but it's a separate name (`hello_zero8_dev` style, with the `@` mangled).
+3. **The VM's attached service account** — once you're shelled in, any `gcloud` or API call you make from inside the VM uses *this* identity, not yours. [The OS Login docs](https://cloud.google.com/compute/docs/oslogin) say this in writing: *"When a user connects to a VM, that user can use all of the IAM permissions granted to the service account attached to the VM."*
+4. **The IAP principal** — if you're tunneling through IAP, that's another check (`roles/iap.tunnelResourceAccessor`) on yet another control plane.
+
+Four identities. I'd been thinking "I'm ssh'd in as me." I'm not. I'm ssh'd in as a posix user whose actions on Google's APIs run under a *different* identity than my login. The first time I noticed this was when I ran a `gcloud` command inside the VM and got back results from a different project — the VM's service account was bound to a different default. I thought I was looking at one project's data. I was looking at another's.
+
+If you've ever wondered why `roles/compute.osLogin` alone isn't enough to ssh in when the VM is private — you also need `roles/iap.tunnelResourceAccessor`, and missing either gives you the same opaque `Permission denied (publickey)` error ([Stack Overflow has the receipts](https://stackoverflow.com/questions/68438905/gloud-os-login-iap-in-private-vm-and-permissions-error-gcloud-beta-compute-s)). Two of those four principals are checking you, only one is failing, and the error message doesn't tell you which.
+
+## Surprise 6: it cannot run in parallel
+
+This one is documented but obscure. [Google Issue Tracker #149709703](https://issuetracker.google.com/issues/149709703) is a public issue, in the Cloud CLI component. A Google engineer left this comment in writing:
+
+> gcloud does not support parallel execution, particularly for auth related operations. The errors are mainly due to locks on local sqlite we use for credentials.
+
+Read that twice. The credential store is SQLite. SQLite uses file-level locking. If you fan out `gcloud compute ssh` calls in parallel — say, across ten VMs — they fight for a lock on `credentials.db`, and the losers fail in confusing ways.
+
+I had been treating gcloud commands like any other CLI: independent processes, fan them out with `xargs -P`, scale up. For most tools this works. For gcloud it doesn't, and when it doesn't the error you get is not "credential lock contention" — it's whatever downstream symptom the failed token refresh produces. A timeout. An auth error. A "could not find instance" that's actually an auth error in disguise.
+
+The lesson I took: gcloud commands are *singleton* commands. If you want parallelism, you want plain `ssh` over a network primitive that's already been set up — not gcloud rebuilding the auth state ten times concurrently.
+
+## Surprise 7: non-interactive isn't the same as interactive
+
+This one is the consequence of all the previous ones. If your OAuth token expires during a non-interactive run, gcloud cannot refresh it — refreshing requires a browser, and there's no browser. You get an error. The command fails. There is no graceful degradation.
+
+Combine that with Surprise 6 (SQLite lock) and Surprise 3 (four API calls before TCP), and you start to see why CI/CD pipelines that lean on `gcloud compute ssh` are flaky in ways that feel mysterious. Each call is a small distributed system that depends on local credential state that can silently rot.
+
+The widely-deployed [`google-github-actions/ssh-compute`](https://github.com/google-github-actions/ssh-compute/issues) action has open issues today for exactly this — `RESOURCE_EXHAUSTED` errors, [`[4033: 'not authorized']`](https://github.com/google-github-actions/ssh-compute/issues/44) from the IAP tunnel start, "Command is not executed in the context requested user." None of those are bugs in OpenSSH. They're bugs in the multi-stage pre-connect machinery I just described. The action is a thin wrapper around `gcloud compute ssh`, which is a not-thin wrapper around six independent things.
+
+## The implicit contract
+
+Once I'd seen these seven surprises I went looking for a unifying picture. Here's what I landed on.
+
+`gcloud compute ssh` was designed for an interactive human with:
+
+- A recent OAuth token (and a browser to refresh it)
+- IAM write permission on the project (or at least metadata-write tolerance)
+- Patience for four API calls of latency before the prompt appears
+- One ssh at a time
+- One identity to reason about, even though the call really involves four
+- A network where "public IP or IAP" is a detail they don't need to think about
+
+Strip any one of those assumptions and the command starts misbehaving in a way that looks like a different bug. Strip several and you get a deploy hanging at 11pm on a Wednesday.
+
+Three audiences violate this contract by default:
+
+1. **CI/CD pipelines** — no browser, often parallel, identity is a service account
+2. **Parallel scripts** — fan-out hits the SQLite lock
+3. **AI coding agents** — non-interactive, often parallel, prompted to "just ssh in and check," authorized via a single allowlist line that the agent treats as a green light
+
+This third one is what got me into this in the first place. Let me come back to it.
+
+## Why this matters more for agents
+
+If `gcloud compute ssh` is six things wearing a trench coat, then every Claude Code allowlist entry like `Bash(gcloud compute ssh ...)` is six security decisions wearing a single checkbox. When I add that line to `settings.local.json`, I am authorizing my agent to:
+
+- Refresh and consume my OAuth token (Surprise 2)
+- Read project metadata (Surprise 3)
+- Write project metadata, by default (Surprise 1)
+- Choose between public-IP and IAP paths silently (Surprise 4)
+- Operate under at least four entangled principals (Surprise 5)
+- Inherit any pathological behavior of gcloud's credential locking if it tries to parallelize (Surprise 6)
+- Hang indefinitely on token expiry (Surprise 7)
+
+I was thinking I'd authorized one thing. I'd authorized seven.
+
+There's a [Claude Code GitHub issue from April](https://github.com/anthropics/claude-code/issues/53830) where someone reports that auto-mode wrote an allowlist entry for `ssh-prod` without per-call approval — exactly the failure mode you'd expect when a verb does too many things and the agent treats it as one. There's a [separate report from Diginomica in February 2026](https://diginomica.com/risky-business-ai-agents-are-asking-your-ssh-keys-21000-exposed-instances-tell-their-own-cautionary) where Claude Code repeatedly probed for SSH keys after losing context — 21,000 instances exposed in the wild. [Anthropic's own blog](https://www.anthropic.com/engineering/claude-code-auto-mode) says users approve **93%** of permission prompts; approval fatigue is now a documented threat model.
+
+When the verb is fat, every "yes" is implicitly fat too.
+
+## What I'm doing about it
+
+The thing I changed, after all this, was to stop allowlisting `gcloud compute ssh` for the agent at all. Instead:
+
+**One-time, by me, not the agent:**
+
+```
+# Generate stable ~/.ssh/config aliases + known_hosts
+gcloud compute config-ssh
+
+# Project-wide OS Login
+gcloud compute project-info add-metadata --metadata enable-oslogin=TRUE
+
+# IAP firewall rule
+gcloud compute firewall-rules create allow-iap \
+  --source-ranges=35.235.240.0/20 --allow=tcp:22
+
+# IAM for the principal that will use the tunnel
+gcloud projects add-iam-policy-binding MY_PROJECT_ID \
+  --member="user:hello@zero8.dev" \
+  --role="roles/iap.tunnelResourceAccessor"
+
+gcloud projects add-iam-policy-binding MY_PROJECT_ID \
+  --member="user:hello@zero8.dev" \
+  --role="roles/compute.osLogin"
+```
+
+**Per session, by me:**
+
+```
+ssh-add -t 1h ~/.ssh/google_compute_engine
+```
+
+The `-t 1h` is the part I find satisfying. The agent gets one hour of access, after which the key is gone from the agent socket and the agent has to come ask me for more. The key file itself never leaves my disk and is never read by the agent — the agent talks to the ssh-agent socket, which signs challenges using the key. This is a capability-based pattern [Patrick McCanna writes about clearly](https://patrickmccanna.net/giving-coding-agents-ssh-access-to-other-systems-without-giving-disclosing-secrets/) in a post I keep going back to: the agent has a *capability* to authenticate, not the *credential* itself. Kill the socket, the capability dies. No rotation needed.
+
+**In `.claude/settings.local.json`:**
+
+```
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh staging:*)",
+      "Bash(scp * staging:*)"
+    ],
+    "deny": [
+      "Bash(gcloud compute ssh*)",
+      "Bash(gcloud iam service-accounts keys create*)",
+      "Bash(gcloud compute project-info add-metadata*)",
+      "Read(~/.ssh/google_compute_engine)"
+    ]
+  }
+}
+```
+
+The thing I find clarifying about this `settings.local.json` is that each line means roughly one thing. `Bash(ssh staging:*)` is transport. The `Read` denial is about key custody. There isn't a single line on the page that does six things at once.
+
+Identity, network, transport — three layers of the system, three different primitives, three different decisions. I'd been smushing all three into one allowlist entry and then wondering why the security model felt squishy.
+
+## What I'm still figuring out
+
+I don't want to oversell this. Some things I haven't worked out:
+
+- `config-ssh` has to be re-run when the instance set changes. For a stable staging VM that's fine; for an autoscaling fleet it isn't, and I think the answer there is `start-iap-tunnel` with destination groups, but I haven't built that yet.
+- OS Login solves a lot, but once you're shelled in you inherit the VM service account's IAM. That's still a privilege boundary I haven't fully thought through. Context-aware access via Access Context Manager is the next layer; that's a future post.
+- I keep wanting `gcloud compute ssh` to grow a `--explain` flag that prints which of the six jobs it's about to do for this invocation. This does not exist. It would be useful.
+- The `--log-http` instrument is great but the output is enormous and most people will never run it. There's a project somewhere in here for a "what is gcloud actually doing" tool.
+
+## What I'm taking forward
+
+The shape of the lesson, more than the specific commands:
+
+A CLI verb has a mental model baked into it. The mental model assumes a particular user, in a particular environment, doing a particular kind of thing. When I run that command in a different context — non-interactive, parallel, agent-driven, automated — the mental model doesn't transfer. The command still runs, but it runs *as if* I were the assumed user, and the gap between assumed-me and actual-me becomes the bug.
+
+`gcloud compute ssh` was built for me-at-my-laptop. When I let the agent type it on my behalf, neither of us is me-at-my-laptop. The command will try its best anyway, and that's where the sharp edges come from.
+
+The thing I'm trying to do now, when I see a CLI in an agent allowlist, is ask: *what is the implicit user this command was designed for?* If the agent isn't that user, I don't allowlist the verb — I find a more decomposed primitive that doesn't smuggle in the assumption.
+
+That's it. I'm sure I'll learn this lesson again in some other shape next month. If you've hit any of these surprises in your own setup, I'd like to hear about it.
