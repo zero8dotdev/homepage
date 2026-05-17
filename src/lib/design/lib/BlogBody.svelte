@@ -81,7 +81,7 @@
   .body :global(code) {
     font-family: var(--font-mono);
     font-size: 0.88em;
-    background: var(--ink-900);
+    background: var(--bg-raised);
     padding: 0.15em 0.4em;
     border-radius: 3px;
     border: 1px solid var(--hairline);
@@ -90,7 +90,7 @@
 
   /* Code blocks */
   .body :global(pre) {
-    background: var(--ink-900);
+    background: var(--bg-raised);
     border: 1px solid var(--hairline);
     border-radius: 8px;
     padding: 20px 22px;
