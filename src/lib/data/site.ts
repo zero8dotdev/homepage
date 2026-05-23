@@ -19,7 +19,7 @@ export const siteConfig = {
 
 export const navLinks = [
 	{ href: '/blog', text: 'Writing' },
-	{ href: '/#work', text: 'Work' },
+	{ href: '/work', text: 'Work' },
 	{ href: '/#contact', text: 'Contact' }
 ];
 
@@ -30,7 +30,7 @@ export const hero = {
 		'Developer tools and AI-native systems. I design the infrastructure that lets agents — human and automated — operate without friction. A decade of product engineering.',
 	ctas: [
 		{ label: 'Read my writing', href: '/blog' },
-		{ label: 'See my work', href: '/#work' }
+		{ label: 'See my work', href: '/work' }
 	]
 };
 
@@ -69,20 +69,54 @@ export const craftAreas = [
 	}
 ];
 
-export const projects = [
+export type ProjectStatus = 'live' | 'sunset' | 'delivered';
+
+export type Project = {
+	name: string;
+	description: string;
+	role: string;
+	stack: string[];
+	href: string | null;
+	status: ProjectStatus;
+	featured: boolean;
+};
+
+export const projects: Project[] = [
 	{
 		name: 'Smriti',
 		description: 'Shared memory for AI-powered engineering teams. Captures and indexes Claude Code, Cursor, and Codex sessions locally, then shares team knowledge through git. No cloud required.',
 		role: 'Concept, CLI design, search architecture, development',
 		stack: ['Bun', 'TypeScript', 'SQLite', 'BM25', 'node-llama-cpp', 'Ollama'],
-		href: 'https://github.com/zero8dotdev/smriti'
+		href: 'https://github.com/zero8dotdev/smriti',
+		status: 'live',
+		featured: true
 	},
 	{
 		name: 'Avkash',
 		description: "India's open-source HR platform: leave management, team policies, and Slack integration for modern workplaces. Self-hostable, with Razorpay billing and row-level security built in.",
 		role: 'Product, design, architecture, development',
 		stack: ['Next.js 15', 'TypeScript', 'Supabase', 'Slack API', 'Razorpay', 'Tailwind CSS'],
-		href: 'https://github.com/zero8dotdev/avkash'
+		href: 'https://github.com/zero8dotdev/avkash',
+		status: 'live',
+		featured: true
+	},
+	{
+		name: 'Godspeed Web',
+		description: 'A visual platform to create, manage, and deploy Godspeed Framework projects — taking a low-code framework to no-code. Built to remove the CLI entirely for teams who want to ship without the setup.',
+		role: 'Product, design, architecture, development',
+		stack: ['TypeScript', 'JavaScript'],
+		href: null,
+		status: 'sunset',
+		featured: false
+	},
+	{
+		name: 'Workflow Management',
+		description: 'A workflow automation platform for Veolia Japan — teams could build, configure, and publish operational workflows without touching code. The frontend was the hard part: a visual drag-and-drop builder, dynamic multi-step forms rendered from a workflow schema, complex state management across branching flows, and role-based views that controlled what each team member could see and act on at every stage.',
+		role: 'Frontend architecture, development',
+		stack: ['React', 'TypeScript'],
+		href: null,
+		status: 'delivered',
+		featured: false
 	}
 ];
 

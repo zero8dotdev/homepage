@@ -8,6 +8,7 @@ export const GET: RequestHandler = () => {
 
 	const staticPages = [
 		{ loc: `${siteConfig.url}/`, priority: '1.0', changefreq: 'weekly', lastmod: today },
+		{ loc: `${siteConfig.url}/work`, priority: '0.9', changefreq: 'monthly', lastmod: today },
 		{ loc: `${siteConfig.url}/blog`, priority: '0.8', changefreq: 'weekly', lastmod: today }
 	];
 
