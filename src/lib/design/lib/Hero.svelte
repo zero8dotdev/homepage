@@ -3,7 +3,7 @@
   export let kicker = '▲ ASHUTOSH TRIPATHI · SOFTWARE ENGINEER';
   export let primaryHref = '/blog';
   export let primaryLabel = 'Read my writing';
-  export let secondaryHref = '/work';
+  export let secondaryHref = '/#work';
   export let secondaryLabel = 'See my work →';
 </script>
 
