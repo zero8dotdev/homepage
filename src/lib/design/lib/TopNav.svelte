@@ -3,7 +3,7 @@
   /** @type {Array<{href: string, label: string}>} */
   export let links = [
     { href: '/blog', label: 'writing' },
-    { href: '/#work', label: 'work' },
+    { href: '/work', label: 'work' },
   ];
   export let active = 'writing';
   export let ctaHref = 'mailto:hello@zero8.dev';

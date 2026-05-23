@@ -5,12 +5,14 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const projectItems = projects.map((p) => ({
-		status: 'live' as const,
-		name: p.name,
-		tags: p.stack.join(' · '),
-		desc: p.description
-	}));
+	const projectItems = projects
+		.filter((p) => p.featured)
+		.map((p) => ({
+			status: 'live' as const,
+			name: p.name,
+			tags: p.stack.join(' · '),
+			desc: p.description
+		}));
 
 	const postItems = data.posts.map((p) => ({
 		date: p.date,
