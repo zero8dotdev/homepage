@@ -11,6 +11,8 @@
 		read: p.readTime,
 		href: `/blog/${p.slug}`
 	}));
+
+	const tags = data.tags;
 </script>
 
 <svelte:head>
@@ -30,6 +32,11 @@
 <TopNav active="writing" />
 <main id="main" class="column">
 	<h1>Writing</h1>
+	<nav class="tags" aria-label="Filter by topic">
+		{#each tags as t}
+			<a href="/blog/tag/{t.tag}" class="tag">{t.tag}<span class="count">{t.count}</span></a>
+		{/each}
+	</nav>
 	<ul>
 		{#each postItems as p}
 			<PostListItem date={p.date} title={p.title} read={p.read} href={p.href} />
@@ -51,6 +58,33 @@
 		letter-spacing: -0.03em;
 		color: var(--fg);
 		margin: 0 0 48px;
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 40px;
+	}
+	.tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--fg-muted);
+		text-decoration: none;
+		padding: 4px 10px;
+		border: 1px solid var(--hairline);
+		border-radius: 4px;
+		transition: color 150ms ease, border-color 150ms ease;
+	}
+	.tag:hover {
+		color: var(--peach-500);
+		border-color: var(--peach-500);
+	}
+	.count {
+		font-size: 10px;
+		color: var(--fg-faint);
 	}
 	ul { list-style: none; margin: 0; padding: 0; }
 	@media (max-width: 640px) {

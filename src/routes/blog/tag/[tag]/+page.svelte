@@ -15,8 +15,16 @@
 
 <svelte:head>
 	<title>{data.tag} · Writing · zero8.dev</title>
-	<meta name="description" content="Posts tagged '{data.tag}' on zero8.dev." />
+	<meta name="description" content="Articles on {data.tag} — deep dives on developer tools, AI systems, and software engineering from Ashutosh Tripathi." />
 	<link rel="canonical" href="{siteConfig.url}/blog/tag/{data.tag}" />
+	<meta property="og:title" content="{data.tag} · Writing · zero8.dev" />
+	<meta property="og:description" content="Articles on {data.tag} — deep dives on developer tools, AI systems, and software engineering from Ashutosh Tripathi." />
+	<meta property="og:url" content="{siteConfig.url}/blog/tag/{data.tag}" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content={siteConfig.ogImage.url} />
+	<meta name="twitter:title" content="{data.tag} · Writing · zero8.dev" />
+	<meta name="twitter:description" content="Articles on {data.tag} — deep dives on developer tools, AI systems, and software engineering from Ashutosh Tripathi." />
+	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
 
 <TopNav active="writing" />
