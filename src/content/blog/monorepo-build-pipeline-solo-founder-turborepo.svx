@@ -1,0 +1,169 @@
+---
+title: "15 packages, 1 dev. The dependency graph is the architecture."
+description: "Most monorepo content assumes you have teams. I have domains. Here's why a 15-package Turborepo monorepo is a thinking tool, not a code org choice."
+date: "2026-05-27"
+draft: false
+tags: ["monorepo", "turborepo", "architecture", "developer-tools"]
+---
+
+I keep reading monorepo articles that open with the same premise: you have multiple teams, they need to coordinate, and a monorepo gives them shared tooling and a single source of truth. That's a real use case. It's not mine.
+
+I'm building [InboxStack](https://inboxstack.com), an email deliverability platform. I'm the sole technical co-founder. Our monorepo has 15 packages and I wrote all of them. There is no team coordination problem to solve. There is no "shared tooling across squads." There's one person, one domain, and a `turbo.json` that's 30 lines long.
+
+So why the monorepo?
+
+Because the monorepo is the only place where my understanding of how the system fits together is written down in a form that breaks the build when it's wrong.
+
+## The problem isn't code. It's the model.
+
+Email deliverability sounds like one problem. It's not. It's a graph of problems that feed into each other:
+
+- DNS records get audited for correctness
+- DMARC policies get parsed and validated
+- Blacklist status gets monitored across dozens of providers
+- Trust scores get computed from all of the above
+- Signals get detected and scored by a signal processor
+- All of this flows into an intelligence layer that also pulls from a knowledge graph and a feature store
+- Results get queued, processed through provider connectors, and surfaced through notifications and emails
+
+As a solo developer, the hardest part of my day isn't implementing any one of these. It's holding the relationships between them in my head while I'm deep inside one. At 11pm, debugging why a trust score is wrong, I need something external to tell me what feeds into trust and what trust feeds into. Something that isn't a wiki page I wrote six months ago and haven't updated since.
+
+## What 15 packages actually look like
+
+Here's the dependency tree. I'm going to show it because the tree *is* the point.
+
+```
+packages/
+  shared/            → (nothing — foundation)
+  db/                → (nothing — data layer)
+  design-tokens/     → (nothing — visual primitives)
+  blacklist/         → db, shared
+  dmarc/             → db, shared
+  dns-audit/         → db, shared
+  trust/             → db, shared
+  signal-processor/  → db, shared
+  connectors/        → db, shared
+  notifications/     → db, shared
+  feature-store/     → db, shared
+  knowledge-graph/   → shared
+  intelligence/      → db, shared, feature-store, knowledge-graph
+  queue/             → connectors, notifications, shared
+  email/             → design-tokens
+```
+
+Stop reading this as a file listing. Read it as a set of claims about the domain.
+
+`intelligence` depends on `db`, `feature-store`, `knowledge-graph`, and `shared`. That's not a configuration detail. That's a statement: intelligence is what happens when you combine stored data, feature signals, and structured domain knowledge. I wrote that in a `package.json` once. Now TypeScript enforces it on every build.
+
+`email` depends on `design-tokens` and nothing else. That's a boundary: the transactional email layer should never know about trust scores or blacklists. If I ever accidentally add `@inboxstack/trust` to `email/package.json`, I'll see it in the diff and ask myself why the presentation layer needs to know about trust. Usually the answer is "it doesn't, I'm being lazy" — and I refactor instead.
+
+`queue` depends on `connectors` and `notifications`, not on `db`. The queue orchestrates work through other packages. It doesn't reach into the database itself. If it did, that dependency would show up, and I'd have to justify it.
+
+Every one of these arrows is a design decision I made once and the build system remembers forever.
+
+## The build pipeline I didn't write
+
+Here's my `turbo.json` in its entirety:
+
+```json
+{
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false,
+      "outputs": ["node_modules/.prisma/**"]
+    }
+  }
+}
+```
+
+The line that matters is `"dependsOn": ["^build"]`. The `^` means "build my dependencies first." Turborepo reads the package dependency graph — the same one I just showed you — and derives the execution order:
+
+1. `shared`, `db`, `design-tokens` build first. No internal deps.
+2. `blacklist`, `dmarc`, `dns-audit`, `trust`, `signal-processor`, `connectors`, `notifications`, `feature-store`, `knowledge-graph` build in parallel. They only depend on things from step 1.
+3. `intelligence` builds. It's waiting for `feature-store` and `knowledge-graph`.
+4. `queue` builds. It's waiting for `connectors` and `notifications`.
+5. `email` builds whenever `design-tokens` is done — so effectively step 2.
+
+I didn't write that pipeline. I didn't create a CI YAML with stages and dependencies. I didn't draw a DAG in a config file. I declared how my packages relate to each other and the build order fell out.
+
+The one piece of "pipeline logic" in the entire file is `cache: false` on `db:generate`. That's there because Prisma client generation reads a `.prisma` schema and writes to `node_modules/.prisma` — it's a side effect, not a pure function. Turborepo's caching model assumes tasks are deterministic: same inputs, same outputs. Prisma breaks that assumption, so I opt it out. Everything else caches normally.
+
+When I run `turbo run build` after changing one line in `shared`, Turborepo rebuilds `shared` and then rebuilds the 12 packages that depend on it. The other two show `FULL TURBO` — cached, 0ms. I didn't configure that. The dependency graph configured it.
+
+## Three things this replaces
+
+I keep a short list of things I used to think I needed separately:
+
+**Architecture documentation.** I don't have a system diagram. The dependency tree is the system diagram, and it's always current because the build breaks when it's wrong. If you want to understand what `intelligence` does, look at what it imports. If you want to understand the system's layers, look at which packages have zero dependencies (foundations), which have one layer of deps (domain logic), and which sit at the top of the graph (orchestration and presentation). That's three layers, visible in `package.json` files, not in a Confluence page that's six months stale.
+
+**API contracts.** In a polyrepo setup, services talk to each other over HTTP or message queues, and you need contract tests or OpenAPI specs to keep them honest. In a monorepo with TypeScript workspace packages, the contract is a TypeScript import. If `trust` changes the shape of a trust score, every consumer gets a type error at build time. Not in staging. Not at 3am. On my laptop, before I push.
+
+**CI pipeline configuration.** I've watched colleagues spend days wiring up CI pipelines: which service builds first, which tests to run after which build, how to cache artifacts between stages. My CI runs `turbo run build test typecheck`. That's one command. Turborepo handles ordering, parallelism, and caching. The dependency graph I already declared *is* the pipeline definition.
+
+## The thinking part
+
+Here's the thing I didn't expect when I set this up.
+
+The monorepo forces me to think about architecture at every change. Not in a "write a design doc" way. In a "should this package really depend on that package" way.
+
+Last month I was adding a feature to the queue processor and reached for `@inboxstack/intelligence`. It would have been easy — just add the dependency, import the function, done. But adding that dependency would mean `queue` depends on `intelligence`, which depends on `knowledge-graph` and `feature-store`. The queue would be pulling in half the system.
+
+I stopped. Refactored the piece I needed into `shared`. The queue stayed thin. The dependency graph stayed clean.
+
+In a single-repo-with-folders setup, that import would have been invisible. No dependency to declare. No diff to review. Just an import statement buried in a file that nobody would question. The architecture would have quietly degraded.
+
+The monorepo made the cost of that decision visible — not as a code review comment or a lint rule, but as a structural change to the dependency graph that shows up in every `turbo run build --graph` from now on.
+
+That's what I mean by "thinking tool." It's not that the monorepo thinks for me. It's that the monorepo refuses to let me stop thinking. Every new dependency is a design decision that I have to make explicitly, and every `package.json` change is a permanent record of that decision that the build system will enforce.
+
+## The honest downsides
+
+I'm not going to pretend this is free.
+
+**Everything breaks together.** Rename a type in `shared` and you get 40 type errors across 12 packages. This is the right behavior — I want to know what broke — but it can feel violent when all you did was rename a field. The cascade is the dependency graph working as designed. It just doesn't feel like it when your terminal is a wall of red.
+
+**Build output is noisy.** `turbo run build` prints output for 15 packages. Most of them say `FULL TURBO` (cached), but I'm still scrolling past 15 headers to find the one that actually did work. Turborepo's `--filter` flag helps, but the default experience is chatty.
+
+**Prisma doesn't fit the model.** `db:generate` runs every time because I can't cache it. For one developer this costs a few seconds. For a team of twenty running `turbo run build` in CI, those seconds add up, and the workaround (checking in the generated client) creates its own problems.
+
+**The temptation is real.** Because workspace imports are frictionless, it's easy to add a dependency you shouldn't. The monorepo makes the cost visible, but it doesn't stop you. You still have to say no to yourself. Some days I'm better at that than others.
+
+## When this will stop working
+
+I don't think this setup scales to 50 engineers. At that point you need CODEOWNERS rules, affected-package CI filters, and probably Nx or Bazel instead of Turborepo. The concerns shift from "what depends on what" to "who is allowed to change what."
+
+But the dependency graph will tell me when to split. If `intelligence` grows to the point where it needs its own team, the dependency list tells me exactly which interfaces it consumes and which it exposes. The extraction boundary is already drawn. I just haven't walked through it yet.
+
+And when I hire the first engineer, each package is a natural onboarding scope. "You own `dmarc` and `dns-audit`. Here are their dependencies. Here's what depends on them. Don't break those interfaces." That conversation takes five minutes because the dependency graph makes it concrete. I don't have to walk them through a wiki. I point at `package.json`.
+
+## The thing I keep coming back to
+
+The standard pitch for monorepos is about collaboration: shared tooling, atomic commits, consistent versioning across teams. Those benefits are real. They're just not why I use one.
+
+I use a monorepo because I'm one person holding an entire system in my head, and the dependency graph is the only artifact in the codebase that captures how the pieces fit together in a way that's both human-readable and machine-enforced.
+
+The `package.json` files are architecture documentation that never goes stale. The `turbo.json` is a build pipeline that writes itself. The TypeScript compiler is a contract testing framework that runs at build time. And the dependency graph, taken as a whole, is the most honest representation of the system I've built — because it's the only one that breaks when it's wrong.
+
+Fifteen packages, one developer, thirty lines of build config. The architecture isn't documented anywhere. It doesn't need to be. It's the code.
