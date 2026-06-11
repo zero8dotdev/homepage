@@ -1,0 +1,108 @@
+---
+title: "State of Agentic Harnesses — June 2026"
+description: "Eleven weeks after our March snapshot: the leaderboard reshuffled, Windsurf became Devin Desktop, Gemini CLI is being sunset for Antigravity — and our three predictions, scored."
+date: "2026-06-12"
+featured: true
+draft: false
+tags: ["agentic-ai", "developer-tools", "claude-code", "cursor", "codex", "open-source"]
+---
+
+<script>
+	import GhCard from '$lib/components/blog/GhCard.svelte';
+</script>
+
+In [March we took a snapshot](/blog/state-of-agentic-harnesses-march-2026) of the agentic coding landscape and made three predictions. Eleven weeks later, two of the ten tools in that comparison no longer exist under the same name.
+
+That's the headline. The harness market isn't just moving fast — the brands themselves are unstable while the capabilities converge. Here's where things stand in June 2026: the updated leaderboard, a scorecard of what we got right and wrong, and what the last eleven weeks say about where harnesses are going.
+
+*Methodology note: every number in this post was pulled on June 12, 2026 by an agent running [Tabstack](https://tabstack.ai) through [tabstack-cli](https://github.com/zero8dotdev/tabstack-cli) — extract for the repo stats, research for the developments. The pipeline that fact-checked the March post is [a shell script](https://github.com/zero8dotdev/tabstack-cli/blob/main/scripts/enrich-post.sh).*
+
+## The leaderboard, reshuffled
+
+Same eight repos as March. Two rank changes, and the gaps tell a story.
+
+<div class="gh-grid">
+	<GhCard name="OpenCode" repo="anomalyco/opencode" desc="Open-source terminal coding agent. Now with a beta desktop app. +42.5K stars since March." stars="173.2K" issues="5K+ issues" prs="1.0K PRs" lang="TypeScript" langColor="#3178c6" />
+	<GhCard name="Claude Code" repo="anthropics/claude-code" desc="Anthropic's terminal-native agent. Fastest absolute growth: +48.8K stars in 11 weeks. Now #2, past Gemini CLI." stars="131.8K" issues="5K+ issues" prs="613 PRs" lang="Python" langColor="#3572A5" />
+	<GhCard name="Gemini CLI" repo="google-gemini/gemini-cli" desc="Google's terminal agent — being sunset for Antigravity CLI on June 18. Growth flattened to +6K." stars="105.2K" issues="1.1K issues" prs="229 PRs" lang="TypeScript" langColor="#3178c6" />
+	<GhCard name="Codex CLI" repo="openai/codex" desc="OpenAI's Rust coding agent. +22.8K stars. Goal mode expanded, Appshots on macOS." stars="90.5K" issues="5K+ issues" prs="409 PRs" lang="Rust" langColor="#dea584" />
+	<GhCard name="Cline" repo="cline/cline" desc="Autonomous VS Code agent with human-in-the-loop approval. Steady: +3.7K." stars="63.1K" issues="533 issues" prs="535 PRs" lang="TypeScript" langColor="#3178c6" />
+	<GhCard name="Goose" repo="block/goose" desc="Block's MCP-native agent, now vendor-neutral under the Agentic AI Foundation. +15.3K stars — past Aider." stars="48.9K" issues="173 issues" prs="173 PRs" lang="Rust" langColor="#dea584" />
+	<GhCard name="Aider" repo="Aider-AI/aider" desc="Terminal AI pair programmer, git-first workflow. Steady: +3.6K." stars="46.0K" issues="1.3K issues" prs="357 PRs" lang="Python" langColor="#3572A5" />
+	<GhCard name="Continue" repo="continuedev/continue" desc="Agents as GitHub status checks on every PR. Quietest quarter: +1.6K." stars="33.7K" issues="496 issues" prs="259 PRs" lang="TypeScript" langColor="#3178c6" />
+</div>
+
+Three things jump out.
+
+**Claude Code grew faster than anything else, in absolute terms.** +48.8K stars in eleven weeks — a 59% jump — moving it from #3 to #2. The growth came *through* an April quality wobble: Anthropic published a [postmortem on April 20](https://www.anthropic.com/engineering/april-23-postmortem) reverting a system-prompt change that had degraded Sonnet 4.6, Opus 4.6, and Opus 4.7 output. Owning the regression publicly seems to have cost them nothing.
+
+**Goose overtook Aider.** +15.3K stars for Goose against Aider's +3.6K. Block moved the project to the [Agentic AI Foundation](https://goose-docs.ai/) under the Linux Foundation — the vendor-neutral governance story is working, and it now has 500+ contributors.
+
+**Gemini CLI's growth collapsed — because Google killed it.** +6K stars, the second-slowest quarter on the board, and the reason is structural: Google [announced on May 19](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/) (at I/O 2026) that Gemini CLI is being replaced by **Antigravity CLI** as part of the Antigravity 2.0 platform. Free, Pro, and Ultra tier support ends **June 18, 2026**. Enterprise access continues. More on this below.
+
+## The scorecard: what we said in March
+
+We closed the March post with three predictions for "the next six months." It took eleven weeks to grade them.
+
+**"Multi-agent orchestration is becoming standard." — Correct.** Anthropic's May 7 event shipped exactly this for Claude Code: routines for automated workflows, rubric-based agent grading ("Outcomes"), and first-party [multi-agent orchestration](https://www.lennysnewsletter.com/p/code-with-claude-the-5-biggest-updates). Codex, Cursor, and Copilot all run sub-agent spawning in production. Orchestration went from frontier to table stakes in one quarter — exactly the trajectory MCP took in 2025.
+
+**"Instruction files are converging. Standardization is inevitable." — Half right.** [AGENTS.md](https://agents.md/) won the open ecosystem — 60K+ open-source projects carry one, and Codex, Cursor, Google's Jules, VS Code, and Copilot all read it. But the two biggest proprietary holdouts didn't move: Claude Code still wants CLAUDE.md, Gemini/Antigravity still wants GEMINI.md. Convergence happened *around* the leaders, not through them.
+
+**"Cloud agents are the real unlock." — Correct, faster than expected.** Background agents that take a task, work in a sandbox, and open a PR are now described as ["the new normal"](https://medium.com/@dave-patten/the-state-of-ai-coding-agents-2026-from-pair-programming-to-autonomous-ai-teams-b11f2b39232a) — Copilot's coding agent, Codex automations, and Cursor's cloud agents all deliver PRs asynchronously. The interesting fight moved one level up: who *schedules* the agents.
+
+And one prediction we didn't know we were making: *"The harness you pick today probably won't be the harness you're using in six months."* Windsurf users didn't even get six months — their editor was renamed under them.
+
+## What actually happened, tool by tool
+
+**Windsurf is gone — it's Devin Desktop now.** Cognition completed the absorption: [Devin Desktop v3.0.12 shipped June 2](https://docs.devin.ai/desktop/changelog), v3.0.21 added a migration command for former Windsurf installs two days later. The pricing moved upmarket with it: Devin's [Team plan runs $500/month for 250 ACUs](https://pensero.ai/blog/devin-pricing). The $15/mo Windsurf tier from our March matrix no longer exists as a product.
+
+**Google traded a community for a platform.** Gemini CLI — 105K stars, the #2 project on our March board — gets sunset for consumer tiers on June 18 in favor of [Antigravity CLI](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/), which promises faster execution and async workflows under the [Antigravity 2.0 umbrella from I/O 2026](https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-developer-highlights/). It's the second time Google has moved the free tier's cheese (March: Flash-only; June: new CLI entirely). The open-source repo's flattening star curve suggests the community noticed.
+
+**Anthropic had the busiest quarter.** April 17: Claude Design for visual outputs. April 20: the quality postmortem. May 7: routines, Outcomes, multi-agent orchestration, raised usage limits, and a persistent memory system called **Dreams**. May 21: Compliance API integrations for governance. And the model story: **Claude Fable 5** — the first of the new Mythos-class tier above Opus — [reached general availability in GitHub Copilot on June 9](https://releasebot.io/updates/github).
+
+**OpenAI kept Codex iterating fast.** [v0.134.0 added search across local conversation history (May 20), Appshots on macOS and an expanded Goal mode (May 21)](https://releasebot.io/updates/openai/codex), plus performance work in June. Codex CLI's +22.8K stars made it the third-fastest grower.
+
+**OpenCode shipped like a startup.** [v1.15.0 on May 15](https://github.com/anomalyco/opencode) rebuilt the event system on TypeScript + Effect, v1.17.3 followed June 10, and a beta desktop app appeared. Still 75+ model providers, still free BYOK, still the most-starred harness on GitHub at 173K.
+
+**Cursor went quieter.** A new Cursor 3 interface landed April 7 and Composer 2.5 [surfaced on the forum June 10](https://forum.cursor.com/c/announcements/11) — but nothing that changed its row in the matrix. After the credit-billing turbulence of 2025, a quiet quarter might be the strategy.
+
+## The feature matrix, June edition
+
+Changes from March in bold. One new column — memory — because that's where the frontier moved.
+
+| Tool | Interface | OSS | Models | MCP | Sub-agents | Cloud agents | Memory | Config file | Price |
+|------|-----------|-----|--------|-----|------------|--------------|--------|-------------|-------|
+| Claude Code | Terminal | Partial | Anthropic only | Yes | Yes | **GitHub Actions + routines** | **Dreams (built-in)** | CLAUDE.md | $20/mo |
+| Cursor | IDE | No | Multi | Yes | Yes | Yes | — | Rules | $20/mo |
+| Codex CLI | Terminal | Yes | OpenAI-focused | Yes | Yes | Yes (Web) | **Local history search** | AGENTS.md | ChatGPT sub |
+| OpenCode | **Terminal+IDE+Desktop (beta)** | Yes | 75+ providers | Yes | — | No | — | AGENTS.md | Free (BYOK) |
+| Aider | Terminal | Yes | 75+ providers | Community | No | No | — | — | Free (BYOK) |
+| Cline | VS Code | Yes | Any | Yes | No | No | — | .clinerules | Free (BYOK) |
+| **Antigravity CLI** *(was Gemini CLI)* | Terminal | **TBD** | Gemini only | Yes | No | Jules | — | GEMINI.md | **Tiered (June 18)** |
+| Goose | CLI+Desktop | Yes | Any | Yes | — | No | — | — | Free (BYOK) |
+| Copilot | IDE ext | No | **Multi (+ Fable 5)** | Yes | Yes | Yes | — | AGENTS.md | $10/mo |
+| **Devin Desktop** *(was Windsurf)* | IDE | No | Multi | Yes | No | **Yes (ACU)** | — | Rules | **$500/mo team** |
+
+For tools without built-in memory, a community layer is forming fast — projects like [agentmemory](https://github.com/rohitg00/agentmemory) hook into Claude Code, Copilot CLI, Cursor, and Gemini CLI with auto-capture and retrieval across sessions. Which brings us to the bigger picture.
+
+## How harnesses are evolving
+
+Three observations from the quarter, and they compound.
+
+**Capabilities are converging; identities aren't.** Every serious harness now has MCP, sub-agents, cloud execution, and an instruction file. What changed hands this quarter was *brands*: Windsurf → Devin Desktop, Gemini CLI → Antigravity, Goose → a foundation. When features converge, the differentiator becomes the model behind the harness and the trust around it — which is exactly why Anthropic publishing a postmortem mattered more than any feature it shipped.
+
+**Memory is the new sub-agents.** In March the frontier was orchestration; by June, orchestration is a checkbox and the race is persistence. Claude Code's Dreams is the first first-party memory system in a major harness, Codex added searchable local history, and the community is bolting memory onto everything else. The harness that remembers your codebase across sessions doesn't just save context tokens — it changes what "onboarding an agent" means. Expect a memory column on every comparison table by September.
+
+**The stack is splitting into harness and platform.** Google's Antigravity move makes the direction explicit: the CLI is no longer the product, it's the entry point to a platform that schedules agents, grades outcomes, and bills for compute. Anthropic's routines + Outcomes combo is the same shape. Devin's ACU pricing is the same shape. The 2025 question was "which agent writes the best code?" The mid-2026 question is "which platform do you trust to run agents while you're not watching?"
+
+## What's next
+
+Three predictions to grade in September:
+
+**Memory becomes portable, or becomes lock-in.** Either an open standard for agent memory emerges the way AGENTS.md did for instructions, or Dreams-style proprietary memory becomes the stickiest switching cost a harness has ever had. We expect both camps to fight it loudly.
+
+**The Antigravity migration is the quarter's biggest churn event.** 105K stars' worth of Gemini CLI users get repotted on June 18. Some will land on Antigravity; the BYOK crowd will scatter to OpenCode and Goose. Watch OpenCode's star curve in July.
+
+**Claude Code holds #2 and challenges OpenCode's growth rate.** Fable 5 plus Dreams plus routines is the strongest single-quarter feature stack any harness has shipped. The constraint is the one that's been there all year: Anthropic models only.
+
+The March post ended by saying switching costs are low and the markdown is portable. Eleven weeks on, both are still true — but the platforms are working hard to change it. Pick your harness for the quarter, not the year. And keep your instructions in AGENTS.md.
