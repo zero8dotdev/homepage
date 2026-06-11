@@ -17,15 +17,15 @@
 
 <svelte:head>
 	<title>Writing · zero8.dev</title>
-	<meta name="description" content="Writing on developer tools, AI memory, agent systems, and the craft of software engineering." />
+	<meta name="description" content="Essays on developer tools, AI memory, agent systems, email deliverability, and the craft of software engineering — written by Ashutosh Tripathi." />
 	<link rel="canonical" href="{siteConfig.url}/blog" />
 	<meta property="og:title" content="Writing · zero8.dev" />
-	<meta property="og:description" content="Writing on developer tools, AI memory, agent systems, and the craft of software engineering." />
+	<meta property="og:description" content="Essays on developer tools, AI memory, agent systems, email deliverability, and the craft of software engineering — written by Ashutosh Tripathi." />
 	<meta property="og:url" content="{siteConfig.url}/blog" />
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content={siteConfig.ogImage.url} />
 	<meta name="twitter:title" content="Writing · zero8.dev" />
-	<meta name="twitter:description" content="Writing on developer tools, AI memory, agent systems, and the craft of software engineering." />
+	<meta name="twitter:description" content="Essays on developer tools, AI memory, agent systems, email deliverability, and the craft of software engineering — written by Ashutosh Tripathi." />
 	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
 
