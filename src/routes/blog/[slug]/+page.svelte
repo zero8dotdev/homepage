@@ -5,6 +5,11 @@
 
 	let { data }: { data: PageData } = $props();
 
+	// Keep <title> within ~60 chars: drop the brand suffix when it would
+	// push past the limit and get truncated in search results.
+	const titleWithBrand = `${data.meta.title} · zero8.dev`;
+	const pageTitle = titleWithBrand.length <= 60 ? titleWithBrand : data.meta.title;
+
 	const postUrl = `${siteConfig.url}/blog/${data.meta.slug ?? ''}`;
 	const postImage = data.meta.image
 		? `${siteConfig.url}${data.meta.image}`
@@ -12,17 +17,17 @@
 </script>
 
 <svelte:head>
-	<title>{data.meta.title} · zero8.dev</title>
+	<title>{pageTitle}</title>
 	<meta name="description" content={data.meta.description} />
 	<link rel="canonical" href={postUrl} />
-	<meta property="og:title" content="{data.meta.title} · zero8.dev" />
+	<meta property="og:title" content={pageTitle} />
 	<meta property="og:description" content={data.meta.description} />
 	<meta property="og:url" content={postUrl} />
 	<meta property="og:type" content="article" />
 	<meta property="og:image" content={postImage} />
 	<meta property="og:image:width" content="{siteConfig.ogImage.width}" />
 	<meta property="og:image:height" content="{siteConfig.ogImage.height}" />
-	<meta name="twitter:title" content="{data.meta.title} · zero8.dev" />
+	<meta name="twitter:title" content={pageTitle} />
 	<meta name="twitter:description" content={data.meta.description} />
 	<meta name="twitter:image" content={postImage} />
 	{#if data.meta.tags?.length}
