@@ -1,8 +1,12 @@
 allowBuilds:
-  core-js: set this to true or false
-  esbuild: set this to true or false
-  protobufjs: set this to true or false
-  sharp: set this to true or false
-  workerd: set this to true or false
+  core-js: true
+  esbuild: true
+  protobufjs: true
+  sharp: true
+  workerd: true
 onlyBuiltDependencies:
+  - core-js
   - esbuild
+  - protobufjs
+  - sharp
+  - workerd
