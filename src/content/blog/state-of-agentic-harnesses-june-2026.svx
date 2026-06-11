@@ -1,6 +1,6 @@
 ---
 title: "State of Agentic Harnesses — June 2026"
-description: "Eleven weeks after our March snapshot: the leaderboard reshuffled, Windsurf became Devin Desktop, Gemini CLI is being sunset for Antigravity — and our three predictions, scored."
+description: "March predictions scored: the leaderboard reshuffled, Windsurf became Devin Desktop, Gemini CLI sunset for Antigravity. Where harnesses are headed."
 date: "2026-06-12"
 featured: true
 draft: false
