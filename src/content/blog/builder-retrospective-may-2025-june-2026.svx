@@ -1,0 +1,245 @@
+---
+title: "Builder Retrospective: May 2025 → June 2026"
+description: "I mined 2,200+ AI-coding sessions across four agents to see what a year of building actually taught me — mistakes, fixes, and the patterns that stuck."
+date: "2026-06-11"
+featured: true
+draft: false
+tags: ["retrospective", "agentic-ai", "claude-code", "smriti", "product", "developer-tools"]
+---
+
+Every conversation I've had with a coding agent since May 2025 is sitting in SQLite on my machine — 2,269 sessions across Claude Code, Cursor, Codex CLI, and Copilot. [Smriti](https://github.com/zero8dotdev/smriti), the memory layer I've been building, ingests all of them. So I ran an experiment: what happens if I point a fleet of analysis agents at my own history and ask *what did this person actually learn?*
+
+This post is the answer. Twenty agents mined session titles, my own messages (the corrections, the frustrations, the "no, do it this way" moments), and the git history of twenty-plus repos. What came back was more honest than any retrospective I would have written from memory.
+
+## The arc
+
+The single clearest signal in the data is a **platform shift with a velocity step-change**. The Cursor era ran May 2025 → January 2026: ~480 sessions, ~22,000 messages, concentrated in a handful of client projects. It ends almost to the day the Claude Code era begins (February 25, 2026) — which produced ~160,000 messages in 3.5 months across twenty-plus active repos. Roughly a **10× jump in throughput**, and a different *kind* of work: less autocomplete-assisted typing, more delegating whole tasks and reviewing outcomes.
+
+Within the heavy window (Feb–Jun 2026), five month-sized phases show up across every project simultaneously:
+
+- **Late Feb — Foundations.** Deep architecture study, fixture-based testing, first CI/release pipelines. The habit that defines everything after: *write the formal plan first, store it in memory, then hand it to the agent.*
+- **March — Systematization.** Multi-step workflows compress into named slash-commands; the SEO blitz pattern emerges (JSON-LD + canonicals + llms.txt in a day); SvelteKit becomes the default stack; content strategy shifts to search-demand-first.
+- **April — Infrastructure.** First production GCP deployment (Terraform + Coolify), a 29-domain Cloudflare Worker architecture, automated SEO reporting crons — and a rule learned twice: *eliminate fragile intermediaries; direct primitives beat vendored SDKs.*
+- **May — Hardening.** A background daemon replaces per-invocation hooks (2s cold start → 5ms socket poke), deliberate scope cuts to reach PMF faster, compliance-native schema design.
+- **June — Product-led velocity.** Analytics pulses to founders every Monday, Search-Console-data-driven fixes instead of guesses, demo accounts as sales tools, reconciliation features driven by real user feedback loops.
+
+The meta-pattern, visible in contract work, client sites, and my own products alike: **reactive → anticipatory → systematic.** Fix-after-rejection became self-validate-before-submit became feedback-loops-embedded-in-the-tool-itself.
+
+The six sections below are the full excavation — expand whichever practice you care about.
+
+<details>
+<summary><strong>Frontend</strong> — from page-builder to systems thinker</summary>
+
+My frontend practice shifted from reactive page-building to system-driven development. I went from inheriting a WordPress site and a Next.js app to owning multiple SvelteKit deployments with coherent design-token systems and component architectures I can defend. The recurring failure mode — the thing I fixed most often — was design-token drift: hardcoded values sneaking back in through new routes.
+
+### What I learned
+
+**Design tokens are only useful if every route is audited at merge time** *(Apr–May)*. Two projects landed token systems and immediately accumulated drift. On zero8.dev I spent a 1,305-message session hunting pages that were "defaulters for not using design tokens." Introducing a token system is step one; enforcing it on every new route is the actual work.
+
+**mdsvex silently poisons internal links with `rel=nofollow`** *(Jun)*. mdsvex hardcodes `remark-external-links` on all absolute URLs — including same-domain hrefs. Invisible until a Google Search Console crawl report surfaced it months after launch. Fix: a custom rehype plugin that strips `nofollow` from internal domains. Third-party markdown processors can mutate your HTML in SEO-consequential ways no browser inspection reveals.
+
+**Browser cache partitioning killed the shared-CDN mental model** *(Apr)*. Chrome 86+, Firefox, and Safari partition HTTP cache by top-level site. For a multi-domain network, separate registrable domains force per-domain cache misses on every asset — subdomains are required to restore shared bundle caching.
+
+**OG images are crawler-time, not viewer-time** *(May)*. Social platforms cache OG images at share-time; the viewer's dark/light preference is irrelevant. Optimize for the crawler's one request, not the user's theme.
+
+**Placeholder sections must not ship visible** *(May)*. A testimonials block went live with placeholder copy and needed a separate hiding commit days later. Render sections only when real data exists.
+
+**Notification systems decompose into cooldown / preferences / dispatcher** *(Jun)*. Splitting "send an email" into three modules — duplicate-send prevention, per-user opt-in state, template routing — let five phases ship in one PR without tangling.
+
+### Mistakes that taught me
+
+- **Global CSS silently overriding page styles.** A homepage dark background lost to a global rule; only visual cross-page testing caught it. Global stylesheets are now suspects whenever a page looks right in isolation but wrong in context.
+- **A canonical-origin redirect without a host guard redirects `http://localhost`.** Hooks that inspect protocol must verify they're on a production host. Two sequential commits in one session tell that story.
+- **Date-range parsing duplicated across three pages.** Same bug fixed three times before I extracted the shared utility.
+- **Components before content architecture.** On a client portfolio site I started building components before the narrative structure was settled. Significant rework. Content hierarchy first, then components.
+
+### How my patterns evolved
+
+**Feb–Mar:** building features as requested, framework choices by instinct. **April:** token systems land, but treated as one-time migrations rather than ongoing enforcement. **May:** the pattern crystallizes — research-first → design system → implement → review → ship; token drift becomes a named problem instead of a mystery layout bug. **June:** `/code-review` is a formal merge gate, and Search Console data surfaces frontend bugs (nofollow links, duplicate origins, thin tag pages) that no local inspection would ever catch. Frontend infrastructure — tokens, SEO signals, caching strategy, consent — now gets the same rigor as backend code.
+
+</details>
+
+<details>
+<summary><strong>Backend</strong> — from "works" to "fails predictably"</summary>
+
+My backend practice shifted from exploratory, monolithic scripting toward layered, contract-first design — from "build a thing that works" to "build a thing that fails predictably, stays debuggable, and evolves without surgery." The most formative pressure came from production incidents I wouldn't have scheduled voluntarily.
+
+### What I learned
+
+**sqlite-vec deadlock is a constraint, not a gotcha** *(Feb)*. Combining vector-table queries with JOINs in one SQL statement hangs indefinitely. The only safe pattern is two-step: query the vector table alone for ids, then a separate lookup. I internalized this from an architecture deep-dive before hitting it in production — the study paid for itself.
+
+**JOIN multiplication silently inflates aggregations** *(Jun)*. A LEFT JOIN to a prefix table before aggregating orders duplicated each order once per prefix — a partner with 7 prefixes reported 7× revenue. Subquery the aggregation before joining dimensions. Obvious in hindsight, invisible in query review.
+
+**Write-only tables are not features** *(Mar)*. I built four metadata sidecar tables that populated on every ingest and had no read path. The data sat unused for weeks. No metadata table ships without a recall design.
+
+**Agent log formats drift silently and break parsers** *(Jun)*. Codex added a wrapper envelope; Copilot switched to snapshot JSONL; Cursor's real chats turned out to live in a SQLite database, not the project folder everyone greps. `Sessions found: N, ingested: 0` with `--force` means format drift — check one raw file before debugging anything else.
+
+**Cold-start cost is an architectural signal** *(May)*. Two runtime processes spawned by a per-conversation hook had silently accumulated 400+ CPU-hours each. The fix wasn't tuning — it was a long-lived daemon with an IPC socket, turning a 2-second cold start into a 5ms poke. When a hook is hot enough, per-invocation startup is the wrong model, period.
+
+**Pre-compute authorization state; don't check at request time** *(Jun)*. Request-time fine-grained-authorization checks over an org hierarchy don't scale. Write org changes to an event outbox, sync tuples to the FGA store asynchronously, and request latency never sees the authorization graph.
+
+**Serverless needs batched writes** *(Jun)*. One UPDATE per row across 1,000+ orders hit Cloudflare Worker CPU limits in production. Classify in memory, batch in groups of 50, skip unchanged rows: O(changed) instead of O(all).
+
+### Mistakes that taught me
+
+- **Building the aspirational feature, not the minimal one.** An Elasticsearch parallel-write spike produced 600-line mixed-concern functions that a later refactor had to untangle. Ship what solves today's problem.
+- **Stale inline test data hides format drift.** Parser tests with hand-crafted data kept passing after the real formats changed. Fixture files from real logs are the only honest approach.
+- **Early returns that silently drop valid data.** A guard clause at the top of an event handler short-circuited before the write. I now trace the full execution path before adding any early return.
+- **`await` in loops.** A rollover routine awaited 100+ employees sequentially. `Promise.all()` exists; domain logic doesn't exempt itself from N+1.
+
+### How my patterns evolved
+
+**February:** monolithic ingest functions mixing parsing, persistence, and speculative writes. **Late February:** a 4-layer architecture — pure parsers, resolver, store gateway, orchestrator — articulated and shipped. **March–April:** debugging gets a protocol (logs → raw artifacts → DB query → fix → verify) instead of instinct. **May:** redesigning for operational reality, not feature correctness — the daemon came from reading a signal, not a roadmap. **June:** contract precision everywhere — typed error taxonomies, dual revenue metrics so reconciliation is unambiguous, `NULL` explicitly handled in aggregate filters. From "the happy path works" to "the contract is specified at every edge."
+
+</details>
+
+<details>
+<summary><strong>Security</strong> — from afterthought to attacker's-eye view</summary>
+
+Security moved from reactive and ad hoc — retrofitting auth after deployment, pasting secrets into chat — to deliberate: secrets storage decided upfront, PoC exploits built to earn buy-in, and the recognition that "it's bound to the URL" is not a security argument. The gaps kept appearing, but the interval between *shipped* and *fixed* shortened dramatically.
+
+### What I learned
+
+**Internal APIs need auth before first deploy, not after** *(Mar)*. An internal service shipped to production with endpoints unprotected and Swagger docs publicly readable. One hardening commit fixed it — but it shaped how every later service was born.
+
+**PoC exploits are the only currency that buys security buy-in** *(Apr)*. I reported an exposed client-ID finding and was told URL-binding made it safe. It didn't — third-party scripts on the same origin can intercept the flow. The report changed nothing; the working clickjacking demo changed the conversation immediately. Model the attacker's position, not the intended use.
+
+**Secrets belong in the OS keychain, not env files** *(Mar)* — with a corrected nuance: keychain libraries provide *storage*, not access control. Any same-user process reads the credential without a biometric prompt. That's correct behavior for cron automation, but I had documented it wrong and had to fix the README.
+
+**Email authentication is a trust chain, not DNS configuration** *(Jun)*. Setting up DKIM + bounce records properly meant understanding how aggregate DMARC reports flow from mailbox providers back to senders — who vouches for what, and where it breaks.
+
+**OAuth tokens for unattended crons must self-refresh** *(Apr–Jun)*. 24-hour tokens plus a scheduled sync equals silent failure. `getValidToken()` — check expiry, refresh via client-credentials, then call — turned token lifetime from an incident class into a non-event.
+
+### Mistakes that taught me
+
+- **Live tokens pasted into agent sessions — twice.** A GitHub PAT in April, an infrastructure root token in June. Anything pasted into an AI session is logged — in the transcript, the tool-call history, potentially a cloud backend. Both were rotated, but the recurrence is the lesson: the fix is structural (env vars, vaults), not behavioral ("I'll rotate it later").
+- **Assuming domain-binding was a mitigation.** Building the actual exploit showed third-party scripts on the bound domain aren't constrained at all. The attacker's position would have caught this in five minutes.
+
+### How my patterns evolved
+
+**Feb–Mar:** security as incident response; services ship without auth. **April:** offensive thinking arrives (PoC exploits) at the same time two secret leaks make the cost of ad hoc handling concrete; SOPS enters the plan, keychain replaces `.env`. **May–Jun:** security designed in — secrets as required platform config from day one, OIDC for CI instead of long-lived keys, service accounts instead of manual key passing. The one habit that didn't fully close: secrets still leaked into a debug session in June. The remaining gap I've named but not yet standardized: a pre-deployment security checklist for every new service.
+
+</details>
+
+<details>
+<summary><strong>SEO &amp; GEO</strong> — from launch checklist to engineering discipline</summary>
+
+SEO went from a thing you audit after launch to a continuous discipline with its own data source (Search Console), its own backlog (structured epics), and its own automated reporting. By June I was filing SEO bugs with linked evidence and closing them one atomic commit per root cause.
+
+### What I learned
+
+**GEO is day-one infrastructure** *(Mar)*. The same session that added RSS and security headers added `llms.txt`, explicit Allow rules for AI crawlers in robots.txt, and four JSON-LD schema types in four sequential commits. Optimizing for AI search engines alongside Google is no longer a phase-2 idea.
+
+**Origin multiplicity silently inflates Search Console 4×** *(Jun)*. All four origin variants (http/https × bare/www) returned 200 with no redirect — GSC saw every page up to four times, producing 74 canonical flags. One 301 redirect in `hooks.server.ts`, scoped to production hosts, cleaned up months of noise.
+
+**Tag pages with one incoming link are functionally orphaned** *(Jun)*. 27 of 37 tag pages had exactly one internal link. Making tag chips link properly and adding related-posts sections gave every tag page 3+ contextual links per post published.
+
+**Title length must be computed with the brand suffix** *(Jun)*. Four post titles broke 60 characters once `· zero8.dev` was appended. The fix is programmatic: compute combined length, conditionally drop the suffix, apply to `<title>`, `og:title`, and `twitter:title` together.
+
+**Automate the monitoring loop or drown** *(Apr–Jun)*. At 29 domains, manual GSC checking is impossible. A twice-weekly GitHub Actions cron pulls Search Console data via OAuth refresh token and emails a React Email digest — CTR regressions and indexing gaps surface automatically. FAQ schema is generated from each page's actual top-ranked queries, and title rewrites are driven by impression data, not guesses.
+
+**Same-owner domain networks are a PBN footprint** *(Jun)*. Twenty-nine domains sharing an owner, a Worker IP, and a template is the textbook private-blog-network signature. Cross-domain interlinking was ruled out; safe authority comes from entity citations (Wikipedia/Wikidata/OSM) and Google Business Profiles instead.
+
+### Mistakes that taught me
+
+- **Redirect chains and robots.txt spam rules discovered in production via GSC** — reactively. Robots correctness and redirect depth belong on the deployment checklist, not the incident queue.
+- **Trusting the agent's claim that a skill was loaded.** It confidently wasn't. After installing tooling, restart the session and verify before proceeding.
+- **`ogtest.jpg` survived to production.** Dev placeholder names are sticky; audit meta tags immediately after first deploy.
+
+### How my patterns evolved
+
+**March:** reactive — 15+ issues fixed in a two-hour, 28-commit burst on a site already live. Right instinct, wrong timing. **April:** SEO infrastructure designed before first page ships (JSON-LD, hreflang, canonical strategy), and the reporting layer automated. **May–June:** Search Console becomes the primary signal — exports read, "Discovered – not indexed" triaged, one GitHub issue per root cause, one commit per fix referencing the exact GSC flag it resolves. In March I fixed SEO issues; by June I was *filing* them, triaging by impact, and closing with linked evidence.
+
+</details>
+
+<details>
+<summary><strong>Deployment &amp; CI/CD</strong> — from guided ritual to invisible infrastructure</summary>
+
+At the start of this period I was asking what CLI flags meant and learning how to undo a wrong commit. By June, deployments were single-word messages, individual containers were selectively redeployed to minimize blast radius, and CI was an orchestration layer rather than a test runner.
+
+### What I learned — deployment
+
+**Terraform state needs locking; GitHub is not a backend** *(Apr)*. Concurrent writes corrupt state silently, and git provides no atomic locking primitive. GCS/S3 are the answer at any scale.
+
+**Single-VM Docker Compose + Coolify beats Kubernetes for a tiny team** *(Apr)*. The deciding design goal was cloud-portability: the same stack moves from GCP to any provider or bare metal without re-engineering.
+
+**Read serverless resource limits before shipping, not after** *(Jun)*. One-UPDATE-per-row hit Cloudflare's CPU limit (Error 1102) in production with real user data. Batch, use `waitUntil()`, instrument before launch.
+
+**`gcloud compute ssh` is a wrapper, not SSH** *(Apr–May)*. IAP tunneling, metadata-injected keys, OS Login — understanding the underlying model turned recurring confusion into working knowledge.
+
+**Migrations need coordinated backfills** *(Jun)*. Schema change + backfill from raw JSON + reclassify pass, as one unit. Shipping the schema alone would have silently broken historical aggregations.
+
+**Audit your scaffolding** *(Apr)*. A framework migration carried a deprecated adapter along; only a blocking `pnpm audit` habit caught it. Multi-tenant topologies deserve the same scrutiny — committing to one Worker serving 29 domains *before* checking the adapter's sitemap/prerender support cost real invocations later.
+
+### What I learned — CI/CD
+
+**Release workflows must be tag-triggered** *(Feb)*. Built the pipeline, merged to main, nothing fired. The working design: test matrix on push → auto-tag on main → release on tag. The release artifact is tag + notes + changelog as a unit.
+
+**Scope commit linting to the PR range** *(Feb)*. Linting all history fails every PR that touches old commits — and clean conventional ranges are what make automated semver computable downstream.
+
+**OIDC eliminates long-lived cloud credentials in CI** *(Apr)*. The Lambda pipeline used GitHub Actions OIDC from day one — no access keys stored as secrets. Now my default.
+
+**Turborepo caching makes monorepo CI tractable** *(Jun)* — with one trap: non-deterministic tasks must opt out with `"cache": false` or you get false cache hits that silently skip real work.
+
+**Pin everything** *(Apr–Jun)*. An unpinned setup action broke CI with no error pointing at version drift; pinning the package manager itself (`pnpm` via `.npmrc`) ended a class of local-vs-CI surprises. Cross-platform CI also surfaces runtime gotchas unit tests never will (`__dirname` vs `import.meta.dir` on Bun; submodules are never initialized implicitly).
+
+### Mistakes that taught me
+
+- **Two database containers on one VM** — caught only by questioning the Compose file instead of accepting scaffolding.
+- **Shell metacommands inside YAML-embedded scripts** (`\gexec`) silently do nothing after environment substitution. Explicit SQL or separate scripts.
+- **Trusting the editor over the build tool.** Typecheck passed while the LSP showed stale red. The authoritative tool wins; the editor caches.
+
+### How my patterns evolved
+
+**Feb–Mar:** agent as teacher — every step potentially irreversible, every flag explained. **April:** deliberate tradeoff reasoning (k8s vs Compose, state backends, OIDC) and the first CI built *before* features rather than after. **May–Jun:** deployment as commodity — "deployed?" / "yes, deploy" — while CI grows into architecture: dependency-graph builds, scheduled analytics workflows, version state surfaced in response headers instead of checked manually. The agent shifted from teacher to executor; I set the strategy.
+
+</details>
+
+<details>
+<summary><strong>Automation &amp; agent workflows</strong> — the discipline that compounds everything else</summary>
+
+By June I had stopped thinking of Claude Code as a smart terminal and started treating it as the orchestration surface for a toolchain: memory (smriti), email (gws), analytics (PostHog MCP), research (parallel-cli), quality gates (/code-review), and GitHub CLI. Every tool was added reactively — when the absence hurt — and composed into a unit.
+
+### What I learned
+
+**Pre-written plans eliminate mid-session drift** *(Feb)*. Sessions that started with "Implement the following plan:" — a markdown doc with acceptance criteria, phased steps, known risks, stored in memory first — had almost no course corrections. Sessions that started with a vague goal drifted. This single habit is the highest-leverage thing I changed all year.
+
+**Workflow files beat agent memory** *(Feb)*. On a contract engagement writing evaluation baselines for coding agents, my first message was a pointer to a workflow file, not inline instructions. Agent memory across sessions is unreliable; files are durable, reviewable, and version-controlled.
+
+**Feedback loops only compound if you embed them in the tool** *(Mar)*. This was the contract work's real lesson. Early on, every reviewer rejection got fixed in-session — and the same mistake recurred on the next task. The shift: after each rejection, *rewrite the skill file itself* from the feedback. Then a second-order move: a self-check pass (a named "reviewer-eye" step) run before every submission, applying the accumulated rules proactively. By late March the rejection-fix loop had inverted into an anticipate-validate loop, and eventually the skill could ingest pasted feedback and rewrite its own instructions. Reactive → anticipatory → systematic, in one arc.
+
+**Dogfooding produces honest quality signals faster than tests** *(Feb–Mar)*. Using my own memory tool on its own development surfaced two quality regressions (write-only tables, fragment-level recall) faster than any test suite — because I was the one burning on them.
+
+**Eliminate fragile intermediaries** *(Apr–May)*. A vendored CLI inside a sandboxed VM broke on proxy interception; pure curl + jq fixed in ten minutes what the SDK route lost hours to. A per-invocation hook with a 2s cold start became a daemon with a 5ms socket poke. A remote agent environment failed twice on multi-repo work that local execution handled trivially. Same shape each time: the intermediary layer *is* the failure point.
+
+**Direct primitives for everything** *(Jun)*. Gmail via an authenticated CLI (works in any bash context, no interactive auth), fan-out web research with multiple parallel queries, analytics queried inside the session. Email became an upstream data source: search inbox → parse → create expense entries; search rejections → sync to the tracker.
+
+### Mistakes that taught me
+
+- **Generated output committed to git.** An export directory full of generated knowledge files ended up in the repo and needed a history rewrite. Decide config-vs-artifact at project start.
+- **Recall fell back to raw SQL mid-session** because embeddings hadn't covered recent sessions — a coverage gap I only found by being my own user.
+- **Sunk hours on the wrong abstraction.** Two failed approaches to make a vendored SDK work inside a VM before the ten-minute direct fix. The sunk cost was the lesson.
+
+### How my patterns evolved
+
+**Feb:** externalize process into files — workflow docs, plans-before-execution, a CLAUDE.md that teaches the agent its own tooling. **Mar:** compress multi-step workflows into single slash-commands; add named self-review passes; run an hourly ingest loop as a daemon stopgap. **Apr–May:** replace every fragile intermediary with a direct primitive. **Jun:** the whole toolchain operates as one composed unit — none of it planned as a stack, each piece added when a gap hurt, all of it now load-bearing.
+
+</details>
+
+## The product lens
+
+Four products were being built or grown through this period, and the same product instincts kept being re-learned until they became defaults:
+
+**Positioning is a decision, not a description.** My memory tool went from "AI memory CLI" to *"help teams make fewer mistakes by learning from each other's coding sessions"* — an articulation forced by an architecture discussion, not a marketing exercise. My own positioning went from "Frontend Engineer" to "Co-founder & CTO." An HRMS went from generic feature checklist to *compliance-native product for tier-2 Indian SMEs* — where Hindi UI, statutory compliance, and Tally export aren't localization features; they're the product. When positioning is vague, every feature decision drifts.
+
+**Scope cuts are shipped decisions.** API-only integration over webhooks, explicitly, to reach PMF faster. A mid-design "are we overbuilding this?" self-check that pulled a team feature back to single-developer-first. The anti-pattern showed up too: a "we'll take the call later" on an architecture boundary that cost real time precisely because it was never decided.
+
+**Trust features beat clever features.** An order-attribution engine only became trustworthy when the dashboard showed *which signal matched and with what confidence*. When users validate your numbers against an external export, evidence columns and audit trails are product features, not debug output. Same lesson from a seeded demo account (nine layers of realistic data) doing more sales work than any pitch.
+
+**Decisions start from instrumented reality.** The June pattern that ties it together: automated Monday-morning analytics pulses to founders, Search Console exports turned into triaged epics, cost dashboards answering runway questions. Product decisions moved from memory and intuition to instrumented evidence — the same shift, in the same months, that happened to my engineering.
+
+## How this post was made
+
+The pipeline: [Smriti](https://github.com/zero8dotdev/smriti) ingested 2,269 sessions from four coding agents (including recovering 482 Cursor sessions from its internal SQLite storage — a parser adventure of its own), correlated them with git history, and a workflow of twenty analysis agents extracted dated learnings, mistakes, and pattern evolutions per project, then synthesized them per category. The v0.8 release that came out of dogfooding this very experiment — cross-agent capture daemon, plus all four agent parsers fixed — is [on GitHub](https://github.com/zero8dotdev/smriti/releases/tag/v0.8.0).
+
+If you've got a year of agent sessions sitting on your disk: they remember more about your growth than you do. Mine them.
