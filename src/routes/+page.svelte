@@ -38,14 +38,14 @@
 	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
 
-<HomePage active="writing">
+<HomePage active="home">
 	<AboutBlock>
 		{#each about.paragraphs as para}
 			<p>{para}</p>
 		{/each}
 	</AboutBlock>
 	<ProjectList projects={projectItems} />
-	<WritingList posts={postItems} />
+	<WritingList posts={postItems} viewAllHref="/blog" />
 
 	<section class="contact" id="contact">
 		<p class="contact-kicker">contact</p>
