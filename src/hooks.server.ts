@@ -3,7 +3,10 @@ import type { Handle } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }) => {
 	// Canonical origin: 301 http → https and www → apex, so crawlers see a
 	// single origin instead of four 200-serving variants of every page.
-	if (event.url.protocol === 'http:' || event.url.hostname === 'www.zero8.dev') {
+	// Scoped to zero8.dev hosts so local dev (http://localhost) is untouched.
+	const host = event.url.hostname;
+	const onProdHost = host === 'zero8.dev' || host.endsWith('.zero8.dev');
+	if (onProdHost && (event.url.protocol === 'http:' || host === 'www.zero8.dev')) {
 		const target = new URL(event.url);
 		target.protocol = 'https:';
 		if (target.hostname === 'www.zero8.dev') target.hostname = 'zero8.dev';
