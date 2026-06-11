@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { TopNav, BlogHeader, BlogBody, Footer } from '$lib/design/lib';
+	import { TopNav, BlogHeader, BlogBody, Footer, PostListItem } from '$lib/design/lib';
 	import { siteConfig } from '$lib/data/site';
 	import type { PageData } from './$types';
 
@@ -50,6 +50,16 @@
 	<BlogBody>
 		{@html data.html}
 	</BlogBody>
+	{#if data.related.length}
+		<section class="related" aria-label="Related posts">
+			<h2 class="related-label">More writing</h2>
+			<ul class="related-list">
+				{#each data.related as p}
+					<PostListItem date={p.date} title={p.title} read={p.readTime} href="/blog/{p.slug}" />
+				{/each}
+			</ul>
+		</section>
+	{/if}
 </main>
 <Footer />
 
@@ -63,6 +73,18 @@
 	@media (max-width: 640px) {
 		.column { padding: 48px 20px 64px; }
 	}
+
+	/* ── Related posts ── */
+	.related { margin-top: 64px; }
+	.related-label {
+		font-family: var(--font-sans);
+		font-size: 22px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: var(--fg);
+		margin: 0 0 var(--s-5);
+	}
+	.related-list { list-style: none; margin: 0; padding: 0; }
 
 	/* ── Table ── */
 	:global(.body table) {

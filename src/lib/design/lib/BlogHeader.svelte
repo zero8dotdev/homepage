@@ -11,7 +11,7 @@
 <header class="header">
   {#if tags.length}
     <div class="tags">
-      {#each tags as t}<Tag>{t}</Tag>{/each}
+      {#each tags as t}<Tag href="/blog/tag/{t}">{t}</Tag>{/each}
     </div>
   {/if}
   <h1>{title}</h1>

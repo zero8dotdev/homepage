@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { render } from 'svelte/server';
-import { postSchema } from '$lib/data/posts';
+import { getAllPosts, postSchema } from '$lib/data/posts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -18,9 +18,22 @@ export const load: PageServerLoad = async ({ params }) => {
 		}
 
 		const { body } = render(post.default);
+
+		// Related posts: most shared tags first, recency as tiebreaker.
+		const related = getAllPosts()
+			.filter((p) => p.slug !== params.slug)
+			.map((p) => ({
+				...p,
+				shared: p.tags.filter((t) => result.data.tags.includes(t)).length
+			}))
+			.sort((a, b) => b.shared - a.shared || +new Date(b.date) - +new Date(a.date))
+			.slice(0, 3)
+			.map(({ slug, title, date, readTime }) => ({ slug, title, date, readTime }));
+
 		return {
 			html: body,
-			meta: { ...result.data, slug: params.slug }
+			meta: { ...result.data, slug: params.slug },
+			related
 		};
 	} catch (e) {
 		if (e && typeof e === 'object' && 'status' in e) throw e;
