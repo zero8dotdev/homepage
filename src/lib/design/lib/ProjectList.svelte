@@ -1,7 +1,7 @@
 <script>
   import ProjectListItem from './ProjectListItem.svelte';
-  export let title = 'Selected work';
-  /** @type {Array<{status: 'live' | 'wip', name: string, tags: string, desc: string}>} */
+  export let title = 'Work';
+  /** @type {Array<{status: 'live' | 'wip', name: string, tags: string, desc: string, href?: string | null, badge?: string}>} */
   export let projects = [];
 </script>
 
@@ -9,7 +9,7 @@
   <h2>{title}</h2>
   <ul>
     {#each projects as p}
-      <ProjectListItem status={p.status} name={p.name} tags={p.tags} desc={p.desc} />
+      <ProjectListItem status={p.status} name={p.name} tags={p.tags} desc={p.desc} href={p.href} badge={p.badge} />
     {/each}
   </ul>
 </section>

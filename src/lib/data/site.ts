@@ -79,6 +79,7 @@ export type Project = {
 	href: string | null;
 	status: ProjectStatus;
 	featured: boolean;
+	badge?: string;
 };
 
 export const projects: Project[] = [
@@ -93,10 +94,20 @@ export const projects: Project[] = [
 	},
 	{
 		name: 'Avkash',
-		description: "India's open-source HR platform: leave management, team policies, and Slack integration for modern workplaces. Self-hostable, with Razorpay billing and row-level security built in.",
+		description: 'Open-core HR API for teams that need real control — leave, attendance, shifts, people, and fine-grained field-level access. Self-hostable.',
 		role: 'Product, design, architecture, development',
-		stack: ['Next.js 15', 'TypeScript', 'Supabase', 'Slack API', 'Razorpay', 'Tailwind CSS'],
+		stack: ['Bun', 'Hono', 'Drizzle', 'PostgreSQL', 'OpenFGA', 'BullMQ', 'TypeScript'],
 		href: 'https://github.com/zero8dotdev/avkash',
+		status: 'live',
+		featured: true,
+		badge: 'v2.0'
+	},
+	{
+		name: 'tabstack-cli',
+		description: 'A Bun/TypeScript CLI for the Tabstack AI API — built live on stream, in a single sitting. Extract any page as structured JSON, run multi-source research, drive browser automation, and pipe everything through standard Unix tools. Includes a self-installing agent skill and a local credit tracking system.',
+		role: 'Concept, design, architecture, development',
+		stack: ['Bun', 'TypeScript', 'SSE', 'NDJSON'],
+		href: 'https://tabstack.zero8.dev',
 		status: 'live',
 		featured: true
 	},

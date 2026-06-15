@@ -2,8 +2,8 @@
 	import { TopNav, Footer, Kicker } from '$lib/design/lib';
 	import { projects, siteConfig } from '$lib/data/site';
 
-	const current = projects.filter((p) => p.featured);
-	const past = projects.filter((p) => !p.featured);
+	const current = projects.filter((p) => p.status === 'live');
+	const past = projects.filter((p) => p.status !== 'live');
 </script>
 
 <svelte:head>
@@ -33,6 +33,9 @@
 			<article class="project">
 				<div class="meta">
 					<span class="status-pill live">● live</span>
+					{#if project.badge}
+						<span class="version-badge">{project.badge}</span>
+					{/if}
 					<span class="role">{project.role}</span>
 				</div>
 				<h2 class="name">{project.name}</h2>
@@ -140,6 +143,16 @@
 	.status-pill.live { color: var(--peach-500); }
 	.status-pill.sunset { color: var(--fg-faint); }
 	.status-pill.delivered { color: var(--fg-faint); }
+
+	.version-badge {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.04em;
+		color: var(--peach-500);
+		border: 1px solid color-mix(in srgb, var(--peach-500) 35%, transparent);
+		padding: 1px 6px;
+		border-radius: 4px;
+	}
 
 	.role {
 		font-family: var(--font-mono);
