@@ -1,0 +1,164 @@
+---
+title: "I thought my daemon was one process. It's actually five."
+description: "A memory question turned into a native crash, a database lock, and a debugging script that hung itself. Five wrong assumptions about process lifecycle."
+date: "2026-07-25"
+draft: false
+tags: ["smriti", "daemon", "process-management", "sqlite", "bun", "developer-tools", "debugging"]
+---
+
+Someone asked me a simple question about [Smriti](https://github.com/zero8dotdev/smriti), the memory daemon I run in the background on this machine: *how much memory is that thing actually using?* I opened btop, filtered to the daemon's PID, and expected a boring number.
+
+Four bugs, one native crash, and a database lock later, I had my answer. It was not boring.
+
+I want to walk through all five, in the order I found them, because each one broke a different assumption I didn't know I was carrying. If you've ever shipped a background process — a daemon, an agent runtime, an MCP server, a worker — you are carrying the same five assumptions right now, and you probably won't notice until something is on fire.
+
+## The naive mental model
+
+If you'd asked me before this afternoon, I'd have said something like:
+
+> A daemon is a process. It sits there, does work when asked, uses memory proportional to that work, and releases it when the work is done. Killing it and restarting it fixes anything weird.
+
+Every clause in that sentence turned out to be wrong in a specific, useful way.
+
+## Thing 1: "the daemon" is already more than one process
+
+The daemon's CLI entry point is a two-line bash shim:
+
+```bash
+#!/usr/bin/env bash
+exec bun /Users/zero8/zero8.dev/smriti/src/index.ts "$@"
+```
+
+That `exec` matters. It replaces the shell's process image in place — same PID, new program — rather than spawning a child and waiting on it. I'd never had to care about the difference, because most CLIs I write don't spawn anything. Daemons do, constantly, and the moment they do, "my program" stops being a single, self-contained thing and starts being a process *tree* whose shape depends on what your dependencies decide to do.
+
+The specific example that made this concrete: the daemon's embedding library, `node-llama-cpp`, has a `testBindingBinary()` step that — on some platforms — forks a child process to test-load its native addon in isolation before trusting it in the main process. On this machine (macOS) it's gated off and never fires. On Linux, where the daemon also ships, it's a real per-instance fork. Same source code, different process topology, depending on where it runs. I only found this by going looking; nothing about the daemon's own code hinted at it.
+
+The lesson: once a process spawns anything, "how many processes is my program" stops being a fixed number you can answer from the source file you're looking at. It's a property of the whole dependency tree, on the specific OS you're running on, that day.
+
+## Thing 2: idle timers are not disposal
+
+Watching the daemon under load, I found something worse than "uses some memory": it climbed to **1.9GB RSS** during a single ingest run, then stayed there. Not a leak in the classic sense — it would eventually come back down — but nothing was making it come down *on purpose*.
+
+The cause: every ingest flush constructed a fresh `LlamaCpp`/`Llama` backend (the embedding/LLM runtime), used it, and then just... let it go. Nothing called `.dispose()`. The design leaned on a 5-minute inactivity timer to eventually free the models — which works, technically, but "eventually, if nothing else happens first" is not a disposal strategy, it's a hope.
+
+This is the mistake I want to name precisely, because it's easy to miss in any language with a garbage collector: **your object's lifetime and your resource's lifetime are different axes.** GC will happily keep a native backend "alive but idle" long after your code has stopped caring about it, because nothing told the backend it was done. The fix was almost embarrassingly small:
+
+```ts
+export async function closeQmdStore(): Promise<void> {
+  if (_store) {
+    // Dispose the LlamaCpp/Llama backend explicitly instead of leaving it
+    // to the 5-min inactivity timer.
+    try { await _store.internal.llm?.dispose(); } catch { /* best-effort */ }
+    _store.internal.close();
+    _store = null;
+  }
+}
+```
+
+Boring, correct, three lines. And it explains a second symptom I'd been treating as unrelated: a recurring `LlamaGrammar ... different Llama instance` error, showing up **404 times** in the daemon's log — roughly one in every eight flushes. A grammar object created against one un-disposed `Llama` instance was occasionally getting used against a different one that had replaced it. Disposal wasn't just a memory problem. It was corrupting state.
+
+## Thing 3: fixing the leak nearly crashed the process
+
+Here's where it stopped being boring. I made disposal more aggressive — dispose on every flush, immediately, not after five minutes — and ran the full test suite. Some tests, unrelated to my change, started failing with:
+
+```
+GGML_ASSERT([rsets->data count] == 0) failed
+```
+
+A native assertion failure in `ggml-metal`, the GPU backend. Not a JavaScript error. A crash, at the C level, inside a library I don't control.
+
+What was happening: two `LlamaCpp` instances — from two different, otherwise-isolated pieces of test code — were being constructed and disposed close together in the same process. `node-llama-cpp`'s JS-level objects looked independent. Underneath, on macOS, the Metal GPU backend they both used is *not* independent — it's process-wide native state. Disposing one instance's backend while another was still mid-construction tore down something the second one still expected to exist.
+
+I want to be honest about what I did and didn't do here: I did not root-cause node-llama-cpp's or Metal's internals. I engineered around the blast radius instead — added a promise chain that serializes daemon flushes so at most one `LlamaCpp` instance is ever alive at a time:
+
+```ts
+let flushChain: Promise<void> = Promise.resolve();
+
+async function defaultFlushAgent(agent: string, log: (m: string) => void) {
+  const run = async () => { /* open db, ingest, dispose */ };
+  const next = flushChain.then(run, run);
+  flushChain = next;
+  return next;
+}
+```
+
+That's the part I think is worth sitting with: **processes and objects that look isolated in your source code can share state you never asked for, several layers down, especially through native/GPU dependencies.** Your type system will not warn you. Your test suite will only catch it if two things happen to construct/dispose close enough together — which is exactly the kind of timing-dependent bug that's absent in development and shows up under real concurrent load.
+
+## Thing 4: one file, two writers, no plan
+
+With the leak and the crash risk handled, I stress-tested the fix with a full forced re-ingest — 402 real sessions, 51,000 messages — while the daemon kept running normally in the background. Somewhere in the middle of that run, the daemon's log picked up a new line:
+
+```
+[smriti] [flush claude] failed to open DB: database is locked
+```
+
+The daemon and the manual ingest process were both writing to the same SQLite file at the same moment. Nothing exotic — this is the single most common way two independent processes step on each other — and SQLite has a built-in answer for exactly this case: `busy_timeout`. It tells a connection "if you hit a lock, retry quietly for N milliseconds before giving up," instead of failing on the first collision.
+
+Nobody had set it:
+
+```ts
+// busy_timeout is per-connection, not persisted in the DB file — set it on
+// every open. Without it, two processes opening the same SQLite file at
+// once fail immediately with "database is locked" instead of retrying.
+db.exec("PRAGMA busy_timeout = 5000");
+```
+
+One line. The gap wasn't ignorance of SQLite's concurrency model — it's that "a daemon plus a CLI tool sharing one file" is the kind of interaction that only exists once you have a daemon *at all*, and it's easy to reach for SQLite "because it's simple" without ever reading past the first page of its concurrency docs, because you don't yet have a second writer to make you go looking.
+
+## Thing 5: the tool I built to catch this had the same disease
+
+This is the one I actually want this whole post to be about.
+
+To verify all of the above, I wrote a small script that samples a process's memory and CPU while a command runs, then prints a summary when it exits. Straightforward: spawn the command, `await child.exited`, print the report.
+
+During the full re-ingest stress test, that script hung. Not slow — hung, for **thirteen minutes**, doing nothing. I checked `ps`. The command it was supposed to be watching had already finished and exited cleanly. No zombie. No orphan. Nothing in the process table at all. And yet `await child.exited` — the promise a JavaScript runtime gives you specifically to answer "has this child exited?" — never resolved.
+
+Classic Unix literature is exhaustive about this problem *at the kernel level*: `wait()`, `waitpid()`, `SIGCHLD`, zombie processes, why you must reap your children or leak process-table entries. Decades of well-worn advice. What I could not find anywhere is good writing about the layer sitting directly on top of that — where a language runtime's *abstraction* over "the child exited" can silently decouple from what the kernel actually observed. The OS-level fact was true and available the whole time (`ps` showed it instantly). The promise built to represent that fact simply never fired.
+
+The fix doesn't require understanding why the promise hung — it requires not trusting it alone:
+
+```ts
+async function waitForChildExit(child: Bun.Subprocess, pollMs: number) {
+  let sawAlive = false;
+  while (true) {
+    const raced = await Promise.race([
+      child.exited.then((code) => ({ done: true as const, code })),
+      Bun.sleep(pollMs).then(() => ({ done: false as const, code: null })),
+    ]);
+    if (raced.done) return raced.code;
+
+    if (isPidAlive(child.pid)) { sawAlive = true; continue; }
+    if (sawAlive) return null; // pid gone, exited never fired — trust the OS
+  }
+}
+```
+
+Race the runtime's promise against an independent, boring, `process.kill(pid, 0)` liveness check. The OS truth wins if the abstraction goes quiet. This is a small amount of code and a large shift in posture: **if a runtime's process-exit signal matters to your tool, verify it independently once, rather than trusting it forever.**
+
+## The actual pattern
+
+Line these five up and a shape appears. It isn't "daemons are hard," which is true but useless. It's that **"process management" is at least five separable skills that get bundled together under one intimidating heading**, and most app-level developers only ever practice the first one:
+
+1. **Process topology** — knowing your program is a tree, not a point, once anything forks or execs.
+2. **Explicit disposal** — resource lifetime is not object lifetime; idle timers are a fallback, not a strategy.
+3. **Shared native state across "isolated" objects** — native and GPU dependencies routinely carry process-wide assumptions your type system can't see.
+4. **Cross-process resource contention** — the moment two processes touch one file, socket, or lock, you need an explicit concurrency contract, not luck.
+5. **Runtime honesty about process exit** — the abstraction your language gives you for "did it exit" can be wrong; the OS is always the tiebreaker.
+
+Most tutorials teach #1 and stop. #2 through #5 are the ones that only show up once your process runs long enough, under enough concurrent load, for long enough, to matter — which is exactly the profile of a daemon, and increasingly, the profile of an agent runtime, an MCP server, or a background AI worker. All the tools this generation of developers is being asked to build.
+
+## What I'm still figuring out
+
+A few things I haven't closed the loop on:
+
+- I engineered around the Metal/GGML crash risk by serializing flushes. I did not verify whether the same native-state sharing exists on Linux's CUDA/CPU backends, or whether it's a macOS-Metal-specific quirk. That's an open question, not a settled one.
+- The `child.exited` hang reproduced once, under real load, and I don't have a minimal repro yet — just a fix that's correct regardless of root cause. I'd like to actually understand why the promise stalled, not just route around it.
+- I don't know how common the `child.exited` failure mode is across Bun versions, or whether it exists in Node's `child_process` too. If you've hit something like this, I'd genuinely like to hear about it.
+
+## What I'm taking forward
+
+The thing I keep coming back to: I've been writing software for years without needing to think hard about any of this, because most of what I ship is request-scoped — a function runs, does its thing, returns, and the runtime cleans up after it whether I asked it to or not. Daemons don't get that for free. Neither do agents that are supposed to keep running, keep a memory index warm, keep watching a filesystem, keep listening on a socket.
+
+If you're building any kind of dev tool that's meant to outlive a single invocation — and a lot of us are, right now, because that's what an agent *is* — process lifecycle stops being a systems-programming curiosity and becomes a load-bearing part of your correctness story. Not "read APUE cover to cover" load-bearing. Just: know which of these five things your tool actually needs, and go verify it instead of assuming it.
+
+I'm sure I'll relearn some version of this next month, in a different shape. If you've got a story like this from your own tools, I'd like to hear it.
