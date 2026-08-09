@@ -1,6 +1,7 @@
 <script>
   import Logo from './Logo.svelte';
   import ThemeToggle from './ThemeToggle.svelte';
+  import { company } from '$lib/data/site';
   /** @type {Array<{href: string, label: string}>} */
   export let links = [
     { href: 'https://github.com/ashu17706', label: 'github' },
@@ -16,6 +17,7 @@
       <Logo size={20} />
       <span class="word">zero8.dev</span>
     </div>
+    <span class="legal-note">Contracts executed via <a href="/legal">{company.legalName}</a></span>
     <div class="links">
       {#each links as l}<a href={l.href}>{l.label}</a>{/each}
       <span class="divider">|</span>
@@ -47,4 +49,16 @@
   .links a { color: var(--fg-muted); text-decoration: none; }
   .links a:hover { color: var(--peach-500); }
   .divider { color: var(--fg-faint); user-select: none; }
+
+  .legal-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-faint);
+  }
+  .legal-note a {
+    color: var(--fg-faint);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .legal-note a:hover { color: var(--peach-500); }
 </style>

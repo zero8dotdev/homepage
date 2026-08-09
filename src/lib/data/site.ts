@@ -17,6 +17,13 @@ export const siteConfig = {
 	}
 };
 
+export const company = {
+	legalName: 'Zero8 Dot Dev Pvt. Ltd.',
+	cin: 'U62011UT2024PTC016718',
+	gstin: '05AACCZ3291K1Z1',
+	addressLines: ['B10, Block 5, Aradhana Greens Apartment', 'Dehradun, Uttarakhand, India, 248001']
+};
+
 export const navLinks = [
 	{ href: '/blog', text: 'Writing' },
 	{ href: '/work', text: 'Work' },
