@@ -21,7 +21,7 @@ export const GET: RequestHandler = () => {
 
 ## About
 
-Ashutosh Tripathi is a software engineer, co-founder and CTO of InboxStack. He designs the infrastructure that makes engineers and AI agents work without friction — from Smriti (shared AI memory for engineering teams) to InboxStack (a self-improving email deliverability intelligence platform with a six-stage typed pipeline). A decade of product engineering, fully remote and async.
+Ashutosh Tripathi is a software engineer focused on developer tools and AI-native systems. He designs the infrastructure that makes engineers and AI agents work without friction — from Smriti (shared AI memory for engineering teams) to typed agent pipelines and self-improving systems. A decade of product engineering, fully remote and async.
 
 ## Projects
 

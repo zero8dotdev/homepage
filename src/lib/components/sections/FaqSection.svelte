@@ -2,7 +2,7 @@
 	const faqs = [
 		{
 			q: 'Who is Ashutosh Tripathi?',
-			a: 'Software engineer, co-founder and CTO of InboxStack. He builds the infrastructure that makes engineers and automated agents work without friction — from shared memory for AI teams to self-improving deliverability pipelines. A decade of product engineering, fully remote.'
+			a: 'Software engineer specializing in developer tools and AI-native systems. He builds the infrastructure that makes engineers and automated agents work without friction — from shared memory for AI teams to typed agent pipelines. A decade of product engineering, fully remote.'
 		},
 		{
 			q: 'What does zero8.dev specialize in?',
