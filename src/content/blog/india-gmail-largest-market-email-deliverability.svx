@@ -1,7 +1,8 @@
 ---
 title: "India is Gmail's #1 market, and nobody's building for it"
-description: "A 15-year email veteran told me nobody in India reads email. The data tells a different story — and reveals India's biggest SaaS blind spot."
+description: "Nobody in India reads email? The data on India's cloud business email market — 400M users, 82% Gmail share, world's worst deliverability — says otherwise."
 date: "2026-04-08"
+updated: "2026-08-21"
 featured: true
 draft: false
 tags: ["email", "india", "deliverability", "d2c", "saas"]
@@ -16,6 +17,19 @@ He wasn't being dismissive. He was being honest. This is the received wisdom acr
 So I went looking for the data. And what I found was genuinely eye-opening — not because my senior was wrong, but because he was *almost* right in a way that points to one of the most overlooked opportunities in the Indian SaaS market.
 
 Let me walk you through it.
+
+## India's email market in numbers
+
+If you came here for the data, here it is up front. The story of what these numbers mean — and why they contradict each other less than they appear to — follows.
+
+- **Active email users in India: ~400–500 million** (derived from 958M active internet users, IAMAI–Kantar *Internet in India 2025*, at 40–50% email literacy)
+- **Gmail market share in India: ~82%** of email users — and India is Gmail's largest market in the world by monthly active users (Google Workspace India, Dec 2024)
+- **Email deliverability rate in India: ~70% inbox placement** — the worst of any country measured (Validity *Email Deliverability Benchmark*, 2025 and 2026 editions)
+- **Global average inbox placement: 87.2%** in the 2026 benchmark — the world improved while India stood still
+- **Average email open rate in India: ~42%** among reachable users — at the global average (HubSpot, MailerLite 2025)
+- **India's email advertising spend: $236M in 2025** (Statista); marketing automation growing at a **24% CAGR** (Grand View Research)
+- **Global email deliverability tools market: $1.2–1.5B**, heading to $2.4B by 2030 — with no India-native specialist player
+- For contrast: **550M+ WhatsApp users** in India, with 90–98% open rates (Meta/DataReportal 2025)
 
 ## First, the uncomfortable part: he's not entirely wrong
 
@@ -72,15 +86,21 @@ The Indian government recently migrated **1.67 million official email accounts t
 
 Email in India isn't dying. It's growing. India's marketing automation market, where email is the single largest solution category, is expanding at a **24% CAGR** ([Grand View Research, *India Marketing Automation Market Report*](https://www.grandviewresearch.com/industry-analysis/india-marketing-automation-market-report)). India's email advertising spend is projected at **$236 million in 2025** (Statista, *Email Advertising – India*). Asia-Pacific is the **fastest-growing email marketing region in the world** (Mordor Intelligence; Straits Research).
 
-## The real problem isn't reading. It's delivery.
+## The real problem isn't reading. It's deliverability.
 
 Here's where the story gets genuinely interesting.
 
-**India has the worst email deliverability rate of any country in the world: ~69.8% inbox placement**, per [Validity's *2025 Email Deliverability Benchmark Report*](https://www.validity.com/resource-center/2025-email-deliverability-benchmark-report/) and [Mailreach's 2025 email deliverability statistics](https://www.mailreach.co/blog/email-deliverability-statistics).
+### India's email deliverability rate: worst in the world
+
+**India has the worst email deliverability rate of any country measured: ~69.8% inbox placement**, per [Validity's *2025 Email Deliverability Benchmark Report*](https://www.validity.com/resource-center/2025-email-deliverability-benchmark-report/) and [Mailreach's 2025 email deliverability statistics](https://www.mailreach.co/blog/email-deliverability-statistics).
 
 Compare that to the United Kingdom at 98.8%, Germany at 97.8%, Australia at 98.7%, and even the United States at 84.6% ([Validity 2025 benchmark](https://www.validity.com/resource-center/2025-email-deliverability-benchmark-report/)). For every 10 legitimate emails sent to an Indian inbox, nearly 3 never arrive. They're filtered, spam-boxed, or silently dropped.
 
 India also ranks **worst in the world for Microsoft inbox placement** and second-worst for Yahoo/AOL, per the same [Validity 2025 benchmark](https://www.validity.com/resource-center/2025-email-deliverability-benchmark-report/).
+
+And the gap is widening, not closing. [Validity's *2026 benchmark*](https://www.validity.com/resource-center/2026-email-deliverability-benchmark-report/) shows the **global average inbox placement rose to 87.2%** — a 3.7-point improvement year over year — while India stayed stuck around 70%. The rest of the world fixed authentication and cleaned up its lists after the 2024 Gmail/Yahoo requirements. India's structural problem didn't move.
+
+If you send email to Indian recipients, don't take the country-level number on faith — **test your own deliverability**: [Gmail Postmaster Tools](https://postmaster.google.com/) is non-negotiable given Gmail's ~82% share (it shows your actual domain reputation and spam rates as Gmail sees them), and a seed-list test against Indian Gmail, Outlook, and Yahoo inboxes will tell you your real placement in an afternoon.
 
 Think about what this means. The senior's observation — "nobody reads email in India" — isn't actually about Indians not reading email. It's about the fact that roughly a third of emails sent to Indians never make it to the inbox they would have read. From the sender's perspective, it *looks* like nobody's reading. From the recipient's perspective, the email simply never arrived.
 
@@ -99,6 +119,8 @@ And yet — there is no India-native email deliverability company of any scale.
 Globally, email deliverability is a **$1.2-1.5B market growing to $2.4B by 2030** (ResearchAndMarkets; The Business Research Company *Email Deliverability Tools Global Market Report 2025*). The broader deliverability ecosystem — authentication, verification, warmup, cold email, monitoring — is **$5-7B today, heading to $10-20B by 2030** (aggregated from Market Research Future, Fortune Business Insights, Market.us). Companies like [Validity/Everest](https://www.validity.com/resource-center/2025-email-deliverability-benchmark-report/), Valimail, EasyDMARC, and Abnormal Security have collectively raised hundreds of millions in venture funding to solve this problem — for Western markets.
 
 In India, the closest thing to a category leader is Netcore Cloud, a broader customer engagement platform with reported revenue of ~$136M (GetLatka, 2025). There's no specialist. No "Validity for India." No "EasyDMARC for Gmail-dominant markets." No inbox stack built for the structural realities of the Indian email ecosystem.
+
+**India's email security market has the same shape.** The adjacent category — DMARC monitoring, spoofing protection, phishing defense — is served entirely by Western vendors (Valimail, EasyDMARC, Red Sift, Abnormal) pricing in dollars for enterprises that buy in dollars, while Indian domains adopt authentication fast but enforce it badly: publishing a DMARC record is common now, running it at `p=reject` with someone actually watching the reports is rare. BFSI regulators are starting to force the issue, which means the demand side of India's email security market is being created by mandate while the supply side still ships from San Francisco. Same gap, same reason: everyone upstream was told nobody here reads email.
 
 This isn't because the market is small. It's because the incumbents don't see it, and the local founders have been told — by people like my senior — that nobody reads email here.
 
@@ -131,6 +153,7 @@ And that's exactly why I'm paying attention.
 - [IAMAI–Kantar, *Internet in India Report 2025*](https://www.thehindu.com/sci-tech/technology/india-now-has-958-million-active-internet-users-57-of-these-are-from-rural-areas/article70566646.ece) — the authoritative source on India's 958M active internet users
 - [ThePrint: "50% of India's internet users don't know how to send email"](https://theprint.in/india/50-of-indias-internet-users-dont-know-how-to-send-email-a-third-know-online-banking-govt-survey/2308129/) — NSSO government survey coverage
 - [YourStory: "India surpasses the US as Gmail's highest monthly user base"](https://yourstory.com/2024/12/india-surpass-united-states-us-gmail-highest-monthly-user-base-google-workspace) — Google Workspace India disclosure
+- [Validity, *2026 Email Deliverability Benchmark Report*](https://www.validity.com/resource-center/2026-email-deliverability-benchmark-report/) — global inbox placement up to 87.2%; India unchanged
 - [Validity, *2025 Email Deliverability Benchmark Report*](https://www.validity.com/resource-center/2025-email-deliverability-benchmark-report/) — global and regional inbox placement data
 - [Mailreach, *Email Deliverability Statistics 2025*](https://www.mailreach.co/blog/email-deliverability-statistics) — ISP-level deliverability breakdown
 - [Business Standard: "India's internet user base crosses 950 million in 2025"](https://www.business-standard.com/industry/news/indian-internet-user-base-crosses-950-million-in-2025-iamai-report-126012901048_1.html)
