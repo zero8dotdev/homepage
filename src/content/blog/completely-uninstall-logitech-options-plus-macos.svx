@@ -1,0 +1,288 @@
+---
+title: "I uninstalled a mouse driver. It was twelve things."
+description: "A root daemon, Sentry telemetry, a Zoom bridge, an AI prompt builder — how to completely uninstall Logitech Options+ on macOS, every file included."
+date: "2026-08-21"
+updated: "2026-08-21"
+draft: false
+tags: ["macos", "logitech", "privacy", "telemetry", "uninstall"]
+---
+
+A while ago, in a fit of frustration, I posted [a gist](https://gist.github.com/ashu17706/196fe586433778c2ef4d92fd7402a553) documenting how to completely remove Logitech Options+ from a Mac. I didn't promote it. I didn't link it anywhere. I wrote it, closed the tab, and moved on with my life.
+
+People keep finding it.
+
+That's the thing about frustration posts: if strangers keep arriving at yours through search, it means they typed the same angry query you did. "Completely uninstall Logitech Options+" is apparently a query with a constituency. So this is the proper, maintained version of that gist — same cleanup, with a couple of bugs fixed and an actual explanation of why the cleanup needs to exist at all.
+
+## The naive mental model
+
+If you'd asked me what installing a mouse driver does, I'd have said:
+
+> It puts an app in `/Applications` that talks to the mouse and remaps the buttons. Maybe a preference file. Drag it to the Trash when you're done.
+
+Logitech Options+ is not that. For what should be a button-remapping tool for an MX Master, it drops files across **six-plus system directories**, installs **background daemons** — one of them running as root — phones home via **Sentry crash reporting**, and bundles an **AI Prompt Builder**. None of which you asked for when you plugged in a mouse.
+
+## What Logitech quietly installs
+
+Here's what's actually on your Mac after a "simple" Options+ install:
+
+| What | Where | Why it's excessive |
+|------|-------|--------------------|
+| Main app | `/Applications/logioptionsplus.app` | Expected |
+| Plugin service | `/Applications/Utilities/LogiPluginService.app` | Separate background app for "plugins" |
+| Driver installer bundle | `/Applications/Utilities/Logi Options+ Driver Installer.bundle` | Persists after install |
+| Launch agent (auto-start) | `/Library/LaunchAgents/com.logi.optionsplus.plist` | Runs on every login, system-wide |
+| Auto-updater daemon | `/Library/LaunchDaemons/com.logi.optionsplus.updater.plist` | Root-level daemon that phones home |
+| RightSight agent | `/Library/LaunchAgents/com.logitech.LogiRightSight.Agent.plist` | Webcam tracking — installed even if you only have a mouse |
+| Sentry crash DBs | `~/Library/Application Support/LogiOptionsPlus/sentry_db_*` | Crash telemetry — two separate databases |
+| AI Prompt Builder | `~/Library/Application Support/com.logitech.logiaipromptbuilder` | A generative-AI feature bundled with a mouse driver |
+| Voice settings DB | `~/Library/Application Support/LogiOptionsPlus/logi_voice_settings.db` | Voice/dictation features baked in |
+| Zoom bridge logs | `~/Library/Logs/LogiZoomBridge` | Zoom integration running silently |
+| 11+ preference files | `~/Library/Preferences/com.logi.*` and `com.logitech.*` | Scattered across multiple naming conventions |
+| System-level support files | `/Library/Application Support/Logi/` and `/Library/Application Support/Logitech.localized/` | Two separate directories with overlapping purposes |
+
+### The red flags
+
+1. **A root-level daemon** (`LaunchDaemons`) for an auto-updater — this runs as root, not as your user
+2. **Sentry crash reporting** with multiple databases — telemetry you never opted into
+3. **An AI Prompt Builder** — a generative-AI feature shipped inside a mouse driver
+4. **A Zoom bridge** — silently integrating with Zoom even if you don't use Logitech webcams
+5. **A RightSight webcam agent** — installed even for mouse-only setups
+6. **Three naming conventions** (`com.logi.*`, `com.logitech.*`, `com.Logitech.*`) that make manual cleanup harder than it should be
+
+Every one of these is a small, individually defensible product decision. Together they mean a peripheral vendor has a persistent, root-privileged, auto-updating, telemetry-emitting footprint on your machine — to remap two buttons.
+
+## Can't uninstall Logitech Options+? You're in the right place
+
+A lot of people land here after Logitech's own uninstaller has already failed them — the app won't launch so its uninstall option is unreachable, or the uninstaller runs and leaves half the table above behind (re-run the discovery command in Step 1 after any "successful" official uninstall and see for yourself). The method below doesn't depend on Logitech's tooling at all: it removes files and unloads services directly, so it works whether the app is healthy, broken, or already half-removed.
+
+## Step 1: See what's on your system
+
+Run these to see exactly what Logitech has installed on *your* machine before deleting anything:
+
+### Find all Logitech files
+
+```bash
+find /Applications ~/Library /Library -maxdepth 3 \
+  -iname "*logi*" 2>/dev/null \
+  | grep -iv "login\|loginwindow\|LoginItems\|LoginUser\|securelogin\|keychain\|Logic$\|Logic Pro"
+```
+
+The `grep -iv` filters out macOS system files that contain "login", and Apple's Logic Pro — those are unrelated. Don't skip it.
+
+### Check for running processes
+
+```bash
+ps aux | grep -i logi | grep -v grep
+```
+
+### Check for launch agents and daemons
+
+```bash
+launchctl list | grep -i logi
+```
+
+### Check what's set to auto-start
+
+```bash
+ls /Library/LaunchAgents/*logi* /Library/LaunchDaemons/*logi* ~/Library/LaunchAgents/*logi* 2>/dev/null
+```
+
+### Check for system extensions
+
+```bash
+systemextensionsctl list
+```
+
+Options+ registers a system extension, `com.logi.options.hidfilter` (team ID `QED4VVPZWA`). If it shows up here as activated, see the system-extension section in Step 2 — it needs slightly different handling than everything else.
+
+## Step 2: Completely uninstall Logitech Options+
+
+Run each section in order. Some commands require `sudo`.
+
+### Kill running processes
+
+```bash
+killall logioptionsplus 2>/dev/null
+killall LogiPluginService 2>/dev/null
+```
+
+### Remove applications
+
+```bash
+sudo rm -rf /Applications/logioptionsplus.app
+sudo rm -rf /Applications/Utilities/LogiPluginService.app
+sudo rm -rf "/Applications/Utilities/Logi Options+ Driver Installer.bundle"
+```
+
+### Remove launch agents and daemons (stops auto-start)
+
+```bash
+# Unload first, then delete
+sudo launchctl bootout system /Library/LaunchDaemons/com.logi.optionsplus.updater.plist 2>/dev/null
+launchctl bootout gui/$(id -u) /Library/LaunchAgents/com.logi.optionsplus.plist 2>/dev/null
+launchctl bootout gui/$(id -u) /Library/LaunchAgents/com.logitech.LogiRightSight.Agent.plist 2>/dev/null
+
+sudo rm -f /Library/LaunchAgents/com.logi.optionsplus.plist
+sudo rm -f /Library/LaunchAgents/com.logitech.LogiRightSight.Agent.plist
+sudo rm -f /Library/LaunchDaemons/com.logi.optionsplus.updater.plist
+```
+
+### Remove application support directories
+
+```bash
+rm -rf ~/Library/Application\ Support/Logitech
+rm -rf ~/Library/Application\ Support/LogiOptionsPlus
+rm -rf ~/Library/Application\ Support/Logi
+rm -rf ~/Library/Application\ Support/com.logitech.logiaipromptbuilder
+sudo rm -rf /Library/Application\ Support/Logi
+sudo rm -rf /Library/Application\ Support/Logitech.localized
+```
+
+### Remove all preference files
+
+```bash
+rm -f ~/Library/Preferences/com.logi.optionsplus.plist
+rm -f ~/Library/Preferences/com.logi.optionsplus.driverhost.plist
+rm -f ~/Library/Preferences/com.logi.pluginservice.plist
+rm -f ~/Library/Preferences/com.logi.lps.settings.plist
+rm -f ~/Library/Preferences/com.logi.cp-dev-mgr.plist
+rm -f ~/Library/Preferences/com.logitech.Logi-Options.plist
+rm -f ~/Library/Preferences/com.Logitech.Updater.plist
+rm -f ~/Library/Preferences/com.logitech.manager.daemon.plist
+rm -f ~/Library/Preferences/com.logitech.manager.devinfo.plist
+rm -f ~/Library/Preferences/com.logitech.manager.setting.0006b023.plist
+rm -f ~/Library/Preferences/com.logitech.manager.setting.ffff.plist
+rm -f ~/Library/Preferences/com.logitech.logiaipromptbuilder.plist
+```
+
+### Remove caches, logs, and telemetry
+
+```bash
+rm -rf ~/Library/Caches/com.logi.optionsplus.installer
+rm -rf ~/Library/Caches/SentryCrash/"Logi AI Prompt Builder"
+rm -rf ~/Library/Logs/Logitech
+rm -rf ~/Library/Logs/LogiZoomBridge
+rm -rf ~/Library/Logs/xlog_logitech
+rm -rf ~/Library/HTTPStorages/LogiPluginServiceNative
+```
+
+(The original gist had a bug on the SentryCrash line — `~` doesn't expand inside quotes, so that directory was never actually deleted. Fixed here. If you ran the gist version, run that one line again.)
+
+### Remove the system extension
+
+This one deserves its own explanation, because I got it wrong the first time. Two readers of the original gist ([egigoka](https://gist.github.com/ashu17706/196fe586433778c2ef4d92fd7402a553?permalink_comment_id=6203361#gistcomment-6203361), who flagged the extension, and [canoben](https://gist.github.com/ashu17706/196fe586433778c2ef4d92fd7402a553?permalink_comment_id=6323425#gistcomment-6323425), who tested on macOS 26) straightened me out.
+
+Options+ registers `com.logi.options.hidfilter` as a system extension. The direct removal command exists — but `systemextensionsctl uninstall` refuses to run while System Integrity Protection is enabled, and Apple's *"this limitation will be removed in the near future"* error message has been promising that since 2020.
+
+**You almost never need it.** When you delete the host app (done above), macOS deactivates its system extensions on its own. So:
+
+```bash
+# After deleting the apps in the steps above:
+sudo reboot
+# Then verify:
+systemextensionsctl list
+```
+
+If `com.logi.options.hidfilter` is gone (or the list is empty), you're done — no SIP involved.
+
+**Only if it survives the reboot**, fall back to the direct route: boot into Recovery (hold the power button on Apple silicon), open Terminal, run `csrutil disable`, reboot, then:
+
+```bash
+systemextensionsctl uninstall QED4VVPZWA com.logi.options.hidfilter
+```
+
+Then go straight back to Recovery and `csrutil enable`. Don't leave SIP off.
+
+## The whole thing as one script (silent uninstall)
+
+If you'd rather not paste ten blocks — or you're an IT admin who needs a silent uninstall for MDM deployment — here's everything above as a single idempotent script. Safe to run repeatedly; every step tolerates the files already being gone.
+
+```bash
+#!/bin/bash
+# Complete Logitech Options+ removal — macOS
+# Run as the logged-in user; it sudos for the system-level parts.
+
+# Kill running processes
+killall logioptionsplus LogiPluginService 2>/dev/null
+
+# Unload launch agents and daemons
+sudo launchctl bootout system /Library/LaunchDaemons/com.logi.optionsplus.updater.plist 2>/dev/null
+launchctl bootout gui/$(id -u) /Library/LaunchAgents/com.logi.optionsplus.plist 2>/dev/null
+launchctl bootout gui/$(id -u) /Library/LaunchAgents/com.logitech.LogiRightSight.Agent.plist 2>/dev/null
+
+# System-level files (root)
+sudo rm -rf \
+  /Applications/logioptionsplus.app \
+  /Applications/Utilities/LogiPluginService.app \
+  "/Applications/Utilities/Logi Options+ Driver Installer.bundle" \
+  /Library/LaunchAgents/com.logi.optionsplus.plist \
+  /Library/LaunchAgents/com.logitech.LogiRightSight.Agent.plist \
+  /Library/LaunchDaemons/com.logi.optionsplus.updater.plist \
+  "/Library/Application Support/Logi" \
+  "/Library/Application Support/Logitech.localized"
+
+# User-level files
+rm -rf \
+  "$HOME/Library/Application Support/Logitech" \
+  "$HOME/Library/Application Support/LogiOptionsPlus" \
+  "$HOME/Library/Application Support/Logi" \
+  "$HOME/Library/Application Support/com.logitech.logiaipromptbuilder" \
+  "$HOME/Library/Caches/com.logi.optionsplus.installer" \
+  "$HOME/Library/Caches/SentryCrash/Logi AI Prompt Builder" \
+  "$HOME/Library/Logs/Logitech" \
+  "$HOME/Library/Logs/LogiZoomBridge" \
+  "$HOME/Library/Logs/xlog_logitech" \
+  "$HOME/Library/HTTPStorages/LogiPluginServiceNative"
+rm -f "$HOME"/Library/Preferences/com.logi.*.plist \
+      "$HOME"/Library/Preferences/com.logitech.*.plist
+
+echo "Done. Reboot so macOS deactivates the system extension, then verify:"
+echo "  systemextensionsctl list"
+```
+
+**MDM note:** the script has a root half and a per-user half. If your MDM runs scripts as root, the `sudo` lines just work, but the `$HOME` block cleans only root's home — loop it over `/Users/*` (or run that block in the user context) to clean actual user accounts. And the reboot at the end isn't optional if you want the system extension gone.
+
+## Step 3: Verify complete removal
+
+Re-run the discovery command — it should return **no results**:
+
+```bash
+find /Applications ~/Library /Library -maxdepth 3 \
+  -iname "*logi*" 2>/dev/null \
+  | grep -iv "login\|loginwindow\|LoginItems\|LoginUser\|securelogin\|keychain\|Logic$\|Logic Pro"
+```
+
+Check no processes are running:
+
+```bash
+ps aux | grep -i logi | grep -v grep
+```
+
+Check no launch agents remain:
+
+```bash
+launchctl list | grep -i logi
+```
+
+Check the system extension is gone (after a reboot):
+
+```bash
+systemextensionsctl list
+```
+
+All of these should come back empty. Your mouse keeps working as a standard Bluetooth/USB device — you just lose Logitech's custom button mappings.
+
+## Using a Logitech mouse without Logitech Options
+
+- **[BetterMouse](https://better-mouse.com)** — lightweight, native macOS app for button remapping, scroll customization, and gesture support. No telemetry, no AI prompt builders, no Zoom bridges. This is what I use now.
+- **macOS built-in** — System Settings → Mouse covers basic tracking speed and button configuration, free.
+
+## The lesson
+
+The naive mental model — "a driver is an app that talks to the hardware" — died somewhere in the last decade. Peripheral software is now a distribution channel: for telemetry, for upsells, for whatever feature the company's roadmap needed a home for. The AI Prompt Builder isn't there because mouse owners asked for it; it's there because you already installed the software and your machine is where the feature ships.
+
+The fix isn't outrage, it's inventory. `find`, `launchctl list`, `ps aux` — twenty seconds of looking tells you what any vendor actually left on your machine. Most people never look, which is precisely what vendors count on.
+
+---
+
+*Tested on macOS Sequoia 15.x with Logitech Options+ and an MX Master 3. Originally posted as [a gist](https://gist.github.com/ashu17706/196fe586433778c2ef4d92fd7402a553); this page is the maintained version. If a Logitech update adds or moves paths, the discovery commands in Step 1 will still find them.*
