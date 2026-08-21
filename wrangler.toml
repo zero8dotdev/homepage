@@ -16,3 +16,7 @@ zone_name = "zero8.dev"
 directory = "./.cloudflare/public"
 binding = "ASSETS"
 
+[[kv_namespaces]]
+binding = "CLICKS"
+id = "8386b8b4885642e882667c6d79ee3575"
+
