@@ -87,6 +87,20 @@ pre {
 }
 pre code { background: transparent; border: 0; padding: 0; }
 
+/* Prism syntax tokens (mdsvex's default highlighter emits these) */
+.token.comment, .token.prolog, .token.doctype, .token.cdata,
+.token.shebang { color: var(--code-comment); font-style: italic; }
+.token.punctuation, .token.operator { color: var(--code-punct); }
+.token.keyword, .token.builtin, .token.important,
+.token.atrule, .token.tag { color: var(--code-keyword); }
+.token.string, .token.char, .token.attr-value,
+.token.url, .token.regex { color: var(--code-string); }
+.token.variable, .token.environment, .token.parameter,
+.token.number, .token.boolean, .token.constant,
+.token.symbol, .token.property, .token.attr-name { color: var(--code-variable); }
+.token.function, .token.class-name,
+.token.selector { color: var(--code-function); font-weight: 600; }
+
 hr { border: 0; height: 1px; background: var(--hairline); margin: var(--s-7) 0; }
 
 blockquote {

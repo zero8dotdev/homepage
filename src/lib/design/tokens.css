@@ -71,6 +71,14 @@
   --selection-bg: var(--coral);
   --selection-fg: #FFFFFF;
 
+  /* --------- CODE SYNTAX (Prism tokens, light) --------- */
+  --code-comment:  #8B8577;
+  --code-keyword:  #C0503A;   /* coral family, darkened for contrast on white */
+  --code-string:   #5F7317;   /* neon family, darkened for contrast on white */
+  --code-variable: #9A6700;
+  --code-function: var(--onyx);
+  --code-punct:    var(--fg-faint);
+
   /* --------- TYPE FAMILIES --------- */
   --font-sans:  'Onest', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono:  'Geist Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -165,6 +173,14 @@
   --focus-ring: rgba(205, 255, 65, 0.32);
   --selection-bg: var(--neon);
   --selection-fg: var(--onyx);
+
+  /* --------- CODE SYNTAX (Prism tokens, dark) --------- */
+  --code-comment:  rgba(255, 184, 168, 0.45);
+  --code-keyword:  var(--coral);
+  --code-string:   var(--neon-press);
+  --code-variable: var(--coral-soft);
+  --code-function: var(--text-strong);
+  --code-punct:    var(--text-muted);
 }
 
 /* Direction B — Terminal (everything mono) */
