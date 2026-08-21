@@ -1,0 +1,112 @@
+---
+title: "The one percent internet"
+description: "29 websites, $29, and 1.2 million page requests in three months — roughly 1% from humans. What the other 99% taught me about how the internet works."
+date: "2026-08-17"
+featured: true
+draft: false
+tags: ["cloudflare", "security", "uttarakhand", "claude-code", "sveltekit"]
+---
+
+29 websites. $29. 1.2 million page requests in three months — and roughly one percent of them from actual human beings. This is the first post about the Uttarakhand `.website` experiment: what we built, how AI agents run it, and what the other 99% of traffic taught me about how the internet really works.
+
+## An experiment that cost less than dinner
+
+In April 2026 I noticed that `.website` domains were selling for $0.98 a year on Namecheap. Not auction leftovers — clean, exact-match place names. `dehradun.website` was available. So was `kedarnath.website`. So was `corbett.website`, while `corbett.com` sat behind a four-figure premium.
+
+That price turns a business decision into a curiosity decision. For the cost of a dinner, I could register a name for every district and major destination in Uttarakhand — the Himalayan state I grew up around — and find out what happens when you give a real place a permanent, structured address on the public internet. Twenty-nine domains, about $29 all in.
+
+The thesis was never "traffic." It was **canonical information**. Uttarakhand has thousands of villages, pilgrimage routes walked by millions, and a public-information layer scattered across PDFs, defunct portals, and word of mouth. The experiment: extract that information into one strict, structured record per place — geography, temples, hospitals, PIN codes, police stations, bus routes, altitude, weather, festivals, government offices — and serve it from a domain that *is* the place's name. A sentence from the government pitch we later wrote states the ambition plainly:
+
+> We will map every village, every business, every panchayat — alongside the government, not in place of it.
+
+It started smaller than that sounds. It started as a social experiment with a $29 budget and a question: *if you build a clean, honest information layer for real places, who — or what — shows up?*
+
+The answer turned out to be far stranger than I expected.
+
+## One worker, twenty-nine websites
+
+The architecture is deliberately austere. All 29 sites are **one application**: a single SvelteKit codebase compiled to a single Cloudflare Worker, deployed once, serving every domain. When a request arrives, the worker reads the hostname, resolves it against a site registry, and hydrates the page from that place's data file. There is no CMS and no database on the hot path — each place is a flat JSON record, typed end-to-end. `dehradun.json` alone is 146 KB across 37 field groups: 86 tourism places, 85 localities, 53 PIN codes, court complexes, petrol pumps, the works, all network-wide.
+
+Around 12,000 lines of source produce 44 page types per site — `/tourism`, `/temples`, `/emergency`, `/pincode`, `/how-to-reach`, `/altitude`, `/govt-stays` — and each site's sitemap is generated per-hostname at request time, including only the sections that place actually has data for. One `git push` updates every site simultaneously. One purge script clears every edge cache. One registry file is the single source of truth that the routing, the sitemaps, the analytics, and (as you'll see) the firewall all read from.
+
+This matters for the story ahead: because everything flows through one worker, everything can be *observed* in one place.
+
+## The part where AI does the operating
+
+I built and run this network essentially alone — which is only possible because a large share of the operation is done by AI agents, primarily Claude Code working inside the repository.
+
+The clearest example is customer onboarding. Local businesses can get a landing page on a subdomain — `sparsh.dehradun.website`, say. Onboarding one is a packaged agent skill: it interviews the owner through a nine-part brand-discovery questionnaire (identity, audience, sensory vibe, even what music plays in the shop), synthesizes an 80–120-word design brief, writes the copy, derives a four-color palette with contrast checks, generates a social-preview image with Google's Imagen 4 — using the business's *real photos* as references so no products are hallucinated — registers the slug, and prints the DNS handoff. What used to be a week of freelance web work is an hour of structured conversation.
+
+The unattended layer runs on cron. Twice a week, a pipeline pulls Search Console rankings and backlink authority for all 29 domains into a database and emails me a diff. A tracker commits its own trend reports back to the repository — of 77 commits in the project's history, 23 were authored by the automation, not by me. A dedicated worker wakes at 04:30 UTC daily to collect zone analytics, worker CPU statistics, and render counts into a table that powers an on-site experiment dashboard. Even the per-place social images — 29 of them — were batch-generated from a prompt file, idempotently, by a script.
+
+None of this is exotic. That's the point I want developers to take: the tooling to run a 29-site network as a single person, with agents doing the interviewing, the monitoring, the reporting, and much of the building, exists *today* and mostly costs nothing. The experiment isn't just "what happens when you publish 29 websites" — it's "how much internet can one person operate when the drudgery is delegated."
+
+And then there's the part of the operation I didn't plan: reading the logs. Which is where this stops being a story about building and becomes a story about the internet itself.
+
+## 1.2 million requests, one percent human
+
+Over the last 90 days, the network's origin served about **1.18 million page renders**. Here is what they actually were:
+
+| Layer of the funnel | Requests |
+|---|---|
+| Total origin page renders | ~1,180,000 |
+| Claimed to be a human browser | 587,197 |
+| …of which requested pages that don't exist | 344,015 |
+| "Humans" who got a real page | 232,374 |
+| …of which came from India — the actual audience | 4,392 |
+| AI crawlers successfully reading pages | 22,362 |
+| Countries traffic arrived from | 170 |
+
+Read that table bottom-up and the honest picture emerges. The traffic arriving from 170 countries sounds like reach; it's mostly scanner infrastructure. The 232,374 "human successes" sound like an audience; but their geography is Ashburn, Singapore, Frankfurt — data-center geography, not pilgrim geography — and 70,000 of them touched only the homepage, which is not how a person researches a trek. The genuinely human traffic — Indian visitors browsing `/temples`, `/weather`, `/pincode`, `/emergency` the way people actually browse — is on the order of fifty real visitors a day across the whole network.
+
+About one percent. Everything else is machines, and the machines fall into castes:
+
+**The scanners.** Every public IP address on earth receives a constant background radiation of automated probing, and running 29 sites means receiving 29 doses. Day in, day out, bots request `/.ssh/id_ed25519`, `/private-key`, `/docker-compose.yaml`, `/firebase-service-account.json`, `/.npmrc` — hunting for the credentials that careless deployments leak. Nobody targeted us. This is just what the internet *is* below the waterline. (They found nothing; there was nothing to find. But it permanently changed how our deploy pipeline works — more below.)
+
+**The impostors.** The most instructive discovery of the whole experiment: our single largest "visitor" one week was Applebot. Except Apple's crawler does not ask for your SSH keys. Neither does Googlebot want `/private-key`, nor Anthropic's ClaudeBot your Docker configs. A scanning botnet was impersonating the world's most trusted crawlers — 72,000 forged requests in five days, wearing the user-agent strings of Google, Apple, Amazon, Anthropic, Perplexity — precisely because those names get waved through naive filters.
+
+**The metric poisoners.** Here is where it cost us something real. In mid-August we shipped a caching overhaul with a proper experiment around it: a seven-day baseline, success criteria, a dashboard. The numbers came back *worse* — render rates up, 404s nearly doubled. A week of an engineering experiment apparently failing. The actual story: the impostor traffic was flooding the metrics. Every forged request was an uncacheable miss on a unique host-and-path combination — 14,666 distinct combinations, mathematically immune to caching. Once we learned to subtract the noise, the cache change had been working the entire time. The experiment was fine; the *measurement* was under attack. I now believe this is common and mostly undiagnosed: if your analytics look strange, consider that the strangeness may not be your users or your code, but a third party you've never thought about.
+
+**The new readers.** Buried in the machine traffic is one genuinely new phenomenon: 22,362 pages served to *verified* AI crawlers — GPTBot, ClaudeBot, PerplexityBot and peers, reading district guides so their models can answer questions about Uttarakhand. That's roughly five times our human Indian readership. Whatever one thinks of it, an information site in 2026 has two audiences, and the second one doesn't show up in Google Analytics.
+
+The resolution to the impostor problem took one afternoon, and it worked because of where we could apply it. Cloudflare maintains a cryptographically verified registry of genuine crawlers. So the rule is simple: *if you claim to be Googlebot and you are not on the verified list, you are blocked at the edge* — before our worker ever wakes up. A second rule blocks the scanner paths outright. A script deploys both rules idempotently to all 22 active zones and runs in CI, so the protection can't silently drift. And the same incident hardened the other direction too: our deploy now runs a leak guard that refuses to ship if anything secret-shaped ever appears in the build output — because the scanners taught us exactly what they're looking for.
+
+## The Radix irony
+
+There is one more chapter, and I tell it with a straight face because it completes the theme.
+
+Two weeks after I registered the second batch of domains, the `.website` registry — Radix — suspended seven of them: `rudrapur`, `ranikhet`, `munsiyari`, `gangotri`, `ramnagar`, `lansdowne`, `dhanaulti`. When we appealed, their abuse team declined, citing their Acceptable Use Policy on **pattern-based, algorithm-generated domain registrations** — the registration signature of bot networks and traffic-generation schemes — and advised against registering domain sets like this again.
+
+Sit with the symmetry of that. The seven domains named after Himalayan towns, registered by one identifiable founder for a disclosed civic project with 22 live sister sites, were flagged as a bot operation. Meanwhile, actual botnets impersonated Googlebot across our network 72,000 times in five days without consequence. The internet's immune system runs on pattern recognition, and pattern recognition cuts both ways: to a registry's anomaly detector, twenty-nine place-name registrations in bulk *does* look like an algorithm at work. I understand why the rule exists. I think they applied it to the wrong case, our appeal is ongoing, and those seven towns still deserve their addresses — but I've come to see the suspension as data too. It taught me more about how trust is actually adjudicated on the internet than any documentation could.
+
+(If anyone from Radix reads this: the other 22 sites are live, the code is one `git log` away, and we'd love to bring Gangotri back online.)
+
+## What Cloudflare gives away, and why that matters
+
+I want to give the infrastructure its own section, because the economics are the most inspiring part for anyone considering a similar experiment.
+
+Everything described above — 22 DNS zones; a Worker serving every request for every site; static asset hosting; a SQL database holding customers, metrics, and experiment data; a key-value cache for weather; per-request analytics writes with 90 days of SQL-queryable retention; daily cron triggers; edge caching; the GraphQL analytics API the experiment dashboard reads; and the WAF custom rules that ended the impostor problem — runs on **Cloudflare's free tier**. Total paid to Cloudflare so far: **zero dollars**.
+
+I find this genuinely remarkable, and worth stating carefully rather than as an advertisement. The free tier is not a demo. It's a complete production platform for a network doing tens of thousands of requests a day, *and* — this is the underrated half — a complete observability and defense platform. The tools we used to detect the botnet (Analytics Engine's SQL interface), diagnose it (per-request bot classification), and defeat it (verified-bot WAF rules at the edge) were all in the $0 tier. A decade ago, this stack was a funded startup's infrastructure. Today it's the default allowance of a free account, and the binding constraint on an experiment like this is no longer money — it's curiosity and operational attention. And the attention, increasingly, can be delegated to agents.
+
+For completeness, the full experiment ledger: ~$29 for the domains, $0 to Cloudflare, free tiers of OpenWeather and a transactional email service, GitHub Actions minutes within the free allowance. The one real bill is coming: `.website` renewals run about $21 per domain per year, so the $29 experiment matures into a ~$600/year decision. I consider that deadline a feature. The first year is the experiment; the renewal is the referendum.
+
+## What I'd tell you to do
+
+If you've read this far, here is the actual recommendation, the one this entire post exists to deliver:
+
+**Run at least one real website, on your own domain, and read its logs.**
+
+Not a portfolio behind a platform that hides the traffic from you. A real domain with real DNS, where you can see every request. It will teach you, within weeks, things that no tutorial covers, because the modern web's most consequential facts live below the analytics layer:
+
+1. **Most traffic was never human**, and the dashboards you're used to are the curated version of reality.
+2. **Someone is always knocking.** Secret-scanners will find your site within days of DNS propagating. Design your deploys as if the probe list is the test suite — because it is.
+3. **Identity on the internet is claimed, not possessed.** Anything can call itself Googlebot. Verification, not reputation, is the unit of trust.
+4. **Debug your data before your system.** A failing metric may mean your measurement is under attack, not your code.
+5. **You have a second audience now.** AI crawlers may read more of your site than people do. Decide deliberately what that means for you.
+6. **The problem's layer matters more than its fix.** Our worst problem was unsolvable in application code and trivial at the edge. Running your own site is how you learn to feel which layer a problem lives in.
+7. **The price of the experiment is no longer the barrier.** $29 and a free tier bought a 29-site civic network, a security incident, a measurement crisis, a registry dispute, and more education than any course I've taken.
+
+The web still rewards people who build a corner of it and pay attention. The tools have never been this cheap, the agents have never been this capable, and the logs have never been this interesting.
+
+This is the first post from the project. The next ones will go deeper into single threads — the caching experiment's full numbers, the AI onboarding pipeline, and what it takes to convince a registry you're human.
