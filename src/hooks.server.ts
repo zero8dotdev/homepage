@@ -24,6 +24,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
+	// /about was removed but had earned links and rankings; send its
+	// residual traffic home instead of 404ing.
+	if (path === '/about' || path === '/about/') {
+		return new Response(null, { status: 301, headers: { Location: '/' } });
+	}
+
 	const response = await resolve(event);
 	response.headers.set('X-Content-Type-Options', 'nosniff');
 	response.headers.set('X-Frame-Options', 'DENY');
