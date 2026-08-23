@@ -1,9 +1,17 @@
 <script lang="ts">
 	import { TopNav, Footer, PostListItem } from '$lib/design/lib';
 	import { siteConfig } from '$lib/data/site';
+	import { breadcrumbSchema } from '$lib/data/schema';
+	import JsonLd from '$lib/components/JsonLd.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const breadcrumbs = breadcrumbSchema([
+		{ name: 'Home', url: siteConfig.url },
+		{ name: 'Writing', url: `${siteConfig.url}/blog` },
+		{ name: data.tag }
+	]);
 
 	const postItems = data.posts.map((p) => ({
 		date: p.date,
@@ -26,6 +34,8 @@
 	<meta name="twitter:description" content="Articles on {data.tag} — deep dives on developer tools, AI systems, and software engineering from Ashutosh Tripathi." />
 	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
+
+<JsonLd data={breadcrumbs} />
 
 <TopNav active="writing" />
 <main id="main" class="column">

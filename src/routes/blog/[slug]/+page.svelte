@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { TopNav, BlogHeader, BlogBody, Footer, PostListItem } from '$lib/design/lib';
 	import { siteConfig } from '$lib/data/site';
-	import { blogPostingSchema } from '$lib/data/schema';
+	import { blogPostingSchema, breadcrumbSchema } from '$lib/data/schema';
 	import JsonLd from '$lib/components/JsonLd.svelte';
 	import type { PageData } from './$types';
 
@@ -26,6 +26,12 @@
 		dateModified: data.meta.updated,
 		tags: data.meta.tags
 	});
+
+	const breadcrumbs = breadcrumbSchema([
+		{ name: 'Home', url: siteConfig.url },
+		{ name: 'Writing', url: `${siteConfig.url}/blog` },
+		{ name: data.meta.title }
+	]);
 </script>
 
 <svelte:head>
@@ -52,6 +58,7 @@
 </svelte:head>
 
 <JsonLd data={articleSchema} />
+<JsonLd data={breadcrumbs} />
 
 <TopNav active="writing" />
 <main id="main" class="column">

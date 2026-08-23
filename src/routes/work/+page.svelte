@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { TopNav, Footer, Kicker } from '$lib/design/lib';
 	import { projects, siteConfig } from '$lib/data/site';
+	import { workGraph, breadcrumbSchema } from '$lib/data/schema';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+
+	const workBreadcrumbs = breadcrumbSchema([
+		{ name: 'Home', url: siteConfig.url },
+		{ name: 'Work' }
+	]);
 
 	const current = projects.filter((p) => p.status === 'live');
 	const past = projects.filter((p) => p.status !== 'live');
@@ -21,6 +28,9 @@
 	<meta name="twitter:title" content="work · zero8.dev" />
 	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
+
+<JsonLd data={workGraph} />
+<JsonLd data={workBreadcrumbs} />
 
 <TopNav active="work" />
 <main id="main" class="column">

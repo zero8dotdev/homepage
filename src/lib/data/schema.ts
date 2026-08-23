@@ -1,4 +1,4 @@
-import { siteConfig, company } from './site';
+import { siteConfig, company, projects } from './site';
 
 const SITE_URL = siteConfig.url;
 
@@ -48,6 +48,13 @@ export const organizationEntity = {
 		url: `${SITE_URL}/logo-mark.png`
 	},
 	founder: { '@id': PERSON_ID },
+	foundingDate: '2024',
+	taxID: company.gstin,
+	identifier: {
+		'@type': 'PropertyValue',
+		propertyID: 'CIN',
+		value: company.cin
+	},
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: 'B10, Block 5, Aradhana Greens Apartment',
@@ -120,6 +127,52 @@ export function blogPostingSchema(post: BlogPostingInput) {
 		inLanguage: 'en'
 	};
 }
+
+/** BreadcrumbList — the last item is the current page and carries no URL, per Google's spec. */
+export function breadcrumbSchema(items: { name: string; url?: string }[]) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: items.map((item, i) => ({
+			'@type': 'ListItem',
+			position: i + 1,
+			name: item.name,
+			...(item.url ? { item: item.url } : {})
+		}))
+	};
+}
+
+function softwareEntity(name: string, operatingSystem: string) {
+	const p = projects.find((proj) => proj.name === name);
+	if (!p?.href) return null;
+	return {
+		'@type': ['SoftwareApplication', 'SoftwareSourceCode'],
+		'@id': `${SITE_URL}/work#${name.toLowerCase()}`,
+		name: p.name,
+		description: p.description,
+		url: p.href,
+		...(p.href.includes('github.com') ? { codeRepository: p.href } : {}),
+		applicationCategory: 'DeveloperApplication',
+		operatingSystem,
+		programmingLanguage: 'TypeScript',
+		keywords: p.stack.join(', '),
+		author: { '@id': PERSON_ID },
+		publisher: { '@id': ORG_ID },
+		isAccessibleForFree: true,
+		offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+	};
+}
+
+/** Graph for /work: the flagship software projects, tied to the person/org entities. */
+export const workGraph = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		personEntity,
+		organizationEntity,
+		softwareEntity('Smriti', 'macOS, Linux'),
+		softwareEntity('Avkash', 'Linux, macOS (self-hosted)')
+	].filter(Boolean)
+};
 
 /** Blog schema for the writing index. */
 export const blogGraph = {
