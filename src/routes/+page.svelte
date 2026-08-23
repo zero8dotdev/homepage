@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { HomePage, AboutBlock, ProjectList, WritingList } from '$lib/design/lib';
 	import { projects, about, siteConfig } from '$lib/data/site';
+	import { homeGraph } from '$lib/data/schema';
+	import JsonLd from '$lib/components/JsonLd.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -39,6 +41,8 @@
 	<meta name="twitter:description" content="Software engineer building developer tools and AI-native systems. A decade of product engineering." />
 	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
+
+<JsonLd data={homeGraph} />
 
 <HomePage active="home">
 	<AboutBlock>

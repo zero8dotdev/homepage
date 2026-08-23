@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { TopNav, Footer, PostListItem } from '$lib/design/lib';
 	import { siteConfig } from '$lib/data/site';
+	import { blogGraph } from '$lib/data/schema';
+	import JsonLd from '$lib/components/JsonLd.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -28,6 +30,8 @@
 	<meta name="twitter:description" content="Essays on developer tools, AI memory, agent systems, email deliverability, and the craft of software engineering — written by Ashutosh Tripathi." />
 	<meta name="twitter:image" content={siteConfig.ogImage.url} />
 </svelte:head>
+
+<JsonLd data={blogGraph} />
 
 <TopNav active="writing" />
 <main id="main" class="column">

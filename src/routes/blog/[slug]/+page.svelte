@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { TopNav, BlogHeader, BlogBody, Footer, PostListItem } from '$lib/design/lib';
 	import { siteConfig } from '$lib/data/site';
+	import { blogPostingSchema } from '$lib/data/schema';
+	import JsonLd from '$lib/components/JsonLd.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -14,6 +16,16 @@
 	const postImage = data.meta.image
 		? `${siteConfig.url}${data.meta.image}`
 		: `${siteConfig.url}/og/blog/${data.meta.slug}`;
+
+	const articleSchema = blogPostingSchema({
+		title: data.meta.title,
+		description: data.meta.description,
+		url: postUrl,
+		image: postImage,
+		datePublished: data.meta.date,
+		dateModified: data.meta.updated,
+		tags: data.meta.tags
+	});
 </script>
 
 <svelte:head>
@@ -38,6 +50,8 @@
 		<meta property="article:modified_time" content={data.meta.updated} />
 	{/if}
 </svelte:head>
+
+<JsonLd data={articleSchema} />
 
 <TopNav active="writing" />
 <main id="main" class="column">
