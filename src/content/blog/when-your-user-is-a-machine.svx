@@ -1,0 +1,195 @@
+---
+title: "When your user is a machine: mapping software for people to agents"
+description: "One rule and one map for developers whose users are turning into AI agents: what changes in feedback, bugs, design, docs, testing and releases."
+date: "2026-11-02"
+draft: true
+tags: ["agentic-ai", "developer-tools", "claude-code", "product", "igl"]
+---
+
+If you build software for people, you know the rhythm. You plan a sprint. You build. You show a demo. A few friendly users try the beta. You roll it out to a small group first, the canary, and watch. Then you listen to feedback and plan the next sprint.
+
+I lived by that rhythm for years. Then, over a few weeks, the people using my newest tool mostly stopped being people. They became AI agents.
+
+This post is what I learned, written so you can use it on your own product. By the end you'll have two things:
+
+1. **One rule** that explains almost everything that changes.
+2. **A map** from what you already know (building for people) to what's new (building for agents).
+
+Let's start with the story, then build the map one piece at a time.
+
+## The tool, and who uses it
+
+The tool is called igl. It's small. It lets me sit at a laptop and run my Claude Code sessions on two home servers. I type `igl callback` and I'm inside that project on the server, with its dev servers running and its links opening on my laptop.
+
+I built it for me. But the agents running on those servers started using it too. They send each other notes with it. They check for updates with it. They start other agents with it. On one server, igl logged more than 200 runs in two weeks. Hardly any of them were me typing. They were agents, the daily updater and the self-test.
+
+So my main users were now machines. That sounded familiar at first.
+
+## Three kinds of users
+
+Software has served machines for a long time. That's what an API is. So you might think: an agent is just another API client. It isn't, and the difference is the whole lesson.
+
+Ask three questions about any user:
+
+| | A person | An API client | An agent |
+| --- | --- | --- | --- |
+| Does it read your words? | Yes | No. Its developer read the docs, once | Yes, every time it runs |
+| Does it decide what to do next? | Yes | No. It does what its code says | Yes |
+| Does it tell you when it's stuck? | Sometimes | No. It just fails | Almost never |
+
+Look at the agent column. It reads and decides like a person. But like a program, it follows what it reads exactly, it never gets tired, and it doesn't complain.
+
+That gives us the rule.
+
+## The rule
+
+> **An agent reads like a person and obeys like a program. So every word your software prints is part of its API.**
+
+Your help text, your error messages, your hints, the "ok" at the end of a dry run: for a person, these are friendly extras. For an agent, they are instructions. An agent will follow them as faithfully as code follows a function signature.
+
+Keep that rule in mind. Every section below is that rule showing up in a different place.
+
+## Part 1: the rhythm you already know
+
+### Feedback: the user never complains
+
+With people, feedback is noisy but it comes. Someone emails you. Someone sighs loudly in the demo.
+
+Agents don't complain. igl has a feedback command, `igl fb`, that sends a short note. When I first checked every inbox on my servers, agents had sent exactly zero notes. The four notes that existed were tests I had sent myself.
+
+Why? Nobody had told the agents the command existed. And even if they used it, the note would only say "from s1", so I couldn't tell which agent sent it.
+
+It got worse. Soon after, one agent did write a careful review: twelve real problems, each one clear. It reached the inbox, got marked as read, and sat there for two weeks. Nobody turned it into work.
+
+**The lesson:** with agents, feedback has to be designed in. Tell the agent how to report a problem. Make reporting one command. Stamp every note with who sent it. And make every note end up as a ticket someone triages, not a message someone reads.
+
+### Bugs: the words are the bug
+
+With people, a bug is usually something you can see. A button that does nothing. A page that crashes.
+
+With agents, many bugs are words. Here's the rule in action.
+
+When an agent typed `igl feedback`, igl said there was no project called "feedback" and suggested `igl add feedback` to create one. A person would laugh and move on. An agent might do exactly what the hint says.
+
+Another one: the dry run of `igl fb` said "ok", but the real send would have failed, because the server couldn't be reached. A person might double-check. An agent trusts the "ok".
+
+**The lesson:** a misleading message is not a polish issue. It's a real bug. It goes on the board like one.
+
+### Beta testing: the tester that never sleeps
+
+With people, beta testers are kind volunteers. They sign up, try it twice, and drift away.
+
+My beta tester is a server. Every morning at 7:00, it installs the newest beta of igl. Then it runs igl's self-test on itself: can it find and check the next release, is it on the right channel, do its logs ship. If anything fails, it puts the old version back on its own and opens a GitHub issue that says what broke. Nobody has to be awake.
+
+There's a catch. A server can only test what a server can see. A few checks, like "did that link actually open on the laptop?" or "does login work?", need the laptop. So once per beta I still run those checks myself.
+
+**The lesson:** with machine users, beta testing can run itself every day. But it only tests what you wrote down. Checks that need a human's screen still need a human.
+
+### Canary: one machine, 48 hours
+
+With a web app, a canary means sending a small slice of real traffic to the new version and watching the error graphs.
+
+My fleet is two servers and a laptop, so there's no "slice of traffic". The canary is a whole machine. One server runs beta, and the agents on it are the first users of every new build. A beta only goes to every machine after it has passed its self-test, stayed green for 48 hours, and left clean logs.
+
+The laptop, where I work, stays on stable. A fix waits at least two days to reach me. It's worth it: when a beta has a problem, it shows up on a server that agents use, not on the machine I work on.
+
+**The lesson:** the canary idea carries over unchanged. The agents on the canary are your early users. Just record which version each of their runs used, so you can compare releases.
+
+## Part 2: the daily craft, mapped
+
+The rhythm is only part of the job. Most of a developer's day is design, docs, compatibility, testing and analytics. These change too, and this is where the rule teaches the most.
+
+### Design: predictable beats delightful
+
+People want software that feels good. Agents want software that behaves the same way every time.
+
+- **No questions.** A command that stops to ask "are you sure?" is fine for a person. An agent has no one to answer it. One of my background agents hung forever on a "do you trust this folder?" prompt. A person clicks yes in a second. The agent just waited.
+- **Plain output.** igl prints a spinner for people and JSON when its output goes to another program. The agents wanted neither. They wanted the one plain line a person sees. To get it, they ran igl inside a fake terminal, which filled their logs with spinner junk. Nothing failed, so no error ever showed up. A `--plain` mode is now planned.
+- **Limits.** Asked to "run the dev server and guide me", one agent opened 15 browser tabs on my laptop, one after another. A person would never do that. Now igl opens three links at a time and holds the rest.
+
+### Docs and onboarding: you can edit your user
+
+Here's something you can't do with a person, and don't need to do with an API client: you can change what your user knows.
+
+An agent starts each session by reading its instructions. So onboarding isn't a tour or a help page. It's a few lines you put in front of the agent. The next igl release ships a short guide for agents that says when to report a problem and exactly how. Better instructions mean a better-behaved user, from the very next session.
+
+### Compatibility: wording is a contract
+
+For people, you can reword a message any time. Nobody's code depends on your sentence.
+
+For an API client, you version the schema and never change a field silently.
+
+For an agent, it's both, and it's sneaky. Those agents now depend on the exact one-line text of `igl update --check`. If I reword that sentence, I might break them, and no test will tell me. The rule again: every word you print is part of the API.
+
+### Usability testing: read the transcripts
+
+With people, you watch someone use your product and notice where they hesitate.
+
+With agents, you read what they did. Agent sessions leave transcripts. I read 18 of them by hand. They held 21 problems with igl, and not one had been reported. That one read found more problems than the feedback inbox had ever received.
+
+Transcripts show you two things no error log can:
+
+- **Workarounds that succeed**, like that fake terminal. Every run logged as a success.
+- **Bypassing**, where the agent gave up on igl and used raw ssh instead. If your product never runs, it never logs anything.
+
+### Analytics: stamp everything with the version
+
+With people, you track clicks and funnels. With agents, every run is already a data point, and there are a lot of them. Make sure each log line says which version wrote it. Then "did this release make things better?" has a real answer: compare the failure rate of the new version with the old one. igl's run logs start doing this in the release that's in beta right now.
+
+## Serve both at once
+
+The title says "when your user is a machine". In practice, it's rarely either-or. igl serves me and my agents with the same commands. Most software will end up the same way.
+
+The pattern is simple: **find out who is on the other end, from evidence, and serve that user.**
+
+igl looks at one thing: is there a terminal?
+
+- **A terminal means a person.** igl shows the spinner and asks before doing something big.
+- **No terminal means a program or an agent.** igl skips the question and does the work. The safety comes from other places: a `--dry-run` that previews, and a one-command rollback.
+
+The same command, two experiences. Neither user is forced to pretend to be the other.
+
+## Where the map stops working
+
+Every map has edges. Here are the three places where "agents are like people" or "agents are like programs" stops being true.
+
+1. **Agents aren't deterministic.** The same input can lead to a different path tomorrow. You can test your words and your behavior, but you can't write a fixed test for how an agent will *use* them. That's why reading transcripts isn't optional.
+2. **You can rewrite your user.** No other kind of user lets you change their knowledge overnight. Use it.
+3. **Agents don't get bored.** A person who hits a wall gives up. An agent may try the same wrong thing many times, very fast. Limits protect both of you.
+
+## Beyond the terminal
+
+All my evidence comes from one tool, and it's a command-line tool. But I expect the same shape anywhere an agent uses software made for people. Think of an agent filling in your web form. A confirm dialog is a question with no one to answer it. A vague error toast is a hint it will follow. A "success!" banner is the "ok" it trusts. I haven't measured this. It's what the rule predicts, and it's worth checking on your own product.
+
+## The whole map
+
+| | Users are people | Users are API clients | Users are agents |
+| --- | --- | --- | --- |
+| **Feedback** | They tell you, sometimes | Never. Their developer files a bug | Never, unless you build it in |
+| **Bugs** | Things you can see break | Broken contracts | Also misleading words: hints, errors, "ok" |
+| **Beta** | Volunteers who drift away | A sandbox | A machine that tests itself every day |
+| **Canary** | A slice of traffic | A slice of traffic | A whole machine and its agents |
+| **Design** | Delight and clarity | A clean contract | Predictability: no questions, plain output, limits |
+| **Docs and onboarding** | Help pages and tours | Reference docs, read once | Instructions you can edit, read every session |
+| **Compatibility** | Reword freely | Version the schema | Wording is part of the contract |
+| **Usability testing** | Watch people use it | Contract tests | Read the transcripts |
+| **Analytics** | Clicks and funnels | Request logs | Logs stamped with version |
+| **Where problems hide** | In silence | In error logs | In workarounds that "succeed" |
+
+## Try it on your own product
+
+Five checks you can do this week:
+
+1. **Find every question your software asks.** What happens when no one is there to answer?
+2. **Read your error messages as instructions.** If someone followed each one exactly, would they do the right thing?
+3. **Check your "ok".** Does every success message mean the thing actually worked?
+4. **Read five agent transcripts,** or five support threads if you don't have agents yet. Write down every workaround you see.
+5. **Stamp your logs with the version** that wrote them.
+
+## What stays the same
+
+The rhythm is the same, and it still works. Plan, build, beta, canary, listen, plan again.
+
+What changes is listening. People will sometimes tell you what's wrong. Agents almost never will. They just do what your words say, or quietly find another way around.
+
+So when your user is a machine, go and read what it did. The transcripts are your user interviews now.
