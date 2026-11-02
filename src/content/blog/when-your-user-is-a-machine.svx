@@ -1,0 +1,120 @@
+---
+title: "When your user is a machine: sprints, bugs and betas for agents"
+description: "My busiest users are AI agents, not people. Here's what happens to feedback, bugs, features, beta testing and canaries when the user is a machine."
+date: "2026-11-02"
+draft: true
+tags: ["agentic-ai", "developer-tools", "claude-code", "product", "igl"]
+---
+
+If you build software for people, you know the rhythm. You plan a sprint. You build. You show a demo. A few friendly users try the beta. You roll it out to a small slice first, the canary, and watch. Then you listen to feedback and plan the next sprint.
+
+I lived by that rhythm for years. Then, over a few weeks, the people using my newest tool mostly stopped being people.
+
+This is the story of what happened to each part of that rhythm when the user turned into a machine.
+
+## The tool, and who uses it
+
+The tool is called igl. It's small. It lets me sit at a laptop and run my Claude Code sessions on two home servers. I type `igl callback` and I'm inside that project on the server, with its dev servers running and its links opening on my laptop.
+
+I built it for me. But the agents running on those servers started using it too. They send each other notes with it. They check for updates with it. They start other agents with it. On one server, igl logged more than 200 runs in two weeks. Hardly any of them were me typing. They were agents, the daily updater and the self-test.
+
+So my main users were now machines. That sounded familiar at first.
+
+## We've had machine users before: APIs
+
+Software has served machines for a long time. That's what an API is.
+
+But think about who actually *uses* an API. A developer reads the docs, writes some code once, and that code calls the API the same way for years. The program doesn't read anything. It doesn't make choices. If something changes, it simply breaks, and a human comes to fix it.
+
+An AI agent is a different kind of machine user. It reads your help text while it works. It reads your error messages and decides what to do next. When something gets in its way, it finds a way around it, right there, without telling anyone.
+
+So it's a machine, but it behaves like a user. And that changes every part of the rhythm.
+
+## Feedback: the user never complains
+
+With people, feedback is noisy but it comes. Someone emails you. Someone tweets. Someone sighs loudly in the demo.
+
+Agents don't complain. igl has a feedback command, `igl fb`, that sends a short note. When I first checked every inbox on my servers, agents had sent exactly zero notes. The four notes that existed were tests I had sent myself.
+
+Why? Two reasons. Nobody had told the agents the command existed. And even if they used it, the note would only say "from s1", so I couldn't tell which agent sent it.
+
+It got worse. Soon after, one agent did write a careful review: twelve real problems, each one clear. It reached the inbox, got marked as read, and sat there for two weeks. Nobody turned it into work.
+
+Then I read 18 agent sessions by hand. They held 21 problems with igl. Not one had been reported.
+
+**What I learned:** with machine users, feedback has to be built into the product. Tell the agent, in its own instructions, how to report a problem. Make reporting one command. Stamp every note with who sent it. And make sure every note ends up as a ticket someone looks at, not a message someone reads.
+
+## Bugs: the words are the bug
+
+With people, a bug is usually something you can see. A button that does nothing. A page that crashes.
+
+With agents, many bugs are words.
+
+When an agent typed `igl feedback`, igl said there was no project called "feedback" and suggested `igl add feedback` to create one. A person would laugh and move on. An agent might do exactly what the hint says.
+
+Another one: the dry run of `igl fb` said "ok", but the real send would have failed because the server couldn't be reached. A person might double-check. An agent trusts the "ok".
+
+**What I learned:** for an agent, your error messages and hints are the user interface. Every hint is an instruction that will be followed. A misleading message is not a small polish issue. It's a real bug, and it goes on the board like one.
+
+## Features: what a machine wants
+
+People want features they can see and enjoy. Agents want boring things, and they want them badly.
+
+**No questions.** A command that stops to ask "are you sure?" is fine for a person. An agent has no one to answer it. One of my background agents hung forever on a "do you trust this folder?" prompt. A person clicks yes in a second. The agent just waited. So I changed igl so that almost every command can run without a person at the keyboard. When a person *is* there, it still asks.
+
+**Plain output.** igl prints a nice spinner for people and JSON when its output goes to another program. The agents wanted neither. They wanted the one plain line a person sees. To get it, they ran igl inside a fake terminal, which filled their logs with spinner junk. Nothing failed, so no error ever showed up. That's why a `--plain` mode is now on the plan.
+
+**Limits.** Asked to "run the dev server and guide me", one agent opened 15 browser tabs on my laptop, one after another. A person would never do that. Now igl opens three links at a time and holds the rest.
+
+**What I learned:** the features agents need are about being predictable. No prompts. Output they can read. Dry runs that tell the truth. Limits on the things a fast machine can do too many times.
+
+## Beta testing: the tester that never sleeps
+
+With people, beta testers are kind volunteers. They sign up, try it twice, and drift away.
+
+My beta tester is a server. Every morning at 7:00, it installs the newest beta of igl. Then it runs igl's self-test on itself: can it find and check the next release, is it on the right channel, do its logs ship. If anything fails, it puts the old version back on its own and opens a GitHub issue that says what broke. Nobody has to be awake.
+
+There's a catch. A server can only test what a server can see. A few checks, like "did that link actually open on the laptop?" or "does login work?", need the laptop. So once per beta I still run those checks myself, from the laptop.
+
+**What I learned:** with machine users, beta testing can be fully automatic and happen every day. But it only tests what you wrote down. The checks that need a human's screen still need a human.
+
+## Canary: one machine, 48 hours
+
+With a web app, a canary means sending a small slice of real traffic to the new version and watching the error graphs.
+
+My fleet is two servers and a laptop, so there's no "slice of traffic". The canary is a whole machine. One server runs beta. The agents on that server are the first users of every new build. A beta only goes to every machine after it has passed its self-test and stayed green for 48 hours, and the logs from that time look clean.
+
+The laptop, where I work, stays on stable. That costs me something: a fix waits at least two days to reach me. It's worth it. When a beta has a problem, it shows up on a server that agents use, not on the machine I need to work on.
+
+**What I learned:** the canary idea still works with machine users. The agents on the canary are your early users. Just make sure their runs are recorded with the version they ran, so "did this release make things better?" has a real answer.
+
+## The sprint: same rhythm, different table
+
+So does the sprint survive? Yes. I'm starting one-week sprints for igl this week. The week is sized around that 48-hour soak, so a beta can prove itself before the next sprint starts.
+
+What changes is what you bring to the planning table. I think of it as three sources:
+
+- **Failures** come from intake: error logs, failed self-tests, reports.
+- **Friction** comes from transcripts: reading what the agents actually did, and where they worked around the product. This is where most of my problems were hiding.
+- **Intent** comes from me: what igl is for, and what matters most next.
+
+The retro at the end of the week is where all three sit together. The next sprint comes out of that.
+
+## The whole picture
+
+| | Users are people | Users are API clients | Users are agents |
+| --- | --- | --- | --- |
+| **Feedback** | They tell you, sometimes | Never. A human files a bug | Never, unless you build it in |
+| **Bugs** | Things you can see break | Broken contracts | Also misleading words: hints, errors, "ok" |
+| **Features** | Things to see and enjoy | New endpoints | Predictability: no prompts, plain output, limits |
+| **Beta** | Volunteers who drift away | A sandbox | A machine that tests itself every morning |
+| **Canary** | A slice of traffic | A slice of traffic | A whole machine and its agents |
+| **Where problems hide** | In silence | In logs | In workarounds that "succeed" |
+
+## What stays the same
+
+The rhythm is the same, and it still works. Plan, build, beta, canary, listen, plan again.
+
+The difference is listening. People will sometimes tell you what's wrong. Machines almost never will. They just do what your words say, or quietly find another way around.
+
+So when your user is a machine, you have to go and read what it did. The transcripts are your user interviews now.
